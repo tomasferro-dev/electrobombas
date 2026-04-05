@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Images, Filter } from 'lucide-react';
+import { MapPin, Filter } from 'lucide-react';
 import { PROJECTS } from '../data';
 import Breadcrumb from '../components/Breadcrumb';
 
