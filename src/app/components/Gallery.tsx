@@ -1,0 +1,86 @@
+import { Link } from 'react-router-dom';
+import { ArrowRight, MapPin } from 'lucide-react';
+import { PROJECTS } from '../data';
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Perforación: 'bg-orange-100 text-orange-800',
+  Limpieza: 'bg-green-100 text-green-800',
+  Mantenimiento: 'bg-blue-100 text-blue-800',
+  Municipal: 'bg-purple-100 text-purple-800',
+  Institucional: 'bg-indigo-100 text-indigo-800',
+};
+
+interface GalleryProps {
+  preview?: boolean;
+}
+
+export default function Gallery({ preview = false }: GalleryProps) {
+  const displayed = preview ? PROJECTS.slice(0, 4) : PROJECTS;
+
+  return (
+    <section id="galeria" className="py-20 bg-gray-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl text-gray-900 mb-4">Galería de Proyectos</h2>
+          <p className="text-gray-600 text-xl max-w-3xl mx-auto">
+            Conocé algunos de nuestros trabajos realizados en Mendoza y San Juan
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayed.map((project) => (
+            <Link
+              key={project.id}
+              to={`/proyectos/${project.id}`}
+              className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white"
+            >
+              {/* Cover image placeholder (replace with actual img when assets available) */}
+              <div className="aspect-square bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
+                <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                
+
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <div className="p-4 text-white">
+                    <p className="text-sm font-medium">Ver proyecto →</p>
+                  </div>
+                </div>
+
+                {/* Category badge */}
+                <div className="absolute top-3 left-3">
+                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${CATEGORY_COLORS[project.category] ?? 'bg-gray-100 text-gray-700'}`}>
+                    {project.category}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4">
+                <h3 className="font-semibold text-gray-900 text-sm mb-1 leading-snug group-hover:text-red-700 transition-colors">
+                  {project.title}
+                </h3>
+                {project.location && (
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <MapPin className="w-3 h-3" />
+                    {project.location}
+                  </div>
+                )}
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {preview && (
+          <div className="text-center mt-12">
+            <Link
+              to="/proyectos"
+              className="inline-flex items-center gap-2 bg-red-700 text-white px-8 py-4 rounded-md hover:bg-red-800 transition-colors font-medium"
+            >
+              Ver todos los proyectos
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
