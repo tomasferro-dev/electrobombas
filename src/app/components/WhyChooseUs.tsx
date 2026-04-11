@@ -1,4 +1,4 @@
-import { Award, Cog, Shield, Users, ArrowRight } from 'lucide-react';
+import { Award, Cog, Shield, Users } from 'lucide-react';
 // import { Link } from 'react-router-dom';
 import ArenasImg from '../../assets/arenas-perfo.jpg';
 
