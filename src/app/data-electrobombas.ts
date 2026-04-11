@@ -3,12 +3,12 @@
 // ─────────────────────────────────────────────
 // Copiá y pegá esta sección al final de tu data.ts existente
 
-import test1 from '../assets/bombas/test3.webp'
-import test2 from '../assets/bombas/test2.webp'
-import test3 from '../assets/bombas/test4.webp'
-import test4 from '../assets/bombas/test5.webp'
-import test5 from '../assets/bombas/test6.webp'
-import test6 from '../assets/bombas/test7.webp'
+// import test1 from '../assets/bombas/test3.webp'
+// import test2 from '../assets/bombas/test2.webp'
+// import test3 from '../assets/bombas/test4.webp'
+// import test4 from '../assets/bombas/test5.webp'
+// import test5 from '../assets/bombas/test6.webp'
+// import test6 from '../assets/bombas/test7.webp'
 
 export interface Electrobomba {
   id: string;
@@ -44,7 +44,7 @@ export const ELECTROBOMBAS_VENTA: Electrobomba[] = [
       'Electrobomba sumergible de 4" ideal para pozos domiciliarios. Construida en acero inoxidable, silenciosa y de bajo consumo energético. Perfecta para hogares con demanda moderada de agua.',
     precio: null,
     disponible: true,
-    imagen: test1,
+    imagen: '',
     destacada: true,
   },
   {
@@ -62,7 +62,7 @@ export const ELECTROBOMBAS_VENTA: Electrobomba[] = [
       'Bomba sumergible italiana de alta calidad para pozos de agua potable. Cuerpo en acero inoxidable AISI 304, motor hermético con refrigeración por el agua bombeada.',
     precio: null,
     disponible: true,
-    imagen: test2,
+    imagen: '',
     destacada: false,
   },
   {
@@ -80,7 +80,7 @@ export const ELECTROBOMBAS_VENTA: Electrobomba[] = [
       'Electrobomba trifásica de alto rendimiento para aplicaciones agrícolas e industriales. Idónea para riego de cultivos, llenado de cisternas y abastecimiento de establecimientos.',
     precio: null,
     disponible: true,
-    imagen: test3,
+    imagen: '',
     destacada: true,
   },
   {
@@ -98,7 +98,7 @@ export const ELECTROBOMBAS_VENTA: Electrobomba[] = [
       'Motor sumergible de 6" de alta eficiencia energética para pozos de gran profundidad. Compatible con variadores de frecuencia. Ideal para grandes extensiones agrícolas y pozos industriales.',
     precio: null,
     disponible: true,
-    imagen: test4,
+    imagen: '',
     destacada: false,
   },
   {
@@ -116,7 +116,7 @@ export const ELECTROBOMBAS_VENTA: Electrobomba[] = [
       'Bomba sumergible de 6" para pozos de alto caudal. Fabricada en acero inoxidable y hierro fundido. Soporta agua con contenido de arena de hasta 200 g/m³. Alta durabilidad en condiciones exigentes.',
     precio: null,
     disponible: false,
-    imagen: test5,
+    imagen: '',
     destacada: false,
   },
   {
@@ -134,7 +134,7 @@ export const ELECTROBOMBAS_VENTA: Electrobomba[] = [
       'Electrobomba sumergible de gran potencia para proyectos de alta demanda. Compatible con tableros de control y variadores de velocidad. Consultá disponibilidad y condiciones de entrega.',
     precio: null,
     disponible: true,
-    imagen: test6,
+    imagen: '',
     destacada: true,
   },
 ];

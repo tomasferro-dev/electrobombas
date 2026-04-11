@@ -177,7 +177,7 @@ export default function ReparacionElectrobombasPage() {
           ¿Preferís comprar una electrobomba nueva en lugar de repararla?
         </p>
         <Link
-          to="/electrobombas/venta"
+          to="/servicios/venta"
           className="inline-flex items-center gap-2 border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-3 rounded-lg font-medium transition-colors"
         >
           Ver Electrobombas en Venta

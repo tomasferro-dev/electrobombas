@@ -14,7 +14,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <div className="flex flex-col leading-tight">
                 <span className="text-xl font-bold text-red-400 tracking-tight">ARENAS</span>
-                <span className="text-xs text-gray-400 tracking-widest uppercase">Perforaciones</span>
+                <span className="text-xs text-gray-400 tracking-widest uppercase">Electrobombas</span>
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">

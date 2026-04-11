@@ -20,8 +20,9 @@ function ElectrobombaCard({ bomba }: { bomba: Electrobomba }) {
   const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${waMsg}`;
 
   return (
+    
     <div className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden ${bomba.destacada ? 'ring-2 ring-red-700' : ''}`}>
-      
+    
       {/* Badge destacada */}
       {bomba.destacada && (
         <div className="bg-red-700 text-white text-xs font-bold px-3 py-1 text-center tracking-wider">
@@ -234,7 +235,7 @@ export default function VentaElectrobombasPage() {
             No siempre es necesario comprar una nueva. Revisamos tu equipo sin costo y te decimos si conviene repararlo.
           </p>
           <Link
-            to="/electrobombas/reparacion"
+            to="/servicios/reparacion"
             className="inline-flex items-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors"
           >
             Ver servicio de reparación

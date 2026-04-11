@@ -1,5 +1,5 @@
 import { Award, Cog, Shield, Users, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import ArenasImg from '../../assets/arenas-perfo.jpg';
 
 const reasons = [
@@ -35,7 +35,7 @@ const reasons = [
 
 const stats = [
   { value: '20+', label: 'Años de Experiencia' },
-  { value: '200HP', label: 'Potencia Máxima' },
+  { value: '300HP', label: 'Potencia Máxima' },
   { value: '100%', label: 'Trabajos Garantizados' },
   { value: '24/7', label: 'Disponibilidad' },
 ];
@@ -62,24 +62,7 @@ export default function WhyChooseUs() {
             soluciones duraderas y eficientes para cada necesidad.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/electrobombas/reparacion"
-              className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
-            >
-              <Cog className="w-5 h-5" />
-              Reparación de Electrobombas
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/electrobombas/venta"
-              className="inline-flex items-center justify-center gap-2 bg-white border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
-            >
-              <ArrowRight className="w-4 h-4" />
-              Venta de Electrobombas
-            </Link>
-          </div>
+          
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">

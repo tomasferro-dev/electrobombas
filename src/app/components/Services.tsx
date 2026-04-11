@@ -9,6 +9,7 @@ import {
   Mountain,
   Anchor,
   ArrowRight,
+  Cog,
 } from "lucide-react";
 import { SERVICES } from "../data";
 
@@ -52,7 +53,32 @@ export default function Services({ preview = false }: ServicesProps) {
             agua en Mendoza, San Juan y todo el Territorio Argentino
           </p>
         </div>
-
+        
+        {/* CTA Buttons */}
+        <div className="text-center mb-10">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            ¿Estás Buscando {' '}
+            <strong className="text-black">Reparar o Comprar una Electrobomba</strong>
+            ?
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link
+              to="servicios/reparacion"
+              className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
+            >
+              <Cog className="w-5 h-5" />
+              Reparación de Electrobombas
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/servicios/venta"
+              className="inline-flex items-center justify-center gap-2 bg-white border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
+            >
+              <ArrowRight className="w-4 h-4" />
+              Venta de Electrobombas
+            </Link>
+          </div>
         {/* Quick nav — lista horizontal de servicios */}
         {/* {!preview && ( */}
           <div className="flex flex-wrap justify-center gap-2 mb-12">
@@ -62,6 +88,7 @@ export default function Services({ preview = false }: ServicesProps) {
                 <Link
                   key={service.id}
                   to={`/servicios/${service.slug}`}
+                  // to={`/servicios/${service.slug}/${service.slug2 || ""}`}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 
                     bg-white text-sm text-gray-600 hover:border-red-600 hover:text-red-700 
                     hover:bg-red-50 transition-all duration-200 shadow-sm"

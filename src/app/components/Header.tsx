@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronRight } from 'lucide-react';
-
-// Replace with your actual logo import path
-import logo from '../../assets/electro.png';
+import { Menu, X, ChevronRight, ChevronDown, Cog, ShoppingCart, Zap } from 'lucide-react';
+import logo from '../../assets/electrobombas_claude2.png';
 
 interface HeaderProps {
   mode: 'home' | 'subpage';
@@ -16,10 +14,30 @@ const NAV_LINKS = [
   { label: 'Contacto', to: '/contacto' },
 ];
 
+const ELECTROBOMBAS_ITEMS = [
+  
+  {
+    label: 'Venta',
+    // to: '/electrobombas/venta',
+    to: '/servicios/venta',
+    icon: ShoppingCart,
+    description: 'Catálogo de electrobombas',
+  },
+  {
+    label: 'Reparación',
+    // to: '/electrobombas/reparacion',
+    to: '/servicios/reparacion',
+    icon: Cog,
+    description: 'Bobinado y reparación integral',
+  },
+];
+
 export default function Header({ mode }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileElectroOpen, setIsMobileElectroOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -28,30 +46,25 @@ export default function Header({ mode }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change
+  // Cerrar menús al cambiar de ruta
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsDropdownOpen(false);
+    setIsMobileElectroOpen(false);
   }, [location.pathname]);
 
-  // const scrollToSection = (id: string) => {
-  //   if (location.pathname !== '/home') {
-  //     navigate('/home');
-  //     setTimeout(() => {
-  //       const el = document.getElementById(id);
-  //       if (el) {
-  //         const offset = 80;
-  //         window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
-  //       }
-  //     }, 300);
-  //   } else {
-  //     const el = document.getElementById(id);
-  //     if (el) {
-  //       const offset = 80;
-  //       window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
-  //     }
-  //   }
-  //   setIsMobileMenuOpen(false);
-  // };
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const isElectroActive = location.pathname.startsWith('/electrobombas');
 
   const bgClass =
     mode === 'home'
@@ -67,12 +80,7 @@ export default function Header({ mode }: HeaderProps) {
 
           {/* Logo */}
           <Link to="/home" className="flex items-center">
-            {/* Use img tag with your logo */}
             <img src={logo} alt="Arenas Perforaciones" className="h-10 md:h-12 w-auto object-contain" />
-            {/* <div className="flex flex-col leading-tight">
-              <span className="text-xl font-bold text-red-700 tracking-tight">ARENAS</span>
-              <span className="text-xs text-gray-500 tracking-widest uppercase">Perforaciones</span>
-            </div> */}
           </Link>
 
           {/* Desktop Navigation */}
@@ -90,6 +98,54 @@ export default function Header({ mode }: HeaderProps) {
                 {link.label}
               </NavLink>
             ))}
+
+            {/* Dropdown Electrobombas */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-red-700 ${
+                  isElectroActive ? 'text-red-700 border-b-2 border-red-700 pb-0.5' : 'text-gray-700'
+                }`}
+              >
+                {/* <Zap className="w-3.5 h-3.5" /> */}
+                Electrobombas
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Dropdown panel */}
+              {isDropdownOpen && (
+                <div className="absolute top-full right-0 mt-3 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                  {/* Link principal al servicio */}
+                  {/* <Link
+                    to="/servicios/electrobombas"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
+                  >
+                    <Zap className="w-4 h-4 text-red-400" />
+                    <span>Ver servicio completo</span>
+                  </Link> */}
+
+                  {/* Opciones */}
+                  {ELECTROBOMBAS_ITEMS.map((item) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className="flex items-start gap-3 px-4 py-3 hover:bg-red-50 transition-colors group"
+                    >
+                      <div className="bg-red-100 group-hover:bg-red-200 rounded-lg p-1.5 flex-shrink-0 mt-0.5 transition-colors">
+                        <item.icon className="w-4 h-4 text-red-700" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-gray-900 group-hover:text-red-700 transition-colors">
+                          {item.label}
+                        </div>
+                        <div className="text-xs text-gray-500">{item.description}</div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link
               to="/contacto"
               className="bg-red-700 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-red-800 transition-colors"
@@ -133,11 +189,54 @@ export default function Header({ mode }: HeaderProps) {
                 <ChevronRight className="w-4 h-4 opacity-40" />
               </NavLink>
             ))}
+
+            {/* Electrobombas accordion en mobile */}
+            <div>
+              <button
+                onClick={() => setIsMobileElectroOpen(!isMobileElectroOpen)}
+                className={`w-full flex items-center justify-between px-6 py-3 text-sm font-medium transition-colors ${
+                  isElectroActive
+                    ? 'text-red-700 bg-red-50'
+                    : 'text-gray-700 hover:text-red-700 hover:bg-gray-50'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  Electrobombas
+                </span>
+                <ChevronDown className={`w-4 h-4 opacity-40 transition-transform duration-200 ${isMobileElectroOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isMobileElectroOpen && (
+                <div className="bg-gray-50 border-t border-b border-gray-100">
+                  {/* Link principal */}
+                  <Link
+                    to="/servicios/electrobombas"
+                    className="flex items-center gap-3 px-8 py-3 text-sm text-gray-500 hover:text-red-700 transition-colors border-b border-gray-100"
+                  >
+                    <Zap className="w-4 h-4" />
+                    Ver servicio completo
+                  </Link>
+
+                  {ELECTROBOMBAS_ITEMS.map((item) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className="flex items-center gap-3 px-8 py-3 text-sm font-medium text-gray-700 hover:text-red-700 hover:bg-red-50 transition-colors"
+                    >
+                      <item.icon className="w-4 h-4 text-red-600" />
+                      {item.label}
+                      <ChevronRight className="w-3.5 h-3.5 opacity-40 ml-auto" />
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="px-4 py-3">
               <Link
                 to="/contacto"
-                className="block text-center bg-red-700 text-white px-6 py-3 rounded-md text-sm 
-                font-medium hover:bg-red-800 transition-colors"
+                className="block text-center bg-red-700 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-red-800 transition-colors"
               >
                 Solicitar Presupuesto
               </Link>

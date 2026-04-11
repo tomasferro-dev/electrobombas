@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Phone, MapPin, Clock, Mail, Linkedin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { CONTACT } from "../data";
-import logo from '../../assets/logo.png';
+import electro from '../../assets/electro.png';
 
 interface ContactProps {
   compact?: boolean; // true = versión /home
@@ -193,7 +193,7 @@ export default function Contact({ compact = false }: ContactProps) {
     {/* <div className="mt-6 flex justify-center"> */}
       <div className="mt-auto pt-6 flex justify-center ">
       <img
-        src={logo}
+        src={electro}
         alt="Arenas Perforaciones"
         className="h-30 object-contain"
       />
@@ -312,11 +312,18 @@ export default function Contact({ compact = false }: ContactProps) {
 
             {/* Map centrado */}
     <div className="w-full flex justify-center">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3060.8973410149188!2d-68.78749332469738!3d-32.933209973598814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e0dbd66118a83%3A0x59d077127fd80065!2sARENAS%20PERFORACIONES!5e1!3m2!1ses-419!2sar!4v1775090719717!5m2!1ses-419!2sar"
+      {/* <iframe
+        src=""
         className="w-full max-w-xl h-80 rounded-xl shadow-md border-0"
         loading="lazy"
-      ></iframe>
+      ></iframe> */}
+      {/* <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3060.906255144203!2d-68.78745612469731!3d-32.93295237359884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e0d6058c59e1f%3A0x7ec900e164996530!2sARENAS%20ELECTROBOMBAS!5e1!3m2!1ses-419!2sar!4v1775514423126!5m2!1ses-419!2sar" 
+        width="600" 
+        height="450" 
+        loading="lazy" >
+      </iframe> */}
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.683766311607!2d-68.78745612469731!3d-32.93295237359884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e0d6058c59e1f%3A0x7ec900e164996530!2sARENAS%20ELECTROBOMBAS!5e0!3m2!1ses-419!2sar!4v1775514526561!5m2!1ses-419!2sar" width="600" height="450"  loading="lazy"></iframe>
     </div>
 
           </div>

@@ -2,10 +2,10 @@ import { Phone, FileText, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import HeroImage1 from '../../assets/hero3.jpg';
-import HeroImage2 from '../../assets/hero4.jpeg';
+import HeroImage1 from '../../assets/pesca22.jpg';
+import HeroImage2 from '../../assets/hero1.jpg';
 import HeroImage3 from '../../assets/hero5.jpg';
-import HeroImage4 from '../../assets/hero6.jpg';
+import HeroImage4 from '../../assets/limpieza1.jpg';
 
 export default function Hero() {
   const scrollToSection = (id: string) => {
@@ -84,7 +84,7 @@ export default function Hero() {
              px-4 py-1.5 rounded-full mb-4 mt-6"
           >
             <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-            Base en Mendoza · Servicio en todo el país · Más de 20 años de experiencia
+            Base en Mendoza · Servicio en todo el país
           </motion.div>
 
           {/* Título — H1 principal con keywords nacionales + locales */}
@@ -92,9 +92,9 @@ export default function Hero() {
             variants={item}
             className="text-3xl sm:text-5xl lg:text-6xl text-white mt-2 mb-6 leading-tight"
           >
-            Encontrá la Mejor Opción en Electrobombas en{' '}
+            La Mejor Opción en Electrobombas en{' '}
             <span className="text-red-400">Mendoza, San Juan</span>
-            {' '}y <span className="text-red-400">toda Argentina</span>
+            {' '}y <span className="text-red-400">Todo Argentina</span>
           </motion.h1>
 
           {/* Subtítulo — keywords de servicios + cobertura */}
@@ -106,7 +106,7 @@ export default function Hero() {
             <strong className="text-white">
               rural, residencial e industrial
             </strong>
-            . Electrobombas, bobinados, filmaciones y más — con base en Cuyo y operaciones en todo el territorio nacional.
+            .
           </motion.h2>
 
           {/* Botones */}
