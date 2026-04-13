@@ -1,6 +1,7 @@
 import { Award, Cog, Shield, Users } from 'lucide-react';
 // import { Link } from 'react-router-dom';
-import ArenasImg from '../../assets/arenas-perfo.jpg';
+// import ArenasImg from '../../assets/arenas-perfo.jpg';
+import ArenasImg from '../../assets/porqueelegirnos.jpg';
 
 const reasons = [
   {

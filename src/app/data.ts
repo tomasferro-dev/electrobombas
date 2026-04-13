@@ -17,6 +17,7 @@ import limpieza1 from "../assets/limpieza1.jpg";
 import bobinados2 from "../assets/bobinados2.jpg";
 // import caneria from "../assets/caneria.jpg";
 import extrac1 from "../assets/extrac1.jpg";
+// import limpieza from '../assets/IMG_0097 2.jpg';
 
 export interface Service {
   id: string;
