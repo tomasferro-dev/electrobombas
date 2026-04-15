@@ -1,25 +1,35 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Images, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { PROJECTS } from "../data";
 
-const SERVICE_TO_CATEGORY: Record<string, string> = {
-  perforaciones: "Perforación",
-  electrobombas: "Mantenimiento",
-  bobinados: "Mantenimiento",
-  filmaciones: "Mantenimiento",
-  limpieza: "Limpieza",
-  pescas: "Mantenimiento",
-  "estudios-geologicos": "Perforación",
-  mantenimiento: "Mantenimiento",
-};
+// Carga dinámica de imágenes
+const allProjectImagesGlob = import.meta.glob(
+  '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
+  { eager: true, import: 'default' }
+);
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Perforación: "bg-orange-100 text-orange-800",
-  Limpieza: "bg-green-100 text-green-800",
-  Mantenimiento: "bg-blue-100 text-blue-800",
-  Municipal: "bg-purple-100 text-purple-800",
-  Institucional: "bg-indigo-100 text-indigo-800",
+function getFirstImage(imageFolder: string): string | null {
+  const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
+    if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
+    return path.includes(imageFolder);
+  });
+  return entry ? (entry[1] as string) : null;
+}
+
+// Mapeo de slug de servicio → servicios del proyecto que matchean
+const SERVICE_SLUG_MAP: Record<string, string[]> = {
+  perforaciones:       ['Desarrollo de perforación nueva'],
+  electrobombas:       ['Extracción de electrobomba', 'Colocación de electrobomba', 'Colocación de equipo nuevo', 'Colocación de electrobomba nueva', 'Alquiler de electrobomba'],
+  bobinados:           [],
+  filmaciones:         ['Filmación de pozos'],
+  limpieza:            ['Limpieza de perforaciones'],
+  pescas:              ['Pesca de electrobomba'],
+  'estudios-geologicos': [],
+  mantenimiento:       ['Mantenimiento de pozos', 'Reentubación de perforación', 'Rehabilitación de perforación en abandono'],
+  venta:               ['Venta de equipo nuevo'],
+  reparacion:          [],
+  desarrollo:          ['Desarrollo de perforación nueva'],
 };
 
 const VISIBLE = 3;
@@ -29,8 +39,10 @@ interface ProjectsCarouselProps {
 }
 
 export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
-  const category = SERVICE_TO_CATEGORY[slug];
-  const related = category ? PROJECTS.filter((p) => p.category === category) : [];
+  const matchingServices = SERVICE_SLUG_MAP[slug] ?? [];
+  const related = matchingServices.length > 0
+    ? PROJECTS.filter((p) => p.servicios.some((s) => matchingServices.includes(s)))
+    : PROJECTS.slice(0, 6);
 
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
@@ -61,7 +73,6 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
 
   const visible = related.slice(startIndex, startIndex + VISIBLE);
 
-  // Clases de animación según dirección
   const animClass = animating
     ? direction === "right"
       ? "-translate-x-8 opacity-0"
@@ -71,7 +82,6 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
   return (
     <div className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="flex items-end justify-between mb-8">
           <div>
             <p className="text-red-700 text-sm font-medium uppercase tracking-widest mb-1">
@@ -90,9 +100,7 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
           </Link>
         </div>
 
-        {/* Carousel */}
         <div className="relative">
-          {/* Prev button */}
           <button
             onClick={() => navigate("left")}
             disabled={!canPrev || animating}
@@ -106,54 +114,48 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Cards */}
           <div
             className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300 ease-in-out ${animClass}`}
           >
-            {visible.map((project) => (
-              <Link
-                key={project.id}
-                to={`/proyectos/${project.id}`}
-                className="group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white border border-gray-100"
-              >
-                <div className="aspect-square bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Images className="w-12 h-12 text-white/20" />
-                  </div>
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                    <p className="text-white text-sm font-medium p-4">
-                      Ver proyecto →
-                    </p>
-                  </div>
-                  <div className="absolute top-3 left-3">
-                    <span
-                      className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                        CATEGORY_COLORS[project.category] ?? "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {project.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-1.5 group-hover:text-red-700 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 text-xs line-clamp-2 mb-2">
-                    {project.description}
-                  </p>
-                  {project.location && (
-                    <div className="flex items-center gap-1 text-xs text-gray-400">
-                      <MapPin className="w-3 h-3" />
-                      {project.location}
+            {visible.map((project) => {
+              const cover = getFirstImage(project.imageFolder);
+              return (
+                <Link
+                  key={project.id}
+                  to={`/proyectos/${project.id}`}
+                  className="group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white border border-gray-100"
+                >
+                  <div className="aspect-video bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
+                    {cover ? (
+                      <img
+                        src={cover}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                      <p className="text-white text-sm font-medium p-4">Ver proyecto →</p>
                     </div>
-                  )}
-                </div>
-              </Link>
-            ))}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-1.5 group-hover:text-red-700 transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-600 text-xs line-clamp-2 mb-2">
+                      {project.descripcion}
+                    </p>
+                    {project.provincia && (
+                      <div className="flex items-center gap-1 text-xs text-gray-400">
+                        <MapPin className="w-3 h-3" />
+                        {project.provincia}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Next button */}
           <button
             onClick={() => navigate("right")}
             disabled={!canNext || animating}
@@ -168,7 +170,6 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
           </button>
         </div>
 
-        {/* Dot indicators */}
         <div className="flex items-center justify-center gap-1.5 mt-8">
           {related.map((_, i) => {
             const isVisible = i >= startIndex && i < startIndex + VISIBLE;
@@ -183,7 +184,6 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
           })}
         </div>
 
-        {/* Mobile link */}
         <div className="text-center mt-6 sm:hidden">
           <Link
             to="/proyectos"

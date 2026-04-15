@@ -1,167 +1,261 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Filter } from 'lucide-react';
-import { PROJECTS } from '../data';
+import { MapPin, ChevronLeft, ChevronRight, X, Filter } from 'lucide-react';
+import { PROJECTS, Project } from '../data';
 import Breadcrumb from '../components/Breadcrumb';
 
-// 👇 IMPORTÁ TUS IMÁGENES (igual que en servicios)
-import Bg1 from '../../assets/proy11.jpg';
-import Bg2 from '../../assets/proy22.jpg';
-import Bg3 from '../../assets/proy3.jpg';
+// ── Banner carrusel ────────────────────────────────────────────
+import Bg1 from '../../assets/proyectos/BANNER/banner11.jpg';
+import Bg2 from '../../assets/proyectos/BANNER/banner3.jpg';
+import Bg3 from '../../assets/proyectos/BANNER/banner4.jpg';
+import Bg5 from '../../assets/proyectos/BANNER/banner6.jpg';
+import Bg6 from '../../assets/proyectos/BANNER/banner7.jpg';
+import Bg7 from '../../assets/proyectos/BANNER/banner8.jpg';
 
-const CATEGORIES = ['Todos', ...Array.from(new Set(PROJECTS.map((p) => p.category)))];
+// ── Carga dinámica de todas las imágenes de proyectos ──────────
+const allProjectImagesGlob = import.meta.glob(
+  '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
+  { eager: true, import: 'default' }
+);
 
-// const CATEGORY_COLORS = {
-//   Perforación: 'bg-orange-100 text-orange-800',
-//   Limpieza: 'bg-green-100 text-green-800',
-//   Mantenimiento: 'bg-blue-100 text-blue-800',
-//   Municipal: 'bg-purple-100 text-purple-800',
-//   Institucional: 'bg-indigo-100 text-indigo-800',
-// };
+/** Devuelve las imágenes de la carpeta de un proyecto */
+function getProjectImages(imageFolder: string): string[] {
+  return Object.entries(allProjectImagesGlob)
+    .filter(([path]) => {
+      // Excluir la carpeta BANNER
+      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
+      return path.includes(imageFolder);
+    })
+    .map(([, mod]) => mod as string)
+    .filter(Boolean);
+}
 
-const CATEGORY_COLORS: { [key: string]: string } = {
-  'Perforación': 'bg-orange-100 text-orange-800',
-  'Limpieza': 'bg-green-100 text-green-800',
-  'Mantenimiento': 'bg-blue-100 text-blue-800',
-  'Municipal': 'bg-purple-100 text-purple-800',
-  'Institucional': 'bg-indigo-100 text-indigo-800',
+// ── Estado del lightbox por proyecto ──────────────────────────
+type LightboxState = { images: string[]; idx: number; projectTitle: string };
+
+// ── Colores por servicio ───────────────────────────────────────
+const SERVICE_COLORS: Record<string, string> = {
+  'Extracción de electrobomba':   'bg-blue-100 text-blue-800',
+  'Colocación de electrobomba':   'bg-sky-100 text-sky-800',
+  'Colocación de electrobomba nueva': 'bg-sky-100 text-sky-800',
+  'Colocación de equipo nuevo':   'bg-sky-100 text-sky-800',
+  'Limpieza de perforaciones':    'bg-green-100 text-green-800',
+  'Reactivación de perforaciones':'bg-teal-100 text-teal-800',
+  'Filmación de pozos':           'bg-purple-100 text-purple-800',
+  'Pesca de electrobomba':        'bg-amber-100 text-amber-800',
+  'Desarrollo de perforación nueva': 'bg-orange-100 text-orange-800',
+  'Rehabilitación de perforación en abandono': 'bg-red-100 text-red-800',
+  'Reentubación de perforación':  'bg-rose-100 text-rose-800',
+  'Alquiler de electrobomba':     'bg-indigo-100 text-indigo-800',
+  'Venta de equipo nuevo':        'bg-yellow-100 text-yellow-800',
+  'Mantenimiento de pozos':       'bg-cyan-100 text-cyan-800',
+  'Colocación de cañería':        'bg-slate-100 text-slate-800',
 };
 
+function serviceColor(s: string) {
+  return SERVICE_COLORS[s] ?? 'bg-gray-100 text-gray-700';
+}
+
+// ──────────────────────────────────────────────────────────────
+// Componente principal
+// ──────────────────────────────────────────────────────────────
 export default function ProyectosPage() {
 
-  const [activeCategory, setActiveCategory] = useState('Todos');
-
-  // 👇 CARRUSEL
-  const images = [Bg1, Bg2, Bg3];
-  const [current, setCurrent] = useState(0);
-
+  // Banner carrusel
+  const bannerImages = [Bg6, Bg7, Bg1, Bg5, Bg2, Bg3];
+  const [bannerCurrent, setBannerCurrent] = useState(0);
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
+    const t = setInterval(() => {
+      setBannerCurrent((p) => (p + 1) % bannerImages.length);
     }, 4000);
-
-    return () => clearInterval(interval);
+    return () => clearInterval(t);
   }, []);
 
-  const filtered =
-    activeCategory === 'Todos'
-      ? PROJECTS
-      : PROJECTS.filter((p) => p.category === activeCategory);
+  // Filtros
+  const allServices = Array.from(new Set(PROJECTS.flatMap((p) => p.servicios))).sort();
+  const [activeService,  setActiveService]  = useState<string | null>(null);
+  const [activeProvincia, setActiveProvincia] = useState<'San Juan' | 'Mendoza' | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  // Proyectos filtrados
+  const filteredProjects = PROJECTS.filter((p) => {
+    if (activeService  && !p.servicios.includes(activeService))  return false;
+    if (activeProvincia && p.provincia !== activeProvincia)        return false;
+    return true;
+  });
+
+  // Lightbox por proyecto
+  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+
+  const openLightbox = useCallback((project: Project, src: string) => {
+    const images = getProjectImages(project.imageFolder);
+    const idx = images.indexOf(src);
+    if (idx !== -1) setLightbox({ images, idx, projectTitle: project.title });
+  }, []);
+
+  const closeLightbox = () => setLightbox(null);
+
+  const prevImage = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightbox((lb) => lb && lb.idx > 0 ? { ...lb, idx: lb.idx - 1 } : lb);
+  }, []);
+
+  const nextImage = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightbox((lb) => lb && lb.idx < lb.images.length - 1 ? { ...lb, idx: lb.idx + 1 } : lb);
+  }, []);
+
+  // Teclado en lightbox
+  useEffect(() => {
+    if (!lightbox) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft')  setLightbox((lb) => lb && lb.idx > 0 ? { ...lb, idx: lb.idx - 1 } : lb);
+      if (e.key === 'ArrowRight') setLightbox((lb) => lb && lb.idx < lb.images.length - 1 ? { ...lb, idx: lb.idx + 1 } : lb);
+      if (e.key === 'Escape')     closeLightbox();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [lightbox]);
 
   return (
     <>
-    
       <Breadcrumb />
 
-      {/* HERO con carrusel */}
+      {/* ── HERO ─────────────────────────────────────────────── */}
       <div className="relative h-[450px] flex items-center justify-center text-white overflow-hidden">
-
-        {/* Carrusel */}
-        {images.map((img, index) => (
+        {bannerImages.map((img, i) => (
           <img
-            key={index}
+            key={i}
             src={img}
             alt="Proyectos"
             className={`absolute inset-0 w-full h-full object-cover object-[center_40%] transition-opacity duration-1000 ${
-              index === current ? 'opacity-100' : 'opacity-0'
+              i === bannerCurrent ? 'opacity-100' : 'opacity-0'
             }`}
           />
         ))}
-
-        {/* Overlay */}
         <div className="absolute inset-0 bg-gray-900/40" />
         <div className="absolute inset-0 bg-gradient-to-tr from-gray-900/80 via-gray-900/40 to-transparent" />
-
-        {/* Contenido */}
         <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl sm:text-5xl font-semibold mb-4">
-            Galería de Proyectos
-          </h1>
-
+          <h1 className="text-4xl sm:text-5xl font-semibold mb-4">Galería de Proyectos</h1>
           <p className="text-xl text-gray-200 max-w-2xl mx-auto">
             Conocé nuestros trabajos realizados en Mendoza y San Juan a lo largo de más de 20 años
           </p>
         </div>
       </div>
 
-      {/* CONTENIDO */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* ── BARRA DE FILTROS ──────────────────────────────────── */}
+      <div className="sticky top-0 z-30 bg-white border-b border-gray-100 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3 flex-wrap">
 
-        {/* Category filter */}
-        <div className="flex items-center gap-3 mb-10 flex-wrap">
-          <Filter className="w-4 h-4 text-gray-500" />
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeCategory === cat
-                  ? 'bg-red-700 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          {/* Botón abrir/cerrar */}
+          <button
+            onClick={() => setFilterOpen((v) => !v)}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+              filterOpen
+                ? 'bg-gray-900 text-white border-gray-900'
+                : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+            }`}
+          >
+            <Filter className="w-4 h-4" />
+            Filtros
+            <span className={`transition-transform duration-200 inline-block ${filterOpen ? 'rotate-180' : ''}`}>▾</span>
+          </button>
+
+          {/* Chips de filtros activos */}
+          {activeProvincia && (
+            <span className="inline-flex items-center gap-1.5 bg-gray-700 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+              {activeProvincia}
+              <button onClick={() => setActiveProvincia(null)} className="hover:text-gray-300 transition-colors leading-none">✕</button>
+            </span>
+          )}
+          {activeService && (
+            <span className="inline-flex items-center gap-1.5 bg-red-700 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+              {activeService}
+              <button onClick={() => setActiveService(null)} className="hover:text-red-200 transition-colors leading-none">✕</button>
+            </span>
+          )}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filtered.map((project) => (
-            <Link
-              key={project.id}
-              to={`/proyectos/${project.id}`}
-              className="group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white"
-            >
-              <div className="aspect-square bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
+        {/* Panel desplegable */}
+        {filterOpen && (
+          <div className="border-t border-gray-100 bg-gray-50">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
 
-                {/* <div className="absolute inset-0 flex items-center justify-center">
-                  <Images className="w-12 h-12 text-white/20" />
-                </div> */}
-                <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                
-
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                  <p className="text-white text-sm font-medium p-4">Ver proyecto →</p>
-                </div>
-
-                <div className="absolute top-3 left-3">
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                    CATEGORY_COLORS[project.category] ?? 'bg-gray-100 text-gray-700'
-                  }`}>
-                    {project.category}
-                  </span>
+              {/* Provincia */}
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Provincia</p>
+                <div className="flex flex-wrap gap-2">
+                  {(['San Juan', 'Mendoza'] as const).map((prov) => (
+                    <button
+                      key={prov}
+                      onClick={() => { setActiveProvincia(activeProvincia === prov ? null : prov); }}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                        activeProvincia === prov
+                          ? 'bg-gray-800 text-white'
+                          : 'bg-white text-gray-600 border border-gray-300 hover:border-gray-400'
+                      }`}
+                    >
+                      {prov}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-1.5 group-hover:text-red-700 transition-colors">
-                  {project.title}
-                </h3>
-
-                <p className="text-gray-600 text-xs line-clamp-2 mb-2">
-                  {project.description}
-                </p>
-
-                {project.location && (
-                  <div className="flex items-center gap-1 text-xs text-gray-400">
-                    <MapPin className="w-3 h-3" />
-                    {project.location}
-                  </div>
-                )}
+              {/* Servicio */}
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Servicio</p>
+                <div className="flex flex-wrap gap-2">
+                  {allServices.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => { setActiveService(activeService === s ? null : s); }}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                        activeService === s
+                          ? 'bg-red-700 text-white'
+                          : 'bg-white text-gray-600 border border-gray-300 hover:border-gray-400'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </Link>
-          ))}
-        </div>
 
-        {filtered.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            No hay proyectos en esta categoría todavía.
+              {/* Limpiar */}
+              {(activeService || activeProvincia) && (
+                <button
+                  onClick={() => { setActiveService(null); setActiveProvincia(null); }}
+                  className="text-xs text-gray-400 hover:text-gray-600 underline transition-colors"
+                >
+                  Limpiar todos los filtros
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
 
-      {/* CTA */}
+      {/* ── CONTENIDO: LISTA ÚNICA ────────────────────────────── */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {filteredProjects.length > 0 ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {filteredProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onOpenLightbox={openLightbox}
+                accentColor="red"
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center py-20 text-gray-400">
+            No hay proyectos para los filtros seleccionados.
+          </p>
+        )}
+      </div>
+
+      {/* ── CTA ───────────────────────────────────────────────── */}
       <section className="py-16 bg-red-700 text-white text-center">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl mb-4">¿Querés ser nuestro próximo proyecto?</h2>
@@ -176,6 +270,177 @@ export default function ProyectosPage() {
           </Link>
         </div>
       </section>
+
+      {/* ── LIGHTBOX POR PROYECTO ─────────────────────────────── */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          {/* Cerrar */}
+          <button
+            className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
+            onClick={closeLightbox}
+          >
+            <X className="w-8 h-8" />
+          </button>
+
+          {/* Anterior — solo si hay imagen previa en este proyecto */}
+          {lightbox.idx > 0 && (
+            <button
+              className="absolute left-3 sm:left-6 text-white/70 hover:text-white transition-colors bg-black/30 rounded-full p-2"
+              onClick={prevImage}
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+          )}
+
+          {/* Imagen */}
+          <img
+            src={lightbox.images[lightbox.idx]}
+            alt=""
+            className="max-w-full max-h-[82vh] rounded-lg object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* Siguiente — solo si hay imagen siguiente en este proyecto */}
+          {lightbox.idx < lightbox.images.length - 1 && (
+            <button
+              className="absolute right-3 sm:right-6 text-white/70 hover:text-white transition-colors bg-black/30 rounded-full p-2"
+              onClick={nextImage}
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+          )}
+
+          {/* Info inferior */}
+          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center px-4 py-3">
+            <p className="text-sm font-medium line-clamp-1">
+              {lightbox.projectTitle}
+            </p>
+            <p className="text-xs text-white/50 mt-0.5">
+              {lightbox.idx + 1} / {lightbox.images.length}
+            </p>
+          </div>
+        </div>
+      )}
     </>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// Sub-componente: tarjeta de proyecto
+// ──────────────────────────────────────────────────────────────
+interface ProjectCardProps {
+  project: Project;
+  onOpenLightbox: (project: Project, src: string) => void;
+  accentColor: 'blue' | 'red';
+}
+
+function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps) {
+  const images = getProjectImages(project.imageFolder);
+  const mainImg = images[0];
+  const restImgs = images.slice(1, 5); // hasta 4 miniaturas adicionales
+  const [descExpanded, setDescExpanded] = useState(false);
+
+  const linkColor = accentColor === 'blue' ? 'text-blue-700 hover:text-blue-900' : 'text-red-700 hover:text-red-900';
+  const btnColor  = accentColor === 'blue' ? 'text-blue-600 hover:text-blue-800' : 'text-red-600 hover:text-red-800';
+
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+
+      {/* Área de imágenes */}
+      {images.length > 0 ? (
+        <div className="relative">
+          {/* Imagen principal */}
+          <button
+            className="block w-full aspect-video overflow-hidden group"
+            onClick={() => onOpenLightbox(project, mainImg)}
+          >
+            <img
+              src={mainImg}
+              alt={project.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+              <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 px-3 py-1 rounded-full">
+                Ampliar
+              </span>
+            </div>
+          </button>
+
+          {/* Miniaturas */}
+          {restImgs.length > 0 && (
+            <div className={`grid gap-1 p-1 bg-gray-50 ${
+              restImgs.length === 1 ? 'grid-cols-1' :
+              restImgs.length === 2 ? 'grid-cols-2' :
+              restImgs.length === 3 ? 'grid-cols-3' : 'grid-cols-4'
+            }`}>
+              {restImgs.map((src, i) => (
+                <button
+                  key={i}
+                  className="aspect-square overflow-hidden rounded group relative"
+                  onClick={() => onOpenLightbox(project, src)}
+                >
+                  <img
+                    src={src}
+                    alt={`${project.title} foto ${i + 2}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  {/* Badge de "más fotos" en la última miniatura */}
+                  {i === restImgs.length - 1 && images.length > 5 && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded">
+                      <span className="text-white text-sm font-semibold">
+                        +{images.length - 5}
+                      </span>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="aspect-video bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+          <p className="text-white/30 text-xs text-center px-4">Imágenes próximamente</p>
+        </div>
+      )}
+
+      {/* Info del proyecto */}
+      <div className="p-5">
+        <h3 className={`font-semibold text-gray-900 text-base leading-snug mb-2 ${linkColor} transition-colors`}>
+          <Link to={`/proyectos/${project.id}`}>{project.title}</Link>
+        </h3>
+
+        <p className={`text-gray-600 text-sm leading-relaxed ${descExpanded ? 'mb-1' : 'line-clamp-3 mb-0'}`}>
+          {project.descripcion}
+        </p>
+        <button
+          onClick={() => setDescExpanded((v) => !v)}
+          className={`text-xs font-medium mb-3 ${btnColor} transition-colors`}
+        >
+          {descExpanded ? 'Ver menos ↑' : 'Ver más ↓'}
+        </button>
+
+        {/* Chips de servicios */}
+        <div className="flex flex-wrap gap-1.5">
+          {project.servicios.map((s) => (
+            <span
+              key={s}
+              className={`text-xs font-medium px-2 py-0.5 rounded-full ${serviceColor(s)}`}
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* Cantidad de fotos */}
+        {images.length > 0 && (
+          <p className="text-xs text-gray-400 mt-3">
+            {images.length} {images.length === 1 ? 'foto' : 'fotos'} · {project.provincia}
+          </p>
+        )}
+      </div>
+    </div>
   );
 }

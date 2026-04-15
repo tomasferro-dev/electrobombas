@@ -6,8 +6,6 @@ import pesca5 from "../assets/pesca5.jpg";
 import pesca6 from "../assets/pesca6.jpg";
 import pesca7 from "../assets/pesca7.jpg";
 import estudio2 from "../assets/estudio2.jpg";
-import lujan1 from "../assets/proyectos/muni-lujan/lujan1.jpg";
-import lujan2 from "../assets/proyectos/muni-lujan/lujan2.jpg";
 import estudiogeologico from "../assets/estudio-geologico.jpg";
 import mant from "../assets/mant-rehab3.jpg";
 import venta4 from "../assets/venta4.png";
@@ -38,12 +36,11 @@ export interface Service {
 export interface Project {
   id: string;
   title: string;
-  description: string;
-  location: string;
-  category: string;
-  coverImage: string | any;
-  images: (string | any)[];
-  imageFolder?: string;
+  provincia?: 'San Juan' | 'Mendoza';
+  descripcion: string;
+  servicios: string[];
+  imageFolder: string;
+  cliente?: string;
 }
 
 // ─────────────────────────────────────────────
@@ -393,90 +390,178 @@ export const SERVICES: Service[] = [
 // ─────────────────────────────────────────────
 export const PROJECTS: Project[] = [
   {
-    id: "limpieza-surgente",
-    title: "Limpieza de Perforación de Pozo Surgente",
-    description:
-      "Limpieza exhaustiva de pozo surgente con reactivación completa del caudal original.",
-    location: "Mendoza, Argentina",
-    category: "Limpieza",
-    coverImage: "../assets/proyectos/muni-lujan/lujan1.jpg",
-    images: [perfo2],
-    imageFolder: "limpieza",
+    id: 'barrancas-maipu',
+    title: 'Extracción y Colocación – Barrancas, Maipú',
+    provincia: 'Mendoza',
+    descripcion:
+      'Se realizó la extracción del equipo de bombeo existente para su revisión y diagnóstico, seguida de la colocación de una electrobomba en condiciones óptimas de funcionamiento. El trabajo incluyó la verificación del estado de la cañería de impulsión y el control eléctrico en sitio, garantizando el restablecimiento del servicio de agua.',
+    servicios: ['Extracción de electrobomba', 'Colocación de electrobomba'],
+    imageFolder: 'barrancas-maipu-extraccion y colocacion',
+    cliente: '',
   },
   {
-    id: "perforacion-280m",
-    title: 'Perforación 280 metros en 14" y 12"',
-    description:
-      'Perforación de 280 metros. 120 metros en 14" y 160 metros en 12". Proyecto de gran envergadura para uso agrícola intensivo.',
-    location: "Mendoza, Argentina",
-    category: "Perforación",
-    coverImage: "/assets/perforacion/cover.jpg",
-    images: [],
-    imageFolder: "perforacion",
+    id: 'bianchetti',
+    title: 'Extracción y Colocación – Sector Agrícola, Mendoza',
+    provincia: 'Mendoza',
+    descripcion:
+      'Intervención completa de pozo de agua en establecimiento agrícola que incluyó la extracción del equipo de bombeo para diagnóstico y reparación del motor y electrobomba, con posterior colocación del equipo revisado. Se verificó el correcto funcionamiento del sistema de bombeo al finalizar la tarea.',
+    servicios: ['Extracción de electrobomba', 'Colocación de electrobomba'],
+    imageFolder: 'bianchetti-extrac y coloc',
+    cliente: 'Bianchetti',
   },
   {
-    id: "servicio-san-juan",
-    title: "Servicio Completo en San Juan",
-    description:
-      "Servicio integral de perforación, instalación de equipo y puesta en marcha en San Juan.",
-    location: "San Juan, Argentina",
-    category: "Perforación",
-    coverImage: "/assets/sj/cover.jpg",
-    images: [],
-    imageFolder: "sj",
+    id: 'desarrollo-perforacion-nueva',
+    title: 'Desarrollo de Perforación Nueva',
+    provincia: undefined,
+    descripcion:
+      'Proyecto de desarrollo de perforación nueva destinado a abastecer un emprendimiento inmobiliario. Se realizó la perforación del pozo, el desarrollo hidráulico para optimizar el rendimiento del acuífero y la instalación del equipo de bombeo completo, con prueba de caudal y puesta en marcha final.',
+    servicios: ['Desarrollo de perforación nueva'],
+    imageFolder: 'desarrollo-perforacion-nueva',
+    cliente: '',
   },
   {
-    id: "municipalidad-lujan",
-    title: "Servicio en Municipalidad de Luján de Cuyo",
-    description:
-      "Servicio especializado para la Municipalidad de Luján de Cuyo, Mendoza.",
-    location: "Luján de Cuyo, Mendoza",
-    category: "Municipal",
-    coverImage: perfo2,
-    images: [lujan1, lujan2],
-    imageFolder: "muni-lujan",
+    id: 'san-juan-7-intervenciones',
+    title: 'Extracción, Colocación y Limpieza – San Juan (7 intervenciones)',
+    provincia: 'San Juan',
+    descripcion:
+      'Proyecto de múltiples intervenciones sobre perforaciones existentes en San Juan. Se realizaron tareas de extracción de electrobombas para revisión, limpieza de perforaciones con reactivación de caudal y posterior colocación de los equipos. El plan de trabajo abarcó 7 intervenciones sobre distintos pozos, logrando la rehabilitación funcional de cada uno.',
+    servicios: [
+      'Extracción de electrobomba',
+      'Colocación de electrobomba',
+      'Limpieza de perforaciones',
+      'Reactivación de perforaciones',
+    ],
+    imageFolder:
+      'extra coloc limpieza de perfo - san juan - 7 intervecnion de perforaciones- varaias limpiezxas y reactivacion',
+    cliente: '',
   },
   {
-    id: "finca-vila",
-    title: "Renovación en Finca Vila",
-    description:
-      "Extracción, colocación y reparación de equipo y recuperación de perforación en Finca Vila.",
-    location: "Finca Vila, Mendoza",
-    category: "Mantenimiento",
-    coverImage: "/assets/vila/cover.jpg",
-    images: [],
-    imageFolder: "vila",
+    id: 'pistachos-san-juan',
+    title: 'Limpieza, Extracción y Rehabilitación – Sector Agrícola, San Juan',
+    provincia: 'San Juan',
+    descripcion:
+      'Intervención integral sobre el sistema de abastecimiento de agua de un importante establecimiento agrícola en la provincia de San Juan. Se realizó limpieza profunda de perforaciones, extracción del equipo de bombeo, colocación de electrobomba nueva y rehabilitación de una perforación en estado de abandono, restableciéndola como fuente activa de suministro.',
+    servicios: [
+      'Limpieza de perforaciones',
+      'Extracción de electrobomba',
+      'Colocación de equipo nuevo',
+      'Rehabilitación de perforación en abandono',
+    ],
+    imageFolder:
+      'limpieza-extraccion-limp de perforacion-colocacion equipo nuevo-gran proyecto pistachos-media agua san juan-rehab de perfo en abandono',
+    cliente: '',
   },
   {
-    id: "secadero-reina-tupungato",
-    title: "Perforación en Secadero Reina, Tupungato",
-    description: "Perforación completa para secadero en Tupungato, Mendoza.",
-    location: "Tupungato, Mendoza",
-    category: "Perforación",
-    coverImage: "/assets/srt/cover.jpg",
-    images: [],
-    imageFolder: "srt",
+    id: 'muni-lujan',
+    title: 'Extracción y Colocación – Sector Municipal, Luján de Cuyo',
+    provincia: 'Mendoza',
+    descripcion:
+      'Servicio de extracción y colocación de electrobomba para un organismo municipal de Luján de Cuyo. La intervención incluyó el retiro del equipo instalado, revisión técnica completa del motor y bomba, y reinstalación con verificación de funcionamiento, orientado a garantizar la continuidad del servicio de agua potable municipal.',
+    servicios: ['Extracción de electrobomba', 'Colocación de electrobomba'],
+    imageFolder: 'muni-lujan-extrac-coloc',
+    cliente: 'Municipalidad de Luján de Cuyo',
   },
   {
-    id: "oreste-km49",
-    title: 'Perforación 250 metros en 12" - Oreste Km 49',
-    description: 'Perforación de 250 metros en 12". Oreste Km 49.',
-    location: "Mendoza, Argentina",
-    category: "Perforación",
-    coverImage: "/assets/oreste/cover.jpg",
-    images: [],
-    imageFolder: "oreste",
+    id: 'olivum',
+    title: 'Extracción, Colocación y Alquiler de Bomba – Sector Olivícola, Mendoza',
+    provincia: 'Mendoza',
+    descripcion:
+      'Intervención en el sistema de riego de un establecimiento dedicado a la producción olivícola en Mendoza. Se realizó la extracción del equipo de bombeo existente, provisión en alquiler de una electrobomba de reemplazo para garantizar la continuidad productiva durante la reparación, y posterior colocación del equipo revisado.',
+    servicios: [
+      'Extracción de electrobomba',
+      'Colocación de electrobomba',
+      'Alquiler de electrobomba',
+    ],
+    imageFolder: 'olivum-extraccion-colocacion-alquiler de bomba',
+    cliente: 'Olivum',
   },
   {
-    id: "independiente-rivadavia",
-    title: "Perforación Club Independiente Rivadavia",
-    description:
-      'Perforación de 250 metros en 12" en terreno complicado para el Club Independiente Rivadavia.',
-    location: "Mendoza, Argentina",
-    category: "Institucional",
-    coverImage: "/assets/independiente/cover.jpg",
-    images: [],
-    imageFolder: "independiente",
+    id: 'parque-solar-geneya',
+    title: 'Servicio Integral – Sector Energía Solar, San Juan',
+    provincia: 'San Juan',
+    descripcion:
+      'Intervención completa en el pozo de agua de un parque solar en San Juan. Ante la caída de la electrobomba al interior de la perforación, se realizó filmación diagnóstica, pesca del equipo caído, limpieza de la perforación, colocación de cañería nueva y colocación de electrobomba nueva con cables y tablero eléctrico. El proyecto aseguró el restablecimiento total del sistema hídrico del establecimiento.',
+    servicios: [
+      'Filmación de pozos',
+      'Pesca de electrobomba',
+      'Extracción de electrobomba',
+      'Limpieza de perforaciones',
+      'Colocación de cañería',
+      'Colocación de electrobomba nueva',
+    ],
+    imageFolder:
+      'parque-solar-sj-geneya-filmacion pesca electrob caida limpieza colocacion caneria colocacion eletrobonba nueva con cables y tablero',
+    cliente: 'Parque Solar Geneya',
+  },
+  {
+    id: 'finca-ranfer',
+    title: 'Pesca, Extracción, Colocación y Filmación – Sector Olivícola, San Juan',
+    provincia: 'San Juan',
+    descripcion:
+      'Servicio técnico integral en un establecimiento productor de aceite de oliva en San Juan. Se realizó filmación del pozo para diagnóstico del estado interior, pesca de la electrobomba caída, extracción del equipo recuperado y colocación de electrobomba en condiciones operativas. La intervención garantizó la continuidad del riego en el proceso de producción olivícola.',
+    servicios: [
+      'Pesca de electrobomba',
+      'Extracción de electrobomba',
+      'Colocación de electrobomba',
+      'Filmación de pozos',
+    ],
+    imageFolder:
+      'pesca-finca ranfer-san juan-aceite de oliva-exctracion colocacion filmacion',
+    cliente: 'Finca Ranfer',
+  },
+  {
+    id: 'petroleo-sudamericano',
+    title: 'Extracción, Colocación y Venta de Equipo – Sector Petrolero, Barrancas',
+    provincia: 'Mendoza',
+    descripcion:
+      'Intervención en el pozo de agua que abastece un yacimiento petrolero en Barrancas, Mendoza. Se realizó la extracción del equipo de bombeo con funcionamiento deficiente, venta e instalación de electrobomba nueva con todos sus componentes y puesta en marcha del sistema, garantizando el suministro continuo de agua al yacimiento.',
+    servicios: [
+      'Extracción de electrobomba',
+      'Colocación de electrobomba',
+      'Venta de equipo nuevo',
+    ],
+    imageFolder:
+      'petroleo-sudamericano-ext coloc venta equipo nuevo - intervencion pozo de agua que abastece yacimiento barrancas',
+    cliente: 'Petróleo Sudamericano',
+  },
+  {
+    id: 'san-rafael-real-del-padre',
+    title: 'Limpieza, Reentubación y Colocación – San Rafael, Real del Padre',
+    provincia: 'Mendoza',
+    descripcion:
+      'Servicio integral de rehabilitación de perforación en Real del Padre, San Rafael. Se realizó limpieza del pozo para eliminación de sedimentos e incrustaciones, reentubación de la perforación para restablecer su integridad estructural, y colocación de electrobomba nueva para la puesta en marcha definitiva del sistema.',
+    servicios: [
+      'Limpieza de perforaciones',
+      'Reentubación de perforación',
+      'Colocación de electrobomba nueva',
+    ],
+    imageFolder:
+      'san rafael - real del padre - limpieza - reentubacion de perforacion - colocacion de electrobomba nueva',
+    cliente: '',
+  },
+  {
+    id: 'santa-rosa',
+    title: 'Extracción y Colocación – Santa Rosa',
+    provincia: 'Mendoza',
+    descripcion:
+      'Intervención de extracción y colocación de electrobomba en Santa Rosa. Se realizó la extracción del equipo instalado para revisión y mantenimiento, con posterior reinstalación del equipo en condiciones óptimas de funcionamiento y verificación final del sistema de bombeo.',
+    servicios: ['Extracción de electrobomba', 'Colocación de electrobomba'],
+    imageFolder: 'santa rosa erxtrac coloc',
+    cliente: '',
+  },
+  {
+    id: 'supermercado-libertad',
+    title: 'Extracción, Colocación y Mantenimiento – Sector Comercial, Mendoza',
+    provincia: 'Mendoza',
+    descripcion:
+      'Servicio de extracción, colocación y mantenimiento del sistema de bombeo para un establecimiento comercial en Mendoza. La intervención incluyó la extracción del equipo existente, revisión técnica completa, reinstalación del equipo y un plan de mantenimiento preventivo para asegurar el suministro continuo de agua en las instalaciones.',
+    servicios: [
+      'Extracción de electrobomba',
+      'Colocación de electrobomba',
+      'Mantenimiento de pozos',
+    ],
+    imageFolder: 'supermercado-libertad-extraccion-colocacion-mantenimiento',
+    cliente: 'Supermercado Libertad',
   },
 ];
 
@@ -506,6 +591,6 @@ export const CONTACT = {
   },
   linkedin: "https://linkedin.com/in/sergio-antonio-arenas-85ba7b96",
   whatsappNumber: "5492614707318",
-  zones: ["Mendoza", "San Juan"],
+  zones: ["Mendoza", "San Juan", "San Luis", "Buenos Aires", "Patagonia", "La Pampa", "Norte Argentino"],
   mapEmbedUrl: "https://maps.app.goo.gl/ibTBbgPVCskm1RDg9",
 };

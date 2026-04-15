@@ -40,6 +40,7 @@ function ElectrobombaCard({ bomba }: { bomba: Electrobomba }) {
         ) : (
           <div className="text-center text-gray-400">
             <Droplet className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+            
             <span className="text-xs">Sin imagen</span>
           </div>
         )}

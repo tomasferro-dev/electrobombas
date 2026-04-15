@@ -2,12 +2,27 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { PROJECTS } from '../data';
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Perforación: 'bg-orange-100 text-orange-800',
-  Limpieza: 'bg-green-100 text-green-800',
-  Mantenimiento: 'bg-blue-100 text-blue-800',
-  Municipal: 'bg-purple-100 text-purple-800',
-  Institucional: 'bg-indigo-100 text-indigo-800',
+// Carga dinámica de imágenes
+const allProjectImagesGlob = import.meta.glob(
+  '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
+  { eager: true, import: 'default' }
+);
+
+function getFirstImage(imageFolder: string): string | null {
+  const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
+    if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
+    return path.includes(imageFolder);
+  });
+  return entry ? (entry[1] as string) : null;
+}
+
+const SERVICE_COLORS: Record<string, string> = {
+  'Extracción de electrobomba':   'bg-blue-100 text-blue-800',
+  'Colocación de electrobomba':   'bg-sky-100 text-sky-800',
+  'Limpieza de perforaciones':    'bg-green-100 text-green-800',
+  'Filmación de pozos':           'bg-purple-100 text-purple-800',
+  'Pesca de electrobomba':        'bg-amber-100 text-amber-800',
+  'Desarrollo de perforación nueva': 'bg-orange-100 text-orange-800',
 };
 
 interface GalleryProps {
@@ -28,45 +43,53 @@ export default function Gallery({ preview = false }: GalleryProps) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {displayed.map((project) => (
-            <Link
-              key={project.id}
-              to={`/proyectos/${project.id}`}
-              className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white"
-            >
-              {/* Cover image placeholder (replace with actual img when assets available) */}
-              <div className="aspect-square bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
-                <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                
+          {displayed.map((project) => {
+            const cover = getFirstImage(project.imageFolder);
+            const mainService = project.servicios[0];
+            return (
+              <Link
+                key={project.id}
+                to={`/proyectos/${project.id}`}
+                className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white"
+              >
+                <div className="aspect-square bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
+                  {cover ? (
+                    <img
+                      src={cover}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  ) : null}
 
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                  <div className="p-4 text-white">
-                    <p className="text-sm font-medium">Ver proyecto →</p>
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                    <div className="p-4 text-white">
+                      <p className="text-sm font-medium">Ver proyecto →</p>
+                    </div>
                   </div>
+
+                  {mainService && (
+                    <div className="absolute top-3 left-3">
+                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${SERVICE_COLORS[mainService] ?? 'bg-gray-100 text-gray-700'}`}>
+                        {mainService}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Category badge */}
-                <div className="absolute top-3 left-3">
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${CATEGORY_COLORS[project.category] ?? 'bg-gray-100 text-gray-700'}`}>
-                    {project.category}
-                  </span>
+                <div className="p-4">
+                  <h3 className="font-semibold text-gray-900 text-sm mb-1 leading-snug group-hover:text-red-700 transition-colors">
+                    {project.title}
+                  </h3>
+                  {project.provincia && (
+                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                      <MapPin className="w-3 h-3" />
+                      {project.provincia}
+                    </div>
+                  )}
                 </div>
-              </div>
-
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 text-sm mb-1 leading-snug group-hover:text-red-700 transition-colors">
-                  {project.title}
-                </h3>
-                {project.location && (
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
-                    <MapPin className="w-3 h-3" />
-                    {project.location}
-                  </div>
-                )}
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
 
         {preview && (
