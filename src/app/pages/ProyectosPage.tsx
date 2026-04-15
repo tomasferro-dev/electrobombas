@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ChevronLeft, ChevronRight, X, Filter } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Filter } from 'lucide-react';
 import { PROJECTS, Project } from '../data';
 import Breadcrumb from '../components/Breadcrumb';
 
