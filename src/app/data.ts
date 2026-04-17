@@ -8,8 +8,6 @@ import pesca7 from "../assets/pesca7.jpg";
 import estudio2 from "../assets/estudio2.jpg";
 import estudiogeologico from "../assets/estudio-geologico.jpg";
 import mant from "../assets/mant-rehab3.jpg";
-import venta4 from "../assets/venta4.png";
-import venta55 from "../assets/venta55.jpg";
 import watermotBanner from "../assets/bombas/watermot-banner.jpg";
 import reparacion1 from "../assets/reparacion1.jpg";
 import limpieza1 from "../assets/limpieza1.jpg";
