@@ -1,24 +1,36 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { ArrowLeft, MapPin, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { PROJECTS, CONTACT } from '../../data';
 import Breadcrumb from '../../components/Breadcrumb';
 
-// Carga dinámica de imágenes de proyectos
+// Lazy glob: imágenes se cargan solo cuando se necesitan
 const allProjectImagesGlob = import.meta.glob(
   '../../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
-  { eager: true, import: 'default' }
-);
+  { import: 'default' }
+) as Record<string, () => Promise<string>>;
 
-function getProjectImages(imageFolder: string): string[] {
-  return Object.entries(allProjectImagesGlob)
+function useFirstProjectImage(imageFolder: string): string | null {
+  const [src, setSrc] = useState<string | null>(null);
+  useEffect(() => {
+    const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
+      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
+      return path.includes(imageFolder);
+    });
+    if (entry) entry[1]().then(setSrc);
+  }, [imageFolder]);
+  return src;
+}
+
+async function loadProjectImages(imageFolder: string): Promise<string[]> {
+  const loaders = Object.entries(allProjectImagesGlob)
     .filter(([path]) => {
       if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
       return path.includes(imageFolder);
     })
-    .map(([, mod]) => mod as string)
-    .filter(Boolean);
+    .map(([, load]) => load);
+  return Promise.all(loaders.map((l) => l()));
 }
 
 const SERVICE_COLORS: Record<string, string> = {
@@ -43,10 +55,13 @@ export default function ProyectoDetallePage() {
   const { id } = useParams<{ id: string }>();
   const project = PROJECTS.find((p) => p.id === id);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (project) loadProjectImages(project.imageFolder).then(setImages);
+  }, [project?.imageFolder]);
 
   if (!project) return <Navigate to="/proyectos" replace />;
-
-  const images = getProjectImages(project.imageFolder);
 
   const waMsg = encodeURIComponent(`Hola! Vi el proyecto "${project.title}" y quisiera consultar.`);
   const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${waMsg}`;
@@ -163,6 +178,7 @@ export default function ProyectoDetallePage() {
                       <img
                         src={src}
                         alt={`${project.title} foto ${i + 1}`}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -233,41 +249,9 @@ export default function ProyectoDetallePage() {
           <div className="mt-16">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Proyectos Relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {related.map((p) => {
-                const relImages = getProjectImages(p.imageFolder);
-                return (
-                  <Link
-                    key={p.id}
-                    to={`/proyectos/${p.id}`}
-                    className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all"
-                  >
-                    <div className="aspect-video overflow-hidden">
-                      {relImages[0] ? (
-                        <img
-                          src={relImages[0]}
-                          alt={p.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-                          <span className="text-white/30 text-xs">Sin imagen</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 text-sm group-hover:text-red-700 transition-colors line-clamp-2">
-                        {p.title}
-                      </h3>
-                      {p.provincia && (
-                        <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
-                          <MapPin className="w-3 h-3" />
-                          {p.provincia}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                );
-              })}
+              {related.map((p) => (
+                <RelatedProjectCard key={p.id} project={p} />
+              ))}
             </div>
           </div>
         )}
@@ -311,3 +295,42 @@ export default function ProyectoDetallePage() {
     </>
   );
 }
+
+// Sub-componente para tarjeta de proyecto relacionado
+import type { Project } from '../../data';
+
+const RelatedProjectCard = memo(function RelatedProjectCard({ project: p }: { project: Project }) {
+  const cover = useFirstProjectImage(p.imageFolder);
+  return (
+    <Link
+      to={`/proyectos/${p.id}`}
+      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all"
+    >
+      <div className="aspect-video overflow-hidden">
+        {cover ? (
+          <img
+            src={cover}
+            alt={p.title}
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+            <span className="text-white/30 text-xs">Sin imagen</span>
+          </div>
+        )}
+      </div>
+      <div className="p-4">
+        <h3 className="font-semibold text-gray-900 text-sm group-hover:text-red-700 transition-colors line-clamp-2">
+          {p.title}
+        </h3>
+        {p.provincia && (
+          <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
+            <MapPin className="w-3 h-3" />
+            {p.provincia}
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+});

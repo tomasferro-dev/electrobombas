@@ -63,28 +63,31 @@ export default function ServicioDetallePage() {
           alt={service.title}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/55" />
         <div className="relative">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16">
             <Link
               to="/servicios"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-8 transition-colors text-sm"
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 sm:mb-8 transition-colors text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               Volver a Servicios
             </Link>
-            <div className="flex items-start gap-6 max-w-3xl">
-              <div className="bg-white/20 rounded-2xl p-5 flex-shrink-0">
-                <Icon className="w-12 h-12 text-white" />
-              </div>
-              <div>
-                <h1 className="text-4xl sm:text-5xl font-semibold mb-4">
+
+            {/* Icono + Título + Descripción */}
+            <div className="max-w-3xl">
+              {/* Fila icono + título: apilados en mobile, en fila desde sm */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mb-3 sm:mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-2.5 sm:p-4 w-fit flex-shrink-0">
+                  <Icon className="w-6 h-6 sm:w-9 sm:h-9 lg:w-12 lg:h-12 text-white" />
+                </div>
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold leading-tight">
                   {service.title}
                 </h1>
-                <p className="text-white/90 text-lg leading-relaxed">
-                  {service.shortDescription}
-                </p>
               </div>
+              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed">
+                {service.shortDescription}
+              </p>
             </div>
           </div>
         </div>
@@ -141,8 +144,8 @@ export default function ServicioDetallePage() {
                 </div>
               </div>
             )}
-            {slug === "venta" ? (
-              <VentaProductos />
+            {slug === "venta" || slug === "alquiler" ? (
+              <VentaProductos variant={slug === "alquiler" ? "alquiler" : "venta"} />
             ) : (
               slug !== "electrobombas" && (
                 <ServiceImageGallery

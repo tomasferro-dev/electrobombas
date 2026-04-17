@@ -10,6 +10,7 @@ import estudiogeologico from "../assets/estudio-geologico.jpg";
 import mant from "../assets/mant-rehab3.jpg";
 import venta4 from "../assets/venta4.png";
 import venta55 from "../assets/venta55.jpg";
+import watermotBanner from "../assets/bombas/watermot-banner.jpg";
 import reparacion1 from "../assets/reparacion1.jpg";
 import limpieza1 from "../assets/limpieza1.jpg";
 import bobinados2 from "../assets/bobinados2.jpg";
@@ -73,9 +74,42 @@ export const SERVICES: Service[] = [
       "Accesorios y repuestos originales",
       "Cobertura en Mendoza, San Juan y resto de Argentina",
     ],
-    image: venta4,
-    images: [venta4],
-    imageDetail: venta55,
+    image: watermotBanner,
+    images: [watermotBanner],
+    imageDetail: watermotBanner,
+    icon: "Settings",
+    gradient: "from-yellow-500 to-orange-600",
+  },
+  {
+    id: "12",
+    slug: "alquiler",
+    slug2: "alquiler",
+    title: "Alquiler de Electrobombas",
+    shortDescription:
+      "Alquiler de electrobombas sumergibles y de superficie en Mendoza, San Juan y resto de Argentina. Solución temporal para garantizar la continuidad del servicio de agua mientras reparamos tu equipo o por proyectos puntuales.",
+    fullDescription:
+      "Ofrecemos un servicio de alquiler de electrobombas pensado para brindar continuidad operativa a productores agrícolas, industrias, municipios y hogares. Es la solución ideal cuando tu equipo se encuentra en reparación, para cubrir períodos de alta demanda o para proyectos con necesidades temporales de bombeo. Disponemos de electrobombas de diferentes potencias y características, todas en óptimas condiciones de funcionamiento y con asesoramiento técnico incluido. Consultanos por la disponibilidad y el modelo que mejor se adapte a tu proyecto a través de nuestro formulario de contacto o WhatsApp.",
+    features: [
+      "Equipos en óptimas condiciones de funcionamiento",
+      "Solución inmediata ante rotura o mantenimiento del equipo propio",
+      "Diferentes potencias y caudales disponibles",
+      "Asesoramiento técnico incluido",
+      "Contratos flexibles adaptados a cada proyecto",
+      "Cobertura en Mendoza, San Juan y resto de Argentina",
+    ],
+    details: [
+      "Electrobombas sumergibles y de superficie",
+      "Equipos monofásicos y trifásicos",
+      "Uso doméstico, agrícola, industrial y municipal",
+      "Alquileres por días, semanas o meses",
+      "Entrega y retiro coordinado",
+      "Instalación y puesta en marcha opcional",
+      "Asistencia técnica durante el período de alquiler",
+      "Presupuesto a medida según el proyecto",
+    ],
+    image: watermotBanner,
+    images: [watermotBanner],
+    imageDetail: watermotBanner,
     icon: "Settings",
     gradient: "from-yellow-500 to-orange-600",
   },
@@ -592,5 +626,5 @@ export const CONTACT = {
   linkedin: "https://linkedin.com/in/sergio-antonio-arenas-85ba7b96",
   whatsappNumber: "5492614707318",
   zones: ["Mendoza", "San Juan", "San Luis", "Buenos Aires", "Patagonia", "La Pampa", "Norte Argentino"],
-  mapEmbedUrl: "https://maps.app.goo.gl/ibTBbgPVCskm1RDg9",
+  mapEmbedUrl: "https://maps.app.goo.gl/ibTBbgPVCskm1R5A",
 };

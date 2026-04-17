@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Phone, MapPin, Clock, Mail, Linkedin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { CONTACT } from "../data";
-import electro from "../../assets/electro.png";
+// import electro from "../../assets/electro.png";
+import electro from '../../assets/logooo.png';
+
 
 interface ContactProps {
   compact?: boolean; // true = versión /home
@@ -75,127 +77,129 @@ export default function Contact({ compact = false }: ContactProps) {
             <h3 className="text-2xl mb-6 text-gray-900">
               Solicitar Presupuesto
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label
-                  htmlFor="nombre"
-                  className="block text-sm font-medium mb-1.5 text-gray-700"
-                >
-                  Nombre Completo *
-                </label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  required
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent"
-                />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="flex flex-col h-full">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="nombre"
                     className="block text-sm font-medium mb-1.5 text-gray-700"
                   >
-                    Email *
+                    Nombre Completo *
                   </label>
                   <input
-                    type="email"
-                    id="email"
-                    name="email"
+                    type="text"
+                    id="nombre"
+                    name="nombre"
                     required
-                    value={formData.email}
+                    value={formData.nombre}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent"
                   />
                 </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium mb-1.5 text-gray-700"
+                    >
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="telefono"
+                      className="block text-sm font-medium mb-1.5 text-gray-700"
+                    >
+                      Teléfono *
+                    </label>
+                    <input
+                      type="tel"
+                      id="telefono"
+                      name="telefono"
+                      required
+                      value={formData.telefono}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent"
+                    />
+                  </div>
+                </div>
                 <div>
                   <label
-                    htmlFor="telefono"
+                    htmlFor="servicio"
                     className="block text-sm font-medium mb-1.5 text-gray-700"
                   >
-                    Teléfono *
+                    Servicio de Interés
                   </label>
-                  <input
-                    type="tel"
-                    id="telefono"
-                    name="telefono"
-                    required
-                    value={formData.telefono}
+                  <select
+                    id="servicio"
+                    name="servicio"
+                    value={formData.servicio}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent bg-white"
+                  >
+                    <option value="">Seleccione un servicio</option>
+                    <option value="Perforaciones">Perforaciones</option>
+                    <option value="Reparación de Electrobombas">
+                      Reparación de Electrobombas
+                    </option>
+                    <option value="Bobinados">Bobinados</option>
+                    <option value="Filmaciones">Filmaciones</option>
+                    <option value="Limpieza de Perforación">
+                      Limpieza de Perforación
+                    </option>
+                    <option value="Pesca de Electrobombas">
+                      Pesca de Electrobombas
+                    </option>
+                    <option value="Estudios Geológicos">
+                      Estudios Geológicos
+                    </option>
+                    <option value="Venta de Bombas">Venta de Bombas</option>
+                    <option value="Asesoramiento">Asesoramiento</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="mensaje"
+                    className="block text-sm font-medium mb-1.5 text-gray-700"
+                  >
+                    Mensaje
+                  </label>
+                  <textarea
+                    id="mensaje"
+                    name="mensaje"
+                    rows={4}
+                    value={formData.mensaje}
+                    onChange={handleChange}
+                    placeholder="Cuéntenos sobre su proyecto..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent resize-none"
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="servicio"
-                  className="block text-sm font-medium mb-1.5 text-gray-700"
+                <button
+                  type="submit"
+                  className="w-full bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
                 >
-                  Servicio de Interés
-                </label>
-                <select
-                  id="servicio"
-                  name="servicio"
-                  value={formData.servicio}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent bg-white"
-                >
-                  <option value="">Seleccione un servicio</option>
-                  <option value="Perforaciones">Perforaciones</option>
-                  <option value="Reparación de Electrobombas">
-                    Reparación de Electrobombas
-                  </option>
-                  <option value="Bobinados">Bobinados</option>
-                  <option value="Filmaciones">Filmaciones</option>
-                  <option value="Limpieza de Perforación">
-                    Limpieza de Perforación
-                  </option>
-                  <option value="Pesca de Electrobombas">
-                    Pesca de Electrobombas
-                  </option>
-                  <option value="Estudios Geológicos">
-                    Estudios Geológicos
-                  </option>
-                  <option value="Venta de Bombas">Venta de Bombas</option>
-                  <option value="Asesoramiento">Asesoramiento</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="mensaje"
-                  className="block text-sm font-medium mb-1.5 text-gray-700"
-                >
-                  Mensaje
-                </label>
-                <textarea
-                  id="mensaje"
-                  name="mensaje"
-                  rows={4}
-                  value={formData.mensaje}
-                  onChange={handleChange}
-                  placeholder="Cuéntenos sobre su proyecto..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent resize-none"
+                  <FaWhatsapp className="w-5 h-5" />
+                  Enviar Consulta por WhatsApp
+                </button>
+              </form>
+              {/* Logo centrado */}
+              {/* <div className="mt-6 flex justify-center"> */}
+              <div className="mt-auto pt-6 flex justify-center ">
+                <img
+                  src={electro}
+                  alt="Arenas Perforaciones"
+                  className="h-30 object-contain"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
-              >
-                <FaWhatsapp className="w-5 h-5" />
-                Enviar Consulta por WhatsApp
-              </button>
-            </form>
-            {/* Logo centrado */}
-            {/* <div className="mt-6 flex justify-center"> */}
-            <div className="mt-auto pt-6 flex justify-center ">
-              <img
-                src={electro}
-                alt="Arenas Perforaciones"
-                className="h-30 object-contain"
-              />
             </div>
           </div>
 

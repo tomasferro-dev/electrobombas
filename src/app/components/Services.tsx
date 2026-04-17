@@ -10,6 +10,7 @@ import {
   Anchor,
   ArrowRight,
   Cog,
+  Clock,
 } from "lucide-react";
 import { SERVICES } from "../data";
 
@@ -27,6 +28,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
 const SERVICE_SHORT_NAMES: Record<string, string> = {
   perforaciones: "Perforaciones",
   electrobombas: "Electrobombas",
+  alquiler: "Alquiler",
   bobinados: "Bobinados",
   filmaciones: "Filmaciones",
   limpieza: "Limpieza",
@@ -63,20 +65,30 @@ export default function Services({ preview = false }: ServicesProps) {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link
-              to="servicios/reparacion"
-              className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
-            >
-              <Cog className="w-5 h-5" />
-              Reparación de Electrobombas
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            
+            
             <Link
               to="/servicios/venta"
               className="inline-flex items-center justify-center gap-2 bg-white border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
             >
               <ArrowRight className="w-4 h-4" />
               Venta de Electrobombas
+            </Link>
+            <Link
+              to="/servicios/alquiler"
+              className="inline-flex items-center justify-center gap-2 bg-white border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
+            >
+              <Clock className="w-5 h-5" />
+              Alquiler de Electrobombas
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/servicios/reparacion"
+              className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
+            >
+              <Cog className="w-5 h-5" />
+              Reparación de Electrobombas
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         {/* Quick nav — lista horizontal de servicios */}
@@ -101,7 +113,7 @@ export default function Services({ preview = false }: ServicesProps) {
           </div>
         {/* )} */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {displayed.map((service) => {
             const Icon = ICON_MAP[service.icon] ?? Droplet;
             return (
@@ -109,11 +121,10 @@ export default function Services({ preview = false }: ServicesProps) {
                 key={service.id}
                 to={`/servicios/${service.slug}`}
                 id={`servicio-${service.slug}`}
-                className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all 
-                duration-300 flex flex-col"
+                className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col"
               >
-                {/* Image header */}
-                <div className="relative h-48 overflow-hidden">
+                {/* Imagen — solo en desktop */}
+                <div className="hidden md:block relative h-48 overflow-hidden">
                   <img
                     src={service.images[0] || service.image}
                     alt={service.title}
@@ -124,36 +135,33 @@ export default function Services({ preview = false }: ServicesProps) {
                   </div>
                 </div>
 
-                <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-xl mb-3 text-gray-900 group-hover:text-red-700 transition-colors">
-                    {service.title}
-                  </h3>
+                <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                  {/* Icono + Título en la misma fila — mobile */}
+                  <div className="flex items-center gap-3 mb-3 md:block">
+                    {/* Icono solo visible en mobile (en desktop está sobre la imagen) */}
+                    <div className="md:hidden flex-shrink-0 bg-red-50 rounded-lg p-2">
+                      <Icon className="w-5 h-5 text-red-700" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl leading-snug text-gray-900 group-hover:text-red-700 transition-colors md:mb-3">
+                      {service.title}
+                    </h3>
+                  </div>
+
                   <p className="text-gray-600 mb-4 text-sm leading-relaxed flex-grow">
                     {service.shortDescription}
                   </p>
+
                   <ul className="space-y-1.5 mb-4">
                     {service.features.slice(0, 3).map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-sm text-gray-700"
-                      >
-                        <svg
-                          className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
+                      <li key={f} className="flex items-start gap-2 text-sm text-gray-700">
+                        <svg className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         {f}
                       </li>
                     ))}
                   </ul>
+
                   <div className="flex items-center gap-1 text-red-700 text-sm font-medium mt-auto">
                     Ver más{" "}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

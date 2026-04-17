@@ -12,22 +12,37 @@ import Bg5 from '../../assets/proyectos/BANNER/banner6.jpg';
 import Bg6 from '../../assets/proyectos/BANNER/banner7.jpg';
 import Bg7 from '../../assets/proyectos/BANNER/banner8.jpg';
 
-// ── Carga dinámica de todas las imágenes de proyectos ──────────
+// ── Lazy glob: imágenes se cargan solo cuando se necesitan ─────
 const allProjectImagesGlob = import.meta.glob(
   '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
-  { eager: true, import: 'default' }
-);
+  { import: 'default' }
+) as Record<string, () => Promise<string>>;
 
-/** Devuelve las imágenes de la carpeta de un proyecto */
-function getProjectImages(imageFolder: string): string[] {
-  return Object.entries(allProjectImagesGlob)
+/** Cuenta cuántas imágenes tiene una carpeta (sincrónico, solo lee las claves) */
+function countProjectImages(imageFolder: string): number {
+  return Object.keys(allProjectImagesGlob).filter(
+    (path) => !path.includes('/BANNER/') && !path.includes('/banner/') && path.includes(imageFolder)
+  ).length;
+}
+
+/** Carga todas las imágenes de una carpeta (asincrónico) */
+async function loadProjectImages(imageFolder: string): Promise<string[]> {
+  const loaders = Object.entries(allProjectImagesGlob)
     .filter(([path]) => {
-      // Excluir la carpeta BANNER
       if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
       return path.includes(imageFolder);
     })
-    .map(([, mod]) => mod as string)
-    .filter(Boolean);
+    .map(([, load]) => load);
+  return Promise.all(loaders.map((l) => l()));
+}
+
+/** Hook: carga las imágenes de una carpeta al montar el componente */
+function useProjectImages(imageFolder: string): string[] {
+  const [images, setImages] = useState<string[]>([]);
+  useEffect(() => {
+    loadProjectImages(imageFolder).then(setImages);
+  }, [imageFolder]);
+  return images;
 }
 
 // ── Estado del lightbox por proyecto ──────────────────────────
@@ -73,24 +88,24 @@ export default function ProyectosPage() {
 
   // Filtros
   const allServices = Array.from(new Set(PROJECTS.flatMap((p) => p.servicios))).sort();
-  const [activeService,  setActiveService]  = useState<string | null>(null);
+  const [activeService,   setActiveService]   = useState<string | null>(null);
   const [activeProvincia, setActiveProvincia] = useState<'San Juan' | 'Mendoza' | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
 
   // Proyectos filtrados
   const filteredProjects = PROJECTS.filter((p) => {
-    if (activeService  && !p.servicios.includes(activeService))  return false;
+    if (activeService   && !p.servicios.includes(activeService))  return false;
     if (activeProvincia && p.provincia !== activeProvincia)        return false;
     return true;
   });
 
   // Lightbox por proyecto
+  // onOpenLightbox recibe las imágenes ya cargadas desde ProjectCard
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
 
-  const openLightbox = useCallback((project: Project, src: string) => {
-    const images = getProjectImages(project.imageFolder);
+  const openLightbox = useCallback((images: string[], src: string, title: string) => {
     const idx = images.indexOf(src);
-    if (idx !== -1) setLightbox({ images, idx, projectTitle: project.title });
+    if (idx !== -1) setLightbox({ images, idx, projectTitle: title });
   }, []);
 
   const closeLightbox = () => setLightbox(null);
@@ -285,7 +300,7 @@ export default function ProyectosPage() {
             <X className="w-8 h-8" />
           </button>
 
-          {/* Anterior — solo si hay imagen previa en este proyecto */}
+          {/* Anterior */}
           {lightbox.idx > 0 && (
             <button
               className="absolute left-3 sm:left-6 text-white/70 hover:text-white transition-colors bg-black/30 rounded-full p-2"
@@ -303,7 +318,7 @@ export default function ProyectosPage() {
             onClick={(e) => e.stopPropagation()}
           />
 
-          {/* Siguiente — solo si hay imagen siguiente en este proyecto */}
+          {/* Siguiente */}
           {lightbox.idx < lightbox.images.length - 1 && (
             <button
               className="absolute right-3 sm:right-6 text-white/70 hover:text-white transition-colors bg-black/30 rounded-full p-2"
@@ -315,9 +330,7 @@ export default function ProyectosPage() {
 
           {/* Info inferior */}
           <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center px-4 py-3">
-            <p className="text-sm font-medium line-clamp-1">
-              {lightbox.projectTitle}
-            </p>
+            <p className="text-sm font-medium line-clamp-1">{lightbox.projectTitle}</p>
             <p className="text-xs text-white/50 mt-0.5">
               {lightbox.idx + 1} / {lightbox.images.length}
             </p>
@@ -333,14 +346,18 @@ export default function ProyectosPage() {
 // ──────────────────────────────────────────────────────────────
 interface ProjectCardProps {
   project: Project;
-  onOpenLightbox: (project: Project, src: string) => void;
+  onOpenLightbox: (images: string[], src: string, title: string) => void;
   accentColor: 'blue' | 'red';
 }
 
 function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps) {
-  const images = getProjectImages(project.imageFolder);
-  const mainImg = images[0];
-  const restImgs = images.slice(1, 5); // hasta 4 miniaturas adicionales
+  // Carga las imágenes del proyecto al montar la tarjeta
+  const images = useProjectImages(project.imageFolder);
+  // Cuenta de imágenes disponible de inmediato (solo lee las claves del glob)
+  const imageCount = countProjectImages(project.imageFolder);
+
+  const mainImg  = images[0];
+  const restImgs = images.slice(1, 5);
   const [descExpanded, setDescExpanded] = useState(false);
 
   const linkColor = accentColor === 'blue' ? 'text-blue-700 hover:text-blue-900' : 'text-red-700 hover:text-red-900';
@@ -350,23 +367,32 @@ function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps)
     <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
 
       {/* Área de imágenes */}
-      {images.length > 0 ? (
+      {imageCount > 0 ? (
         <div className="relative">
           {/* Imagen principal */}
           <button
             className="block w-full aspect-video overflow-hidden group"
-            onClick={() => onOpenLightbox(project, mainImg)}
+            onClick={() => mainImg && onOpenLightbox(images, mainImg, project.title)}
+            disabled={!mainImg}
           >
-            <img
-              src={mainImg}
-              alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-              <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 px-3 py-1 rounded-full">
-                Ampliar
-              </span>
-            </div>
+            {mainImg ? (
+              <img
+                src={mainImg}
+                alt={project.title}
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            ) : (
+              // Skeleton mientras carga la imagen principal
+              <div className="w-full h-full bg-gray-200 animate-pulse" />
+            )}
+            {mainImg && (
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 px-3 py-1 rounded-full">
+                  Ampliar
+                </span>
+              </div>
+            )}
           </button>
 
           {/* Miniaturas */}
@@ -380,19 +406,18 @@ function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps)
                 <button
                   key={i}
                   className="aspect-square overflow-hidden rounded group relative"
-                  onClick={() => onOpenLightbox(project, src)}
+                  onClick={() => onOpenLightbox(images, src, project.title)}
                 >
                   <img
                     src={src}
                     alt={`${project.title} foto ${i + 2}`}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   {/* Badge de "más fotos" en la última miniatura */}
-                  {i === restImgs.length - 1 && images.length > 5 && (
+                  {i === restImgs.length - 1 && imageCount > 5 && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded">
-                      <span className="text-white text-sm font-semibold">
-                        +{images.length - 5}
-                      </span>
+                      <span className="text-white text-sm font-semibold">+{imageCount - 5}</span>
                     </div>
                   )}
                 </button>
@@ -425,19 +450,16 @@ function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps)
         {/* Chips de servicios */}
         <div className="flex flex-wrap gap-1.5">
           {project.servicios.map((s) => (
-            <span
-              key={s}
-              className={`text-xs font-medium px-2 py-0.5 rounded-full ${serviceColor(s)}`}
-            >
+            <span key={s} className={`text-xs font-medium px-2 py-0.5 rounded-full ${serviceColor(s)}`}>
               {s}
             </span>
           ))}
         </div>
 
-        {/* Cantidad de fotos */}
-        {images.length > 0 && (
+        {/* Cantidad de fotos (disponible inmediatamente) */}
+        {imageCount > 0 && (
           <p className="text-xs text-gray-400 mt-3">
-            {images.length} {images.length === 1 ? 'foto' : 'fotos'} · {project.provincia}
+            {imageCount} {imageCount === 1 ? 'foto' : 'fotos'} · {project.provincia}
           </p>
         )}
       </div>

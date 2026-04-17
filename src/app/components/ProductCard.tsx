@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, Zap, Droplet } from 'lucide-react';
-import venta55 from "../../assets/venta77.png";
-import BORRAR from "../../assets/BORRAR.png";
+import watermot1 from "../../assets/bombas/watermot/2.jpg";
+import watermot2 from "../../assets/bombas/watermot/3.jpg";
+import watermot3 from "../../assets/bombas/watermot/5.jpg";
+import shakti1 from "../../assets/bombas/shakti/14.jpg";
+import hidraulica1 from "../../assets/hidraulica/4.jpg";
 
 // ─────────────────────────────────────────────────────────────
 // DATOS DE PRODUCTOS — editá aquí para actualizar
@@ -33,7 +36,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
       { label: 'Material', value: 'Acero inoxidable AISI 304' },
     ],
     // Reemplazá con tus rutas reales: '../../../assets/bomba1.jpg'
-    imagenes: [venta55,venta55,venta55,venta55],
+    imagenes: [watermot1,watermot2,watermot3,watermot1],
   },{
     id: 'bomba-franklin',
     tipo: 'Electrobomba',
@@ -49,7 +52,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
       { label: 'Material', value: 'Acero inoxidable AISI 304' },
     ],
     // Reemplazá con tus rutas reales: '../../../assets/bomba1.jpg'
-    imagenes: [venta55,venta55,venta55,venta55],
+    imagenes: [shakti1],
   },
   {
     id: 'hidraulica-franklin',
@@ -66,7 +69,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
       { label: 'Conexión', value: 'Acoplamiento directo al motor' },
     ],
     // Reemplazá con tus rutas reales
-    imagenes: [BORRAR,BORRAR,BORRAR,BORRAR],
+    imagenes: [hidraulica1],
   },
 ];
 
@@ -236,14 +239,22 @@ function ProductCard({ producto }: ProductCardProps) {
 }
 
 // ─── Componente principal exportado ───────────────────────────
-export default function VentaProductos() {
+interface VentaProductosProps {
+  variant?: "venta" | "alquiler";
+}
+
+export default function VentaProductos({ variant = "venta" }: VentaProductosProps) {
+  const titulo =
+    variant === "alquiler" ? "Productos Disponibles para Alquiler" : "Productos en Venta";
+  const subtitulo =
+    variant === "alquiler"
+      ? "Ofrecemos en alquiler electrobombas y componentes hidráulicos de las mejores marcas. Consultanos por disponibilidad, modelos y condiciones del alquiler."
+      : "Comercializamos electrobombas y sus componentes hidráulicos de las mejores marcas. Consultanos por disponibilidad y precios.";
+
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-gray-900 mb-2">Productos en Venta</h2>
-      <p className="text-gray-500 text-sm mb-8">
-        Comercializamos electrobombas y sus componentes hidráulicos de las mejores marcas.
-        Consultanos por disponibilidad y precios.
-      </p>
+      <h2 className="text-2xl font-semibold text-gray-900 mb-2">{titulo}</h2>
+      <p className="text-gray-500 text-sm mb-8">{subtitulo}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {PRODUCTOS_VENTA.map((p) => (
           <ProductCard key={p.id} producto={p} />

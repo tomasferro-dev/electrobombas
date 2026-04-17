@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronRight, ChevronDown, Cog, ShoppingCart, Zap } from 'lucide-react';
-import logo from '../../assets/electrobombas_claude2.png';
+import { Menu, X, ChevronRight, ChevronDown, Cog, ShoppingCart, Zap, Clock } from 'lucide-react';
+import logo from '../../assets/logooo.png';
 
 interface HeaderProps {
   mode: 'home' | 'subpage';
@@ -15,13 +15,19 @@ const NAV_LINKS = [
 ];
 
 const ELECTROBOMBAS_ITEMS = [
-  
+
   {
     label: 'Venta',
     // to: '/electrobombas/venta',
     to: '/servicios/venta',
     icon: ShoppingCart,
     description: 'Catálogo de electrobombas',
+  },
+  {
+    label: 'Alquiler',
+    to: '/servicios/alquiler',
+    icon: Clock,
+    description: 'Alquiler de electrobombas',
   },
   {
     label: 'Reparación',
@@ -39,6 +45,13 @@ export default function Header({ mode }: HeaderProps) {
   const [isMobileElectroOpen, setIsMobileElectroOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (location.pathname === '/' || location.pathname === '/home') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -79,7 +92,7 @@ export default function Header({ mode }: HeaderProps) {
         <div className="flex items-center justify-between h-full">
 
           {/* Logo */}
-          <Link to="/home" className="flex items-center">
+          <Link to="/home" onClick={handleLogoClick} className="flex items-center">
             <img src={logo} alt="Arenas Perforaciones" className="h-10 md:h-12 w-auto object-contain" />
           </Link>
 

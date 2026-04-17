@@ -1,20 +1,24 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
-import { PROJECTS } from "../data";
+import { PROJECTS, Project } from "../data";
 
-// Carga dinámica de imágenes
+// ── Lazy glob ─────────────────────────────────────────────────
 const allProjectImagesGlob = import.meta.glob(
   '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
-  { eager: true, import: 'default' }
-);
+  { import: 'default' }
+) as Record<string, () => Promise<string>>;
 
-function getFirstImage(imageFolder: string): string | null {
-  const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
-    if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
-    return path.includes(imageFolder);
-  });
-  return entry ? (entry[1] as string) : null;
+function useFirstProjectImage(imageFolder: string): string | null {
+  const [src, setSrc] = useState<string | null>(null);
+  useEffect(() => {
+    const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
+      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
+      return path.includes(imageFolder);
+    });
+    if (entry) entry[1]().then(setSrc);
+  }, [imageFolder]);
+  return src;
 }
 
 // Mapeo de slug de servicio → servicios del proyecto que matchean
@@ -36,6 +40,46 @@ const VISIBLE = 3;
 
 interface ProjectsCarouselProps {
   slug: string;
+}
+
+// Sub-componente para usar el hook por tarjeta
+function CarouselCard({ project }: { project: Project }) {
+  const cover = useFirstProjectImage(project.imageFolder);
+
+  return (
+    <Link
+      to={`/proyectos/${project.id}`}
+      className="group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white border border-gray-100"
+    >
+      <div className="aspect-video bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
+        {cover && (
+          <img
+            src={cover}
+            alt={project.title}
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+        )}
+        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+          <p className="text-white text-sm font-medium p-4">Ver proyecto →</p>
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-1.5 group-hover:text-red-700 transition-colors">
+          {project.title}
+        </h3>
+        <p className="text-gray-600 text-xs line-clamp-2 mb-2">
+          {project.descripcion}
+        </p>
+        {project.provincia && (
+          <div className="flex items-center gap-1 text-xs text-gray-400">
+            <MapPin className="w-3 h-3" />
+            {project.provincia}
+          </div>
+        )}
+      </div>
+    </Link>
+  );
 }
 
 export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
@@ -100,58 +144,40 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
           </Link>
         </div>
 
-        <div className="relative">
+        {/* Grilla de tarjetas */}
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300 ease-in-out ${animClass}`}
+        >
+          {visible.map((project) => (
+            <CarouselCard key={project.id} project={project} />
+          ))}
+        </div>
+
+        {/* Controles: flecha ← · puntos · flecha → */}
+        <div className="flex items-center justify-center gap-4 mt-8">
           <button
             onClick={() => navigate("left")}
             disabled={!canPrev || animating}
             aria-label="Anterior"
-            className={`absolute -left-4 sm:-left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full shadow-md flex items-center justify-center transition-all duration-200
+            className={`w-9 h-9 rounded-full shadow-sm flex items-center justify-center transition-all duration-200
               ${canPrev && !animating
-                ? "bg-white text-gray-700 hover:bg-red-700 hover:text-white"
-                : "bg-gray-100 text-gray-300 cursor-not-allowed"
+                ? "bg-white border border-gray-200 text-gray-700 hover:bg-red-700 hover:text-white hover:border-red-700"
+                : "bg-gray-100 text-gray-300 cursor-not-allowed border border-transparent"
               }`}
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4" />
           </button>
 
-          <div
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300 ease-in-out ${animClass}`}
-          >
-            {visible.map((project) => {
-              const cover = getFirstImage(project.imageFolder);
+          <div className="flex items-center gap-1.5">
+            {related.map((_, i) => {
+              const isVisible = i >= startIndex && i < startIndex + VISIBLE;
               return (
-                <Link
-                  key={project.id}
-                  to={`/proyectos/${project.id}`}
-                  className="group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white border border-gray-100"
-                >
-                  <div className="aspect-video bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
-                    {cover ? (
-                      <img
-                        src={cover}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    ) : null}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                      <p className="text-white text-sm font-medium p-4">Ver proyecto →</p>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-1.5 group-hover:text-red-700 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 text-xs line-clamp-2 mb-2">
-                      {project.descripcion}
-                    </p>
-                    {project.provincia && (
-                      <div className="flex items-center gap-1 text-xs text-gray-400">
-                        <MapPin className="w-3 h-3" />
-                        {project.provincia}
-                      </div>
-                    )}
-                  </div>
-                </Link>
+                <span
+                  key={i}
+                  className={`rounded-full transition-all duration-300 ${
+                    isVisible ? "w-3 h-3 bg-red-600" : "w-2 h-2 bg-gray-300"
+                  }`}
+                />
               );
             })}
           </div>
@@ -160,28 +186,14 @@ export default function ProjectsCarousel({ slug }: ProjectsCarouselProps) {
             onClick={() => navigate("right")}
             disabled={!canNext || animating}
             aria-label="Siguiente"
-            className={`absolute -right-4 sm:-right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full shadow-md flex items-center justify-center transition-all duration-200
+            className={`w-9 h-9 rounded-full shadow-sm flex items-center justify-center transition-all duration-200
               ${canNext && !animating
-                ? "bg-white text-gray-700 hover:bg-red-700 hover:text-white"
-                : "bg-gray-100 text-gray-300 cursor-not-allowed"
+                ? "bg-white border border-gray-200 text-gray-700 hover:bg-red-700 hover:text-white hover:border-red-700"
+                : "bg-gray-100 text-gray-300 cursor-not-allowed border border-transparent"
               }`}
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4" />
           </button>
-        </div>
-
-        <div className="flex items-center justify-center gap-1.5 mt-8">
-          {related.map((_, i) => {
-            const isVisible = i >= startIndex && i < startIndex + VISIBLE;
-            return (
-              <span
-                key={i}
-                className={`rounded-full bg-gray-300 transition-all duration-300 ${
-                  isVisible ? "w-3 h-3 bg-red-600" : "w-2 h-2"
-                }`}
-              />
-            );
-          })}
         </div>
 
         <div className="text-center mt-6 sm:hidden">

@@ -9,7 +9,7 @@ import { CONTACT } from '../data';
 // Imágenes del carrusel
 import Bg1 from '../../assets/serv1.jpg';
 import Bg2 from '../../assets/hero4.jpeg';
-import Bg3 from '../../assets/serv2.jpg';
+import Bg3 from '../../assets/agua1.jpg';
 
 export default function ServiciosPage() {
   const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(
@@ -23,7 +23,7 @@ export default function ServiciosPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
-    }, 4000); // más natural que 2s
+    }, 3000); // más natural que 2s
 
     return () => clearInterval(interval);
   }, []);
