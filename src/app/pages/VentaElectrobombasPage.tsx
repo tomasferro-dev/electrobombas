@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { CONTACT } from '../data';
 import { ELECTROBOMBAS_VENTA, type Electrobomba } from '../data-electrobombas';
+import SEO from '../components/SEO';
 
 const USO_OPTIONS = ['Todos', 'Doméstico', 'Agrícola', 'Industrial', 'Municipal', 'Minería'];
 
@@ -126,6 +127,11 @@ export default function VentaElectrobombasPage() {
 
   return (
     <>
+      <SEO
+        title="Venta de Electrobombas en Mendoza y San Juan"
+        description="Comprá electrobombas sumergibles y de superficie en Mendoza y San Juan. Stock permanente, asesoramiento técnico y entrega inmediata. Equipos para uso doméstico, agrícola e industrial."
+        canonical="/venta"
+      />
       <Breadcrumb label="Venta de Electrobombas" />
 
       {/* ── HERO ──────────────────────────────────────────────── */}

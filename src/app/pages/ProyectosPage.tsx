@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, X, Filter } from 'lucide-react';
 import { PROJECTS, Project } from '../data';
 import Breadcrumb from '../components/Breadcrumb';
+import SEO from '../components/SEO';
 
 // ── Banner carrusel ────────────────────────────────────────────
 import Bg1 from '../../assets/proyectos/BANNER/banner11.jpg';
@@ -134,6 +135,11 @@ export default function ProyectosPage() {
 
   return (
     <>
+      <SEO
+        title="Proyectos de Electrobombas y Pozos de Agua"
+        description="Conocé nuestros proyectos en Mendoza, San Juan y resto de Argentina: extracción, colocación, limpieza, filmación y rehabilitación de pozos de agua."
+        canonical="/proyectos"
+      />
       <Breadcrumb />
 
       {/* ── HERO ─────────────────────────────────────────────── */}

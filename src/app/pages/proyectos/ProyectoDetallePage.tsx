@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { PROJECTS, CONTACT } from '../../data';
 import Breadcrumb from '../../components/Breadcrumb';
+import SEO from '../../components/SEO';
 
 // Lazy glob: imágenes se cargan solo cuando se necesitan
 const allProjectImagesGlob = import.meta.glob(
@@ -96,6 +97,11 @@ export default function ProyectoDetallePage() {
 
   return (
     <>
+      <SEO
+        title={project.title}
+        description={`${project.descripcion.slice(0, 150)}...`}
+        canonical={`/proyectos/${project.id}`}
+      />
       <Breadcrumb label={project.title} />
 
       {/* Header */}

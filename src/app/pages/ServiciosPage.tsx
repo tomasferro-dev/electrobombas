@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Services from '../components/Services';
 import Breadcrumb from '../components/Breadcrumb';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
 import { CONTACT } from '../data';
@@ -30,7 +31,11 @@ export default function ServiciosPage() {
 
   return (
     <>
-    
+      <SEO
+        title="Servicios de Electrobombas y Pozos de Agua"
+        description="Venta, reparación, alquiler de electrobombas, perforación de pozos, bobinados, filmaciones, limpieza y más. Cobertura en Mendoza, San Juan y resto de Argentina."
+        canonical="/servicios"
+      />
       <Breadcrumb />
 
       {/* HERO con carrusel */}
