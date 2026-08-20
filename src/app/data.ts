@@ -1,20 +1,20 @@
-import perfo2 from "../assets/perfo2.jpg";
-import agua from "../assets/agua.jpg";
-import agua1 from "../assets/agua1.jpg";
-import filmacion1 from "../assets/filmacion1.jpg";
-import pesca5 from "../assets/pesca5.jpg";
-import pesca6 from "../assets/pesca6.jpg";
-import pesca7 from "../assets/pesca7.jpg";
-import estudio2 from "../assets/estudio2.jpg";
-import estudiogeologico from "../assets/estudio-geologico.jpg";
-import mant from "../assets/mant-rehab3.jpg";
-import watermotBanner from "../assets/bombas/watermot-banner.jpg";
-import reparacion1 from "../assets/reparacion1.jpg";
-import limpieza1 from "../assets/limpieza1.jpg";
-import bobinados2 from "../assets/bobinados2.jpg";
-// import caneria from "../assets/caneria.jpg";
-import extrac1 from "../assets/extrac1.jpg";
-// import limpieza from '../assets/IMG_0097 2.jpg';
+import perfo2 from "../assets/perfo2.webp";
+import agua from "../assets/agua.webp";
+import agua1 from "../assets/agua1.webp";
+import filmacion1 from "../assets/filmacion1.webp";
+import pesca5 from "../assets/pesca5.webp";
+import pesca6 from "../assets/pesca6.webp";
+import pesca7 from "../assets/pesca7.webp";
+import estudio2 from "../assets/estudio2.webp";
+import estudiogeologico from "../assets/estudio-geologico.webp";
+import mant from "../assets/mant-rehab3.webp";
+import watermotBanner from "../assets/bombas/watermot-banner.webp";
+import reparacion1 from "../assets/reparacion1.webp";
+import limpieza1 from "../assets/limpieza1.webp";
+import bobinados2 from "../assets/bobinados2.webp";
+// import caneria from "../assets/caneria.webp";
+import extrac1 from "../assets/extrac1.webp";
+// import limpieza from '../assets/IMG_0097 2.webp';
 
 export interface Service {
   id: string;
@@ -240,7 +240,7 @@ export const SERVICES: Service[] = [
       "Detección de acumulación de sedimentos",
     ],
     images: [filmacion1, filmacion1],
-    image: "/assets/filmaciones.jpg",
+    image: "/assets/filmaciones.webp",
     imageDetail: perfo2,
     icon: "Video",
     gradient: "from-indigo-500 to-purple-600",

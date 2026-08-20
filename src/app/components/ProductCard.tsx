@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, Zap, Droplet } from 'lucide-react';
-import watermot1 from "../../assets/bombas/watermot/2.jpg";
-import watermot2 from "../../assets/bombas/watermot/3.jpg";
-import watermot3 from "../../assets/bombas/watermot/5.jpg";
-import shakti1 from "../../assets/bombas/shakti/14.jpg";
-import hidraulica1 from "../../assets/hidraulica/4.jpg";
+import watermot1 from "../../assets/bombas/watermot/2.webp";
+import watermot2 from "../../assets/bombas/watermot/3.webp";
+import watermot3 from "../../assets/bombas/watermot/5.webp";
+import shakti1 from "../../assets/bombas/shakti/14.webp";
+import hidraulica1 from "../../assets/hidraulica/4.webp";
 
 // ─────────────────────────────────────────────────────────────
 // DATOS DE PRODUCTOS — editá aquí para actualizar
@@ -35,7 +35,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
       { label: 'Aplicación', value: 'Doméstico · Agrícola · Industrial' },
       { label: 'Material', value: 'Acero inoxidable AISI 304' },
     ],
-    // Reemplazá con tus rutas reales: '../../../assets/bomba1.jpg'
+    // Reemplazá con tus rutas reales: '../../../assets/bomba1.webp'
     imagenes: [watermot1,watermot2,watermot3,watermot1],
   },{
     id: 'bomba-franklin',
@@ -51,7 +51,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
       { label: 'Aplicación', value: 'Doméstico · Agrícola · Industrial' },
       { label: 'Material', value: 'Acero inoxidable AISI 304' },
     ],
-    // Reemplazá con tus rutas reales: '../../../assets/bomba1.jpg'
+    // Reemplazá con tus rutas reales: '../../../assets/bomba1.webp'
     imagenes: [shakti1],
   },
   {

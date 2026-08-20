@@ -2,10 +2,10 @@ import { Phone, FileText, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import HeroImage1 from '../../assets/pesca22.jpg';
-import HeroImage2 from '../../assets/hero1.jpg';
-import HeroImage3 from '../../assets/hero5.jpg';
-import HeroImage4 from '../../assets/limpieza1.jpg';
+import HeroImage1 from '../../assets/pesca22.webp';
+import HeroImage2 from '../../assets/hero1.webp';
+import HeroImage3 from '../../assets/hero5.webp';
+import HeroImage4 from '../../assets/limpieza1.webp';
 
 export default function Hero() {
   const scrollToSection = (id: string) => {

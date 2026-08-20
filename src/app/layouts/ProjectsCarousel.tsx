@@ -5,7 +5,7 @@ import { PROJECTS, Project } from "../data";
 
 // ── Lazy glob ─────────────────────────────────────────────────
 const allProjectImagesGlob = import.meta.glob(
-  '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
+  '../../assets/proyectos/**/*.webp',
   { import: 'default' }
 ) as Record<string, () => Promise<string>>;
 

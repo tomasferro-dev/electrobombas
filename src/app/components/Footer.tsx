@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Linkedin } from "lucide-react";
 import { CONTACT, SERVICES, serviceHref } from "../data";
-// import Logo from '../../../assets/arenas_perforaciones_sin_fondo.png';
-import logo from "../../assets/logo-blanco.png";
+// import Logo from '../../../assets/arenas_perforaciones_sin_fondo.webp';
+import logo from "../../assets/logo-blanco.webp";
 
 
 export default function Footer() {

@@ -6,16 +6,16 @@ import Breadcrumb from '../components/Breadcrumb';
 import SEO from '../components/SEO';
 
 // ── Banner carrusel ────────────────────────────────────────────
-import Bg1 from '../../assets/proyectos/BANNER/banner11.jpg';
-import Bg2 from '../../assets/proyectos/BANNER/banner3.jpg';
-import Bg3 from '../../assets/proyectos/BANNER/banner4.jpg';
-import Bg5 from '../../assets/proyectos/BANNER/banner6.jpg';
-import Bg6 from '../../assets/proyectos/BANNER/banner7.jpg';
-import Bg7 from '../../assets/proyectos/BANNER/banner8.jpg';
+import Bg1 from '../../assets/proyectos/BANNER/banner11.webp';
+import Bg2 from '../../assets/proyectos/BANNER/banner3.webp';
+import Bg3 from '../../assets/proyectos/BANNER/banner4.webp';
+import Bg5 from '../../assets/proyectos/BANNER/banner6.webp';
+import Bg6 from '../../assets/proyectos/BANNER/banner7.webp';
+import Bg7 from '../../assets/proyectos/BANNER/banner8.webp';
 
 // ── Lazy glob: imágenes se cargan solo cuando se necesitan ─────
 const allProjectImagesGlob = import.meta.glob(
-  '../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
+  '../../assets/proyectos/**/*.webp',
   { import: 'default' }
 ) as Record<string, () => Promise<string>>;
 

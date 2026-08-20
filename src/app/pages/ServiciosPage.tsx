@@ -8,9 +8,9 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { whatsappLink } from '../data';
 
 // Imágenes del carrusel
-import Bg1 from '../../assets/serv1.jpg';
-import Bg2 from '../../assets/hero4.jpeg';
-import Bg3 from '../../assets/agua1.jpg';
+import Bg1 from '../../assets/serv1.webp';
+import Bg2 from '../../assets/hero4.webp';
+import Bg3 from '../../assets/agua1.webp';
 
 export default function ServiciosPage() {
   const waUrl = whatsappLink('Hola! Quisiera consultar sobre sus servicios.');

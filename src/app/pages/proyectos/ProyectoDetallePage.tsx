@@ -9,7 +9,7 @@ import NotFoundPage from '../NotFoundPage';
 
 // Lazy glob: imágenes se cargan solo cuando se necesitan
 const allProjectImagesGlob = import.meta.glob(
-  '../../../assets/proyectos/**/*.{jpg,jpeg,JPG,JPEG}',
+  '../../../assets/proyectos/**/*.webp',
   { import: 'default' }
 ) as Record<string, () => Promise<string>>;
 
