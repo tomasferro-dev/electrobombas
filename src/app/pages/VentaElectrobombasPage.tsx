@@ -6,6 +6,9 @@ import Breadcrumb from '../components/Breadcrumb';
 import { CONTACT, whatsappLink } from '../data';
 import { ELECTROBOMBAS_VENTA, type Electrobomba } from '../data-electrobombas';
 import SEO from '../components/SEO';
+import ServiceDetailBlocks from '../components/ServiceDetailBlocks';
+import VentaProductos from '../components/ProductCard';
+import ProjectsCarousel from '../layouts/ProjectsCarousel';
 
 const USO_OPTIONS = ['Todos', 'Doméstico', 'Agrícola', 'Industrial', 'Municipal', 'Minería'];
 
@@ -219,6 +222,20 @@ export default function VentaElectrobombasPage() {
         </p>
       </div>
 
+      {/* ── MARCAS QUE TRABAJAMOS ────────────────────────────── */}
+      {/* Catálogo con fotos que vivía en /servicios/venta antes del 301. */}
+      <div className="bg-gray-50 border-t border-gray-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+          <VentaProductos variant="venta" />
+        </div>
+      </div>
+
+      {/* ── DETALLE DEL SERVICIO ─────────────────────────────── */}
+      <ServiceDetailBlocks slug="venta" />
+
+      {/* ── OBRAS RELACIONADAS ───────────────────────────────── */}
+      <ProjectsCarousel slug="venta" />
+
       {/* ── CTA REPARACIÓN ───────────────────────────────────── */}
       <div className="py-10 sm:py-12 bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
@@ -229,7 +246,7 @@ export default function VentaElectrobombasPage() {
             No siempre es necesario comprar una nueva. Revisamos tu equipo sin costo.
           </p>
           <Link
-            to="/servicios/reparacion"
+            to="/reparacion"
             className="inline-flex items-center gap-2 bg-red-700 hover:bg-red-800 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-colors text-sm sm:text-base"
           >
             Ver servicio de reparación

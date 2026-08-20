@@ -44,17 +44,7 @@
 
   <!-- ── Detalle de servicios ── -->
   <url>
-    <loc>https://www.arenaselectrobombas.com.ar/servicios/venta</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.arenaselectrobombas.com.ar/servicios/alquiler</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.arenaselectrobombas.com.ar/servicios/reparacion</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -12,7 +12,7 @@ import {
   Cog,
   Clock,
 } from "lucide-react";
-import { SERVICES } from "../data";
+import { SERVICES, serviceHref } from "../data";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Droplet,
@@ -68,7 +68,7 @@ export default function Services({ preview = false }: ServicesProps) {
             
             
             <Link
-              to="/servicios/venta"
+              to="/venta"
               className="inline-flex items-center justify-center gap-2 bg-white border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
             >
               <ArrowRight className="w-4 h-4" />
@@ -83,7 +83,7 @@ export default function Services({ preview = false }: ServicesProps) {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              to="/servicios/reparacion"
+              to="/reparacion"
               className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
             >
               <Cog className="w-5 h-5" />
@@ -99,8 +99,7 @@ export default function Services({ preview = false }: ServicesProps) {
               return (
                 <Link
                   key={service.id}
-                  to={`/servicios/${service.slug}`}
-                  // to={`/servicios/${service.slug}/${service.slug2 || ""}`}
+                  to={serviceHref(service)}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 
                     bg-white text-sm text-gray-600 hover:border-red-600 hover:text-red-700 
                     hover:bg-red-50 transition-all duration-200 shadow-sm"
@@ -119,7 +118,7 @@ export default function Services({ preview = false }: ServicesProps) {
             return (
               <Link
                 key={service.id}
-                to={`/servicios/${service.slug}`}
+                to={serviceHref(service)}
                 id={`servicio-${service.slug}`}
                 className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col"
               >

@@ -20,6 +20,12 @@ export interface Service {
   id: string;
   slug: string;
   slug2: string;
+  /**
+   * URL propia del servicio, cuando no vive bajo /servicios/:slug.
+   * Venta y Reparación tienen landing dedicada (/venta, /reparacion) y
+   * /servicios/venta y /servicios/reparacion redirigen 301 hacia ellas.
+   */
+  href?: string;
   title: string;
   shortDescription: string;
   fullDescription: string;
@@ -50,6 +56,7 @@ export const SERVICES: Service[] = [
     id: "1",
     slug: "venta",
     slug2: "venta",
+    href: "/venta",
     title: "Venta de Electrobombas",
     shortDescription:
       "Comercialización de electrobombas en Mendoza, San Juan y resto de Argentina para uso doméstico, agrícola e industrial, con asesoramiento técnico para elegir el equipo adecuado.",
@@ -115,6 +122,7 @@ export const SERVICES: Service[] = [
     id: "2",
     slug: "reparacion",
     slug2: "reparacion",
+    href: "/reparacion",
     title: "Reparación de Electrobombas",
     shortDescription:
       "Servicio técnico especializado en reparación de electrobombas en Mendoza, San Juan y resto de Argentina, con diagnóstico preciso, repuestos de calidad y prueba en banco.",
@@ -632,6 +640,11 @@ export const CONTACT = {
  * Centralizarlo permite cambiar el número, el formato o el mensaje por
  * defecto en un solo lugar, y le da a la analítica un solo objetivo que medir.
  */
+/** URL canónica de un servicio. Único lugar donde se arma el link. */
+export function serviceHref(service: Pick<Service, "slug" | "href">): string {
+  return service.href ?? `/servicios/${service.slug}`;
+}
+
 export function whatsappLink(mensaje?: string): string {
   const texto = mensaje ?? "Hola! Quisiera hacerles una consulta.";
   return `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(texto)}`;

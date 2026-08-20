@@ -18,8 +18,7 @@ const ELECTROBOMBAS_ITEMS = [
 
   {
     label: 'Venta',
-    // to: '/electrobombas/venta',
-    to: '/servicios/venta',
+    to: '/venta',
     icon: ShoppingCart,
     description: 'Catálogo de electrobombas',
   },
@@ -31,8 +30,7 @@ const ELECTROBOMBAS_ITEMS = [
   },
   {
     label: 'Reparación',
-    // to: '/electrobombas/reparacion',
-    to: '/servicios/reparacion',
+    to: '/reparacion',
     icon: Cog,
     description: 'Bobinado y reparación integral',
   },
@@ -77,7 +75,7 @@ export default function Header({ mode }: HeaderProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const isElectroActive = location.pathname.startsWith('/electrobombas');
+  const isElectroActive = ELECTROBOMBAS_ITEMS.some((i) => location.pathname === i.to);
 
   const bgClass =
     mode === 'home'
@@ -222,16 +220,7 @@ export default function Header({ mode }: HeaderProps) {
 
               {isMobileElectroOpen && (
                 <div className="bg-gray-50 border-t border-b border-gray-100">
-                  {/* Link principal */}
-                  <Link
-                    to="/servicios/electrobombas"
-                    className="flex items-center gap-3 px-8 py-3 text-sm text-gray-500 hover:text-red-700 transition-colors border-b border-gray-100"
-                  >
-                    <Zap className="w-4 h-4" />
-                    Ver servicio completo
-                  </Link>
-
-                  {ELECTROBOMBAS_ITEMS.map((item) => (
+                                    {ELECTROBOMBAS_ITEMS.map((item) => (
                     <Link
                       key={item.to}
                       to={item.to}

@@ -1,26 +1,20 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Linkedin } from "lucide-react";
-import { CONTACT } from "../data";
+import { CONTACT, SERVICES, serviceHref } from "../data";
 // import Logo from '../../../assets/arenas_perforaciones_sin_fondo.png';
 import logo from "../../assets/logo-blanco.png";
 
 
 export default function Footer() {
-  const services = [
-    "Perforaciones",
-    "Venta de Electrobombas",
-    "Reparación de Electrobombas",
-    "Bobinados",
-    "Filmaciones",
-    "Limpieza",
-    "Pesca de Bombas",
+  // Se derivan de SERVICES para que link y nombre no se desincronicen:
+  // antes el slug se armaba normalizando el texto visible del footer.
+  const FOOTER_SERVICE_SLUGS = [
+    "perforaciones", "venta", "reparacion", "bobinados",
+    "filmaciones", "limpieza", "pescas",
   ];
-
-  const routes: Record<string, string> = {
-    "Venta de Electrobombas": "venta",
-    "Reparación de Electrobombas": "reparacion",
-    "Pesca de Bombas": "pescas"
-  };
+  const services = FOOTER_SERVICE_SLUGS
+    .map((slug) => SERVICES.find((s) => s.slug === slug))
+    .filter((s): s is (typeof SERVICES)[number] => Boolean(s));
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -66,26 +60,16 @@ export default function Footer() {
             <h3 className="text-base font-semibold mb-4">Servicios</h3>
 
             <ul className="space-y-2 text-sm text-gray-400">
-              {services.map((s) => {
-                const slug =
-                  routes[s] ??
-                  s
-                    .toLowerCase()
-                    .normalize("NFD") // elimina tildes
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/ /g, "-");
-
-                return (
-                  <li key={s}>
-                    <Link
-                      to={`/servicios/${slug}`}
-                      className="hover:text-white transition-colors"
-                    >
-                      {s}
-                    </Link>
-                  </li>
-                );
-              })}
+              {services.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    to={serviceHref(s)}
+                    className="hover:text-white transition-colors"
+                  >
+                    {s.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

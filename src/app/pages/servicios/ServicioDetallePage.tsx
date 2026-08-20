@@ -1,5 +1,5 @@
 import ProjectsCarousel from "../../layouts/ProjectsCarousel";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import SEO from "../../components/SEO";
 import NotFoundPage from "../NotFoundPage";
 import {
@@ -18,7 +18,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { SERVICES, CONTACT, whatsappLink } from "../../data";
+import { SERVICES, CONTACT, whatsappLink, serviceHref } from "../../data";
 import Breadcrumb from "../../components/Breadcrumb";
 import ServiceImageGallery from "../../components/ServiceImageGallery";
 import VentaProductos from "../../components/ProductCard";
@@ -41,6 +41,10 @@ export default function ServicioDetallePage() {
 
   // Slug inexistente = 404 real. Redirigir a /servicios generaba un soft 404.
   if (!service) return <NotFoundPage />;
+
+  // Venta y Reparación viven en /venta y /reparacion. Vercel hace el 301,
+  // esto replica el comportamiento en navegación client-side y en dev.
+  if (service.href) return <Navigate to={service.href} replace />;
 
   const Icon = ICON_MAP[service.icon] ?? Droplet;
   const waMsg = encodeURIComponent(
@@ -269,7 +273,7 @@ export default function ServicioDetallePage() {
               return (
                 <Link
                   key={s.id}
-                  to={`/servicios/${s.slug}`}
+                  to={serviceHref(s)}
                   className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
                 >
                   <div

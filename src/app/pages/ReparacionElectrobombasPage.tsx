@@ -6,6 +6,8 @@ import Contact from '../components/Contact';
 import Breadcrumb from '../components/Breadcrumb';
 import { CONTACT, whatsappLink } from '../data';
 import SEO from '../components/SEO';
+import ServiceDetailBlocks from '../components/ServiceDetailBlocks';
+import ProjectsCarousel from '../layouts/ProjectsCarousel';
 
 const PROCESO = [
   {
@@ -237,6 +239,15 @@ export default function ReparacionElectrobombasPage() {
         </div>
       </section>
 
+      {/* ── DESCRIPCIÓN DEL SERVICIO ──────────────────────────── */}
+      {/* Sólo el párrafo largo: la sección INCLUYE de esta página ya es más
+          completa que los details/features de data.ts, duplicarlos empeora
+          el contenido. */}
+      <ServiceDetailBlocks slug="reparacion" showDetails={false} showFeatures={false} />
+
+      {/* ── OBRAS RELACIONADAS ────────────────────────────────── */}
+      <ProjectsCarousel slug="reparacion" />
+
       {/* ── BANNER CTA ────────────────────────────────────────── */}
       <div className="bg-red-700 py-8 sm:py-10 text-center px-4">
         <h2 className="text-lg sm:text-2xl lg:text-3xl text-white font-semibold mb-2">
@@ -256,7 +267,7 @@ export default function ReparacionElectrobombasPage() {
           ¿Preferís comprar una electrobomba nueva en lugar de repararla?
         </p>
         <Link
-          to="/servicios/venta"
+          to="/venta"
           className="inline-flex items-center gap-2 border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-6 sm:px-8 py-3 rounded-lg font-medium transition-colors text-sm sm:text-base"
         >
           Ver Electrobombas en Venta
