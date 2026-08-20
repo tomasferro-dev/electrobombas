@@ -11,7 +11,7 @@ const localBusinessJsonLd = {
   name: 'Arenas Electrobombas',
   description:
     'Empresa especializada en venta, reparación y alquiler de electrobombas en Mendoza y San Juan. Perforación de pozos de agua, bobinados, filmaciones y más.',
-  url: 'https://arenaselectrobombas.com.ar',
+  url: 'https://www.arenaselectrobombas.com.ar',
   telephone: '+5402614707318',
   email: 'arenasbombas@hotmail.com',
   address: {

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arenaselectrobombas.com.ar/sitemap.xml
+Sitemap: https://www.arenaselectrobombas.com.ar/sitemap.xml
