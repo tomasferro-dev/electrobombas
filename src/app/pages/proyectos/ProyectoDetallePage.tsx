@@ -1,10 +1,11 @@
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect, useCallback, memo } from 'react';
 import { ArrowLeft, MapPin, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
-import { PROJECTS, CONTACT } from '../../data';
+import { PROJECTS, whatsappLink } from '../../data';
 import Breadcrumb from '../../components/Breadcrumb';
 import SEO from '../../components/SEO';
+import NotFoundPage from '../NotFoundPage';
 
 // Lazy glob: imágenes se cargan solo cuando se necesitan
 const allProjectImagesGlob = import.meta.glob(
@@ -62,10 +63,11 @@ export default function ProyectoDetallePage() {
     if (project) loadProjectImages(project.imageFolder).then(setImages);
   }, [project?.imageFolder]);
 
-  if (!project) return <Navigate to="/proyectos" replace />;
+  // Id inexistente = 404 real. Redirigir a /proyectos generaba un soft 404.
+  if (!project) return <NotFoundPage />;
 
   const waMsg = encodeURIComponent(`Hola! Vi el proyecto "${project.title}" y quisiera consultar.`);
-  const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${waMsg}`;
+  const waUrl = whatsappLink(waMsg);
 
   // Proyectos relacionados: mismo servicio principal
   const related = PROJECTS

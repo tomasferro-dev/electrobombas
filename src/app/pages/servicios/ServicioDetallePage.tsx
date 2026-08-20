@@ -1,6 +1,7 @@
 import ProjectsCarousel from "../../layouts/ProjectsCarousel";
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import SEO from "../../components/SEO";
+import NotFoundPage from "../NotFoundPage";
 import {
   Droplet,
   Wrench,
@@ -17,7 +18,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { SERVICES, CONTACT } from "../../data";
+import { SERVICES, CONTACT, whatsappLink } from "../../data";
 import Breadcrumb from "../../components/Breadcrumb";
 import ServiceImageGallery from "../../components/ServiceImageGallery";
 import VentaProductos from "../../components/ProductCard";
@@ -37,19 +38,15 @@ const ICON_MAP: Record<string, React.ElementType> = {
 export default function ServicioDetallePage() {
   const { slug } = useParams<{ slug: string }>();
   const service = SERVICES.find((s) => s.slug === slug);
-  //   const { slug, slug2 } = useParams();
 
-  // const service = SERVICES.find(
-  //   (s) => s.slug === slug && s.slug2 === slug2
-  // );
-
-  if (!service) return <Navigate to="/servicios" replace />;
+  // Slug inexistente = 404 real. Redirigir a /servicios generaba un soft 404.
+  if (!service) return <NotFoundPage />;
 
   const Icon = ICON_MAP[service.icon] ?? Droplet;
   const waMsg = encodeURIComponent(
     `Hola! Me gustaría consultar sobre el servicio de ${service.title}.`,
   );
-  const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${waMsg}`;
+  const waUrl = whatsappLink(waMsg);
 
   const related = SERVICES.filter((s) => s.id !== service.id).slice(0, 3);
 
@@ -67,7 +64,7 @@ export default function ServicioDetallePage() {
           provider: {
             '@type': 'LocalBusiness',
             name: 'Arenas Electrobombas',
-            url: 'https://arenaselectrobombas.com.ar',
+            url: 'https://www.arenaselectrobombas.com.ar',
           },
           areaServed: ['Mendoza', 'San Juan', 'Argentina'],
         }}
