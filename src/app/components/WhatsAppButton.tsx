@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ArrowUp } from 'lucide-react';
-import { CONTACT } from '../data';
+import { whatsappLink } from '../data';
 
 export default function WhatsAppButton() {
-  const message = encodeURIComponent('Hola! Me gustaría consultar sobre sus servicios de perforación.');
-  const url = `https://wa.me/${CONTACT.whatsappNumber}?text=${message}`;
+  const url = whatsappLink('Hola! Me gustaría consultar sobre sus servicios de perforación.');
 
   const [showScrollTop, setShowScrollTop] = useState(false);
 

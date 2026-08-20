@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Phone, MapPin, Clock, Mail, Linkedin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { CONTACT } from "../data";
+import { CONTACT, whatsappLink } from "../data";
 // import electro from "../../assets/electro.png";
 import electro from '../../assets/logooo.png';
 
@@ -23,7 +23,7 @@ export default function Contact({ compact = false }: ContactProps) {
     e.preventDefault();
     const msg = `Hola! Me gustaría solicitar un presupuesto:\n\nNombre: ${formData.nombre}\nEmail: ${formData.email}\nTeléfono: ${formData.telefono}\nServicio: ${formData.servicio}\nMensaje: ${formData.mensaje}`;
     window.open(
-      `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(msg)}`,
+      whatsappLink(msg),
       "_blank",
     );
   };
@@ -53,7 +53,7 @@ export default function Contact({ compact = false }: ContactProps) {
         {/* Quick contact buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <a
-            href={`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent("Hola! Quisiera consultar sobre sus servicios.")}`}
+            href={whatsappLink("Hola! Quisiera consultar sobre sus servicios.")}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-medium transition-colors text-lg"

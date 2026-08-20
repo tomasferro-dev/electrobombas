@@ -5,7 +5,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
-import { CONTACT } from '../data';
+import { whatsappLink } from '../data';
 
 // Imágenes del carrusel
 import Bg1 from '../../assets/serv1.jpg';
@@ -13,9 +13,7 @@ import Bg2 from '../../assets/hero4.jpeg';
 import Bg3 from '../../assets/agua1.jpg';
 
 export default function ServiciosPage() {
-  const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(
-    'Hola! Quisiera consultar sobre sus servicios.'
-  )}`;
+  const waUrl = whatsappLink('Hola! Quisiera consultar sobre sus servicios.');
 
   // Carrusel
   const images = [Bg1, Bg2, Bg3];

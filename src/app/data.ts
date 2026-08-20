@@ -626,3 +626,13 @@ export const CONTACT = {
   zones: ["Mendoza", "San Juan", "San Luis", "Buenos Aires", "Patagonia", "La Pampa", "Norte Argentino"],
   mapEmbedUrl: "https://maps.app.goo.gl/ibTBbgPVCskm1R5A",
 };
+
+/**
+ * Único punto donde se arma un link de WhatsApp en todo el sitio.
+ * Centralizarlo permite cambiar el número, el formato o el mensaje por
+ * defecto en un solo lugar, y le da a la analítica un solo objetivo que medir.
+ */
+export function whatsappLink(mensaje?: string): string {
+  const texto = mensaje ?? "Hola! Quisiera hacerles una consulta.";
+  return `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(texto)}`;
+}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
 import Contact from '../components/Contact';
 import Breadcrumb from '../components/Breadcrumb';
-import { CONTACT } from '../data';
+import { CONTACT, whatsappLink } from '../data';
 import SEO from '../components/SEO';
 
 const PROCESO = [
@@ -53,7 +53,7 @@ const INCLUYE_VISIBLE_MOBILE = 5;
 
 export default function ReparacionElectrobombasPage() {
   const waMsg = encodeURIComponent('Hola! Necesito reparar una electrobomba. ¿Me pueden ayudar?');
-  const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${waMsg}`;
+  const waUrl = whatsappLink(waMsg);
 
   const [descExpanded, setDescExpanded] = useState(false);
   const [incluyeExpanded, setIncluyeExpanded] = useState(false);

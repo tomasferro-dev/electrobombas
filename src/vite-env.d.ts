@@ -1,5 +1,14 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  /** ID de medición de GA4 (G-XXXXXXXXXX). Si falta, la analítica queda apagada. */
+  readonly VITE_GA4_ID?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 declare module '*.jpg' {
   const src: string;
   export default src;

@@ -3,7 +3,7 @@ import { ShoppingCart, Phone, Filter, Zap, Droplet, CheckCircle2, AlertCircle } 
 import { FaWhatsapp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
-import { CONTACT } from '../data';
+import { CONTACT, whatsappLink } from '../data';
 import { ELECTROBOMBAS_VENTA, type Electrobomba } from '../data-electrobombas';
 import SEO from '../components/SEO';
 
@@ -13,7 +13,7 @@ function ElectrobombaCard({ bomba }: { bomba: Electrobomba }) {
   const waMsg = encodeURIComponent(
     `Hola! Estoy interesado en la electrobomba ${bomba.marca} ${bomba.modelo} (${bomba.potenciaHP} HP). ¿Está disponible?`
   );
-  const waUrl = `https://wa.me/${CONTACT.whatsappNumber}?text=${waMsg}`;
+  const waUrl = whatsappLink(waMsg);
 
   return (
     <div className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden ${bomba.destacada ? 'ring-2 ring-red-700' : ''}`}>
@@ -167,7 +167,7 @@ export default function VentaElectrobombasPage() {
             </div>
           </div>
           <a
-            href={`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent('Hola! Busco una electrobomba específica.')}`}
+            href={whatsappLink('Hola! Busco una electrobomba específica.')}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 sm:mt-4 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors w-full sm:w-auto sm:inline-flex"
