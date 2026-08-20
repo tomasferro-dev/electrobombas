@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Cog, CheckCircle2, Phone, Wrench, Zap, Settings, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { FaWhatsapp } from 'react-icons/fa';
+import WhatsAppIcon from '../components/WhatsAppIcon';
 import Contact from '../components/Contact';
 import Breadcrumb from '../components/Breadcrumb';
 import { CONTACT, whatsappLink } from '../data';
@@ -110,7 +110,7 @@ export default function ReparacionElectrobombasPage() {
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3.5 sm:py-4 rounded-lg font-medium transition-colors text-sm sm:text-base"
             >
-              <FaWhatsapp className="w-5 h-5" />
+              <WhatsAppIcon className="w-5 h-5" />
               Consultar por WhatsApp
             </a>
             <a

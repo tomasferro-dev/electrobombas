@@ -72,7 +72,9 @@ export default function WhyChooseUs() {
           <div className="order-2 lg:order-1 relative">
             <img
               src={ArenasImg}
-              alt="Taller de reparación de electrobombas Arenas Perforaciones"
+              alt="Taller de reparación de electrobombas de Arenas Electrobombas en Maipú, Mendoza"
+              loading="lazy"
+              decoding="async"
               className="rounded-lg shadow-xl w-full h-[500px] object-cover object-[center_40%]"
             />
             <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-black/60 via-black/30 to-transparent" />

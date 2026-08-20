@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { SearchX } from 'lucide-react';
-import { FaWhatsapp } from 'react-icons/fa';
+import WhatsAppIcon from '../components/WhatsAppIcon';
 import SEO from '../components/SEO';
 import { CONTACT, whatsappLink } from '../data';
 
@@ -67,7 +67,7 @@ export default function NotFoundPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-medium transition-colors"
             >
-              <FaWhatsapp className="w-5 h-5" />
+              <WhatsAppIcon className="w-5 h-5" />
               Consultar por WhatsApp
             </a>
             <a

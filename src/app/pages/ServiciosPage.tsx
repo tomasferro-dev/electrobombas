@@ -1,10 +1,10 @@
 
-import { useState, useEffect } from 'react';
+import { useSlideshow } from '../lib/useSlideshow';
 import Services from '../components/Services';
 import Breadcrumb from '../components/Breadcrumb';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
-import { FaWhatsapp } from 'react-icons/fa';
+import WhatsAppIcon from '../components/WhatsAppIcon';
 import { whatsappLink } from '../data';
 
 // Imágenes del carrusel
@@ -16,16 +16,12 @@ export default function ServiciosPage() {
   const waUrl = whatsappLink('Hola! Quisiera consultar sobre sus servicios.');
 
   // Carrusel
-  const images = [Bg1, Bg2, Bg3];
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 3000); // más natural que 2s
-
-    return () => clearInterval(interval);
-  }, []);
+  const images = [
+    { src: Bg1, alt: 'Perforación de un pozo de agua en Mendoza' },
+    { src: Bg2, alt: 'Trabajo de extracción de electrobomba en obra' },
+    { src: Bg3, alt: 'Pozo de agua en producción tras la intervención' },
+  ];
+  const { current, isMounted, imgProps } = useSlideshow(images.length);
 
   return (
     <>
@@ -40,16 +36,19 @@ export default function ServiciosPage() {
       <div className="relative h-[450px] flex items-center justify-center text-white overflow-hidden">
         
         {/* Carrusel */}
-        {images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt="Servicios"
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              index === current ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-        ))}
+        {images.map((img, index) =>
+          isMounted(index) ? (
+            <img
+              key={index}
+              src={img.src}
+              alt={img.alt}
+              {...imgProps(index)}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                index === current ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ) : null,
+        )}
 
         {/* Overlay base (más liviano) */}
         <div className="absolute inset-0 bg-gray-900/40" />
@@ -73,7 +72,7 @@ export default function ServiciosPage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
-            <FaWhatsapp className="w-5 h-5" />
+            <WhatsAppIcon className="w-5 h-5" />
             Consultar por WhatsApp
           </a>
         </div>

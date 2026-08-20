@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect, useCallback, memo } from 'react';
 import { ArrowLeft, MapPin, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { FaWhatsapp } from 'react-icons/fa';
+import WhatsAppIcon from '../../components/WhatsAppIcon';
 import { PROJECTS, whatsappLink } from '../../data';
 import Breadcrumb from '../../components/Breadcrumb';
 import SEO from '../../components/SEO';
@@ -215,7 +215,7 @@ export default function ProyectoDetallePage() {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-3.5 rounded-lg font-medium transition-colors"
                 >
-                  <FaWhatsapp className="w-5 h-5" />
+                  <WhatsAppIcon className="w-5 h-5" />
                   Consultar por WhatsApp
                 </a>
                 <Link

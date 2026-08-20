@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSlideshow } from '../lib/useSlideshow';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, X, Filter } from 'lucide-react';
 import { PROJECTS, Project } from '../data';
@@ -79,13 +80,11 @@ export default function ProyectosPage() {
 
   // Banner carrusel
   const bannerImages = [Bg6, Bg7, Bg1, Bg5, Bg2, Bg3];
-  const [bannerCurrent, setBannerCurrent] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => {
-      setBannerCurrent((p) => (p + 1) % bannerImages.length);
-    }, 4000);
-    return () => clearInterval(t);
-  }, []);
+  const {
+    current: bannerCurrent,
+    isMounted: bannerMounted,
+    imgProps: bannerImgProps,
+  } = useSlideshow(bannerImages.length);
 
   // Filtros
   const allServices = Array.from(new Set(PROJECTS.flatMap((p) => p.servicios))).sort();
@@ -144,16 +143,19 @@ export default function ProyectosPage() {
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <div className="relative h-[450px] flex items-center justify-center text-white overflow-hidden">
-        {bannerImages.map((img, i) => (
-          <img
-            key={i}
-            src={img}
-            alt="Proyectos"
-            className={`absolute inset-0 w-full h-full object-cover object-[center_40%] transition-opacity duration-1000 ${
-              i === bannerCurrent ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-        ))}
+        {bannerImages.map((img, i) =>
+          bannerMounted(i) ? (
+            <img
+              key={i}
+              src={img}
+              alt={i === 0 ? 'Obras de perforación y mantenimiento de pozos de agua' : ''}
+              {...bannerImgProps(i)}
+              className={`absolute inset-0 w-full h-full object-cover object-[center_40%] transition-opacity duration-1000 ${
+                i === bannerCurrent ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ) : null,
+        )}
         <div className="absolute inset-0 bg-gray-900/40" />
         <div className="absolute inset-0 bg-gradient-to-tr from-gray-900/80 via-gray-900/40 to-transparent" />
         <div className="relative z-10 text-center px-4">

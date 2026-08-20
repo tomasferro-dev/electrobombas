@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ShoppingCart, Phone, Filter, Zap, Droplet, CheckCircle2, AlertCircle } from 'lucide-react';
-import { FaWhatsapp } from 'react-icons/fa';
+import WhatsAppIcon from '../components/WhatsAppIcon';
 import { Link } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { CONTACT, whatsappLink } from '../data';
@@ -104,7 +104,7 @@ function ElectrobombaCard({ bomba }: { bomba: Electrobomba }) {
               rel="noopener noreferrer"
               className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg text-sm font-medium transition-colors"
             >
-              <FaWhatsapp className="w-4 h-4" />
+              <WhatsAppIcon className="w-4 h-4" />
               Consultar
             </a>
             <a
@@ -175,7 +175,7 @@ export default function VentaElectrobombasPage() {
             rel="noopener noreferrer"
             className="mt-3 sm:mt-4 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors w-full sm:w-auto sm:inline-flex"
           >
-            <FaWhatsapp className="w-4 h-4" />
+            <WhatsAppIcon className="w-4 h-4" />
             Consultar por WhatsApp
           </a>
         </div>

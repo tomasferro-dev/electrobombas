@@ -17,7 +17,7 @@ import {
   Cog,
   ArrowRight,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
+import WhatsAppIcon from '../../components/WhatsAppIcon';
 import { SERVICES, CONTACT, whatsappLink, serviceHref } from "../../data";
 import Breadcrumb from "../../components/Breadcrumb";
 import ServiceImageGallery from "../../components/ServiceImageGallery";
@@ -221,7 +221,7 @@ export default function ServicioDetallePage() {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-medium transition-colors"
                 >
-                  <FaWhatsapp className="w-5 h-5" />
+                  <WhatsAppIcon className="w-5 h-5" />
                   Consultar por WhatsApp
                 </a>
                 <a

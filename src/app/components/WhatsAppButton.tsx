@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
+import WhatsAppIcon from './WhatsAppIcon';
 import { ArrowUp } from 'lucide-react';
 import { whatsappLink } from '../data';
 
@@ -37,7 +37,7 @@ export default function WhatsAppButton() {
         className="bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
         aria-label="Contactar por WhatsApp"
       >
-        <FaWhatsapp className="w-7 h-7" />
+        <WhatsAppIcon className="w-7 h-7" />
       </a>
     </div>
   );

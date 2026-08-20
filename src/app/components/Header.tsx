@@ -91,7 +91,14 @@ export default function Header({ mode }: HeaderProps) {
 
           {/* Logo */}
           <Link to="/" onClick={handleLogoClick} className="flex items-center">
-            <img src={logo} alt="Arenas Electrobombas" className="h-10 md:h-12 w-auto object-contain" />
+            <img
+              src={logo}
+              alt="Arenas Electrobombas"
+              width={512}
+              height={200}
+              fetchPriority="high"
+              className="h-10 md:h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}

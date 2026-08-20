@@ -1,7 +1,7 @@
 import { Phone, FileText, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useSlideshow } from '../lib/useSlideshow';
 import HeroImage1 from '../../assets/pesca22.webp';
 import HeroImage2 from '../../assets/hero1.webp';
 import HeroImage3 from '../../assets/hero5.webp';
@@ -18,16 +18,13 @@ export default function Hero() {
     }
   };
 
-  const images = [HeroImage1, HeroImage2, HeroImage3, HeroImage4];
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const images = [
+    { src: HeroImage1, alt: 'Pesca y recuperación de una electrobomba en un pozo de agua' },
+    { src: HeroImage2, alt: 'Equipo de perforación de pozos de agua en Mendoza' },
+    { src: HeroImage3, alt: 'Colocación de electrobomba sumergible en perforación' },
+    { src: HeroImage4, alt: 'Limpieza y desarrollo de una perforación de agua' },
+  ];
+  const { current, isMounted, imgProps } = useSlideshow(images.length);
 
   const container = {
     hidden: {},
@@ -53,16 +50,19 @@ export default function Hero() {
     <section id="hero" className="relative min-h-screen flex items-center justify-center pt-20">
       {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt="Perforación de pozos de agua en Argentina"
-            className={`absolute right-0 top-0 h-full w-[75%] object-cover object-[80%_center] transition-opacity duration-1000 ${
-              index === current ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-        ))}
+        {images.map((img, index) =>
+          isMounted(index) ? (
+            <img
+              key={index}
+              src={img.src}
+              alt={img.alt}
+              {...imgProps(index)}
+              className={`absolute right-0 top-0 h-full w-[75%] object-cover object-[80%_center] transition-opacity duration-1000 ${
+                index === current ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ) : null,
+        )}
 
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent" />
         <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900" />

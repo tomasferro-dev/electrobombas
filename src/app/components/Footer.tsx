@@ -23,7 +23,15 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex flex-col leading-tight">
-                <img src={logo} alt="Arenas Electrobombas" className="max-w-[80%] h-auto" />
+                <img
+                  src={logo}
+                  alt="Arenas Electrobombas"
+                  width={512}
+                  height={200}
+                  loading="lazy"
+                  decoding="async"
+                  className="max-w-[80%] h-auto"
+                />
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">

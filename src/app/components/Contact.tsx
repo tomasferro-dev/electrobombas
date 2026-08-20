@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Phone, MapPin, Clock, Mail, Linkedin } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
+import WhatsAppIcon from './WhatsAppIcon';
 import { CONTACT, whatsappLink } from "../data";
 // import electro from "../../assets/electro.webp";
 import electro from '../../assets/logooo.webp';
@@ -58,7 +58,7 @@ export default function Contact({ compact = false }: ContactProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-medium transition-colors text-lg"
           >
-            <FaWhatsapp className="w-6 h-6" />
+            <WhatsAppIcon className="w-6 h-6" />
             Consultar por WhatsApp
           </a>
           <a
@@ -187,7 +187,7 @@ export default function Contact({ compact = false }: ContactProps) {
                   type="submit"
                   className="w-full bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
                 >
-                  <FaWhatsapp className="w-5 h-5" />
+                  <WhatsAppIcon className="w-5 h-5" />
                   Enviar Consulta por WhatsApp
                 </button>
               </form>
@@ -196,8 +196,12 @@ export default function Contact({ compact = false }: ContactProps) {
               <div className="mt-auto pt-6 flex justify-center ">
                 <img
                   src={electro}
-                  alt="Arenas Perforaciones"
-                  className="h-30 object-contain"
+                  alt="Arenas Electrobombas"
+                  width={512}
+                  height={200}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-24 w-auto object-contain"
                 />
               </div>
             </div>
