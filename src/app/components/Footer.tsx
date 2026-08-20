@@ -29,7 +29,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex flex-col leading-tight">
-                <img src={logo} alt="Arenas Perforaciones Logo" className="max-w-[80%] h-auto" />
+                <img src={logo} alt="Arenas Electrobombas" className="max-w-[80%] h-auto" />
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -43,7 +43,7 @@ export default function Footer() {
             <h3 className="text-base font-semibold mb-4">Navegación</h3>
             <ul className="space-y-2 text-sm">
               {[
-                { label: "Inicio", to: "/home" },
+                { label: "Inicio", to: "/" },
                 { label: "Servicios", to: "/servicios" },
                 { label: "Proyectos", to: "/proyectos" },
                 { label: "Nosotros", to: "/nosotros" },

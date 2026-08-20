@@ -47,7 +47,7 @@ export default function Header({ mode }: HeaderProps) {
   const location = useLocation();
 
   const handleLogoClick = (e: React.MouseEvent) => {
-    if (location.pathname === '/' || location.pathname === '/home') {
+    if (location.pathname === '/') {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -92,8 +92,8 @@ export default function Header({ mode }: HeaderProps) {
         <div className="flex items-center justify-between h-full">
 
           {/* Logo */}
-          <Link to="/home" onClick={handleLogoClick} className="flex items-center">
-            <img src={logo} alt="Arenas Perforaciones" className="h-10 md:h-12 w-auto object-contain" />
+          <Link to="/" onClick={handleLogoClick} className="flex items-center">
+            <img src={logo} alt="Arenas Electrobombas" className="h-10 md:h-12 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}

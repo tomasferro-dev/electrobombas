@@ -36,7 +36,7 @@ export default function Breadcrumb({ label }: { label?: string }) {
       className="flex items-center gap-1.5 text-sm text-gray-500 py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
       aria-label="Breadcrumb"
     >
-      <Link to="/home" className="flex items-center gap-1 hover:text-red-700 transition-colors">
+      <Link to="/" className="flex items-center gap-1 hover:text-red-700 transition-colors">
         <Home className="w-3.5 h-3.5" />
         <span>Inicio</span>
       </Link>
