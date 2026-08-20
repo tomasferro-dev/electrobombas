@@ -3,3 +3,6 @@ dist/
 .env
 .env.local
 .DS_Store
+# Cache de TypeScript y temporales de Vite
+*.tsbuildinfo
+vite.config.ts.timestamp-*.mjs
