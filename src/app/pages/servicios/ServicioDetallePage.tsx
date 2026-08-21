@@ -14,8 +14,6 @@ import {
   ArrowLeft,
   Phone,
   CheckCircle2,
-  Cog,
-  ArrowRight,
 } from "lucide-react";
 import WhatsAppIcon from '../../components/WhatsAppIcon';
 import { SERVICES, CONTACT, whatsappLink, serviceHref } from "../../data";
@@ -116,62 +114,16 @@ export default function ServicioDetallePage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-10">
-            <div>
-              <div className="flex items-center justify-between mb-6 ">
-                {/* <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                  Descripción del Servicio
-                </h2> */}
-
-                {slug === "reparacion" && (
-                  <Link
-                    to="/reparacion"
-                    className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
-                  >
-                    <Cog className="w-5 h-5" />
-                    Cómo Trabajamos
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-              <p className="text-gray-600 leading-relaxed text-lg">
-                {service.fullDescription}
-              </p>
-            </div>
-            {service.slug === "electrobombas" && (
-              <div className="border-t border-gray-100 pt-8">
-                <div className="text-center mb-6">
-                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                    ¿Estás Buscando Reparar o Comprar una Electrobomba?
-                  </p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/electrobombas/reparacion"
-                    className="inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
-                  >
-                    <Cog className="w-5 h-5" />
-                    Reparación de Electrobombas
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    to="/electrobombas/venta"
-                    className="inline-flex items-center justify-center gap-2 bg-white border-2 border-red-700 text-red-700 hover:bg-red-700 hover:text-white px-8 py-4 rounded-lg font-medium transition-colors text-base"
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                    Venta de Electrobombas
-                  </Link>
-                </div>
-              </div>
-            )}
-            {slug === "venta" || slug === "alquiler" ? (
-              <VentaProductos variant={slug === "alquiler" ? "alquiler" : "venta"} />
+            <p className="text-gray-600 leading-relaxed text-lg">
+              {service.fullDescription}
+            </p>
+            {slug === "alquiler" ? (
+              <VentaProductos variant="alquiler" />
             ) : (
-              slug !== "electrobombas" && (
-                <ServiceImageGallery
-                  images={SERVICE_IMAGES[slug ?? ""] ?? []}
-                  altBase={service.title}
-                />
-              )
+              <ServiceImageGallery
+                images={SERVICE_IMAGES[slug ?? ""] ?? []}
+                altBase={service.title}
+              />
             )}
 
             <div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSlideshow } from '../lib/useSlideshow';
+import { countProjectImages, useProjectImages } from '../lib/projectImages';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, X, Filter } from 'lucide-react';
 import { PROJECTS, Project } from '../data';
@@ -13,39 +14,6 @@ import Bg3 from '../../assets/proyectos/BANNER/banner4.webp';
 import Bg5 from '../../assets/proyectos/BANNER/banner6.webp';
 import Bg6 from '../../assets/proyectos/BANNER/banner7.webp';
 import Bg7 from '../../assets/proyectos/BANNER/banner8.webp';
-
-// ── Lazy glob: imágenes se cargan solo cuando se necesitan ─────
-const allProjectImagesGlob = import.meta.glob(
-  '../../assets/proyectos/**/*.webp',
-  { import: 'default' }
-) as Record<string, () => Promise<string>>;
-
-/** Cuenta cuántas imágenes tiene una carpeta (sincrónico, solo lee las claves) */
-function countProjectImages(imageFolder: string): number {
-  return Object.keys(allProjectImagesGlob).filter(
-    (path) => !path.includes('/BANNER/') && !path.includes('/banner/') && path.includes(imageFolder)
-  ).length;
-}
-
-/** Carga todas las imágenes de una carpeta (asincrónico) */
-async function loadProjectImages(imageFolder: string): Promise<string[]> {
-  const loaders = Object.entries(allProjectImagesGlob)
-    .filter(([path]) => {
-      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
-      return path.includes(imageFolder);
-    })
-    .map(([, load]) => load);
-  return Promise.all(loaders.map((l) => l()));
-}
-
-/** Hook: carga las imágenes de una carpeta al montar el componente */
-function useProjectImages(imageFolder: string): string[] {
-  const [images, setImages] = useState<string[]>([]);
-  useEffect(() => {
-    loadProjectImages(imageFolder).then(setImages);
-  }, [imageFolder]);
-  return images;
-}
 
 // ── Estado del lightbox por proyecto ──────────────────────────
 type LightboxState = { images: string[]; idx: number; projectTitle: string };

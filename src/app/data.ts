@@ -12,14 +12,11 @@ import watermotBanner from "../assets/bombas/watermot-banner.webp";
 import reparacion1 from "../assets/reparacion1.webp";
 import limpieza1 from "../assets/limpieza1.webp";
 import bobinados2 from "../assets/bobinados2.webp";
-// import caneria from "../assets/caneria.webp";
 import extrac1 from "../assets/extrac1.webp";
-// import limpieza from '../assets/IMG_0097 2.webp';
 
 export interface Service {
   id: string;
   slug: string;
-  slug2: string;
   /**
    * URL propia del servicio, cuando no vive bajo /servicios/:slug.
    * Venta y Reparación tienen landing dedicada (/venta, /reparacion) y
@@ -55,7 +52,6 @@ export const SERVICES: Service[] = [
   {
     id: "1",
     slug: "venta",
-    slug2: "venta",
     href: "/venta",
     title: "Venta de Electrobombas",
     shortDescription:
@@ -88,7 +84,6 @@ export const SERVICES: Service[] = [
   {
     id: "12",
     slug: "alquiler",
-    slug2: "alquiler",
     title: "Alquiler de Electrobombas",
     shortDescription:
       "Alquiler de electrobombas sumergibles y de superficie en Mendoza, San Juan y resto de Argentina. Solución temporal para garantizar la continuidad del servicio de agua mientras reparamos tu equipo o por proyectos puntuales.",
@@ -121,7 +116,6 @@ export const SERVICES: Service[] = [
   {
     id: "2",
     slug: "reparacion",
-    slug2: "reparacion",
     href: "/reparacion",
     title: "Reparación de Electrobombas",
     shortDescription:
@@ -156,7 +150,6 @@ export const SERVICES: Service[] = [
   {
     id: "3",
     slug: "bobinados",
-    slug2: "",
     title: "Bobinados",
     shortDescription:
       "Bobinado profesional de motores eléctricos sumergibles y de superficie para cualquier aplicación industrial o agrícola.",
@@ -185,7 +178,6 @@ export const SERVICES: Service[] = [
   {
     id: "4",
     slug: "extraccion",
-    slug2: "",
     title: "Extracción y Colocación de Electrobombas",
     shortDescription:
       "Realizamos extracción e instalación de electrobombas en pozos de agua con herramientas especializadas y personal capacitado.",
@@ -219,7 +211,6 @@ export const SERVICES: Service[] = [
   {
     id: "5",
     slug: "filmaciones",
-    slug2: "",
     title: "Filmaciones de Pozos",
     shortDescription:
       "Videofilmaciones hasta 500 metros para diagnóstico preciso del estado de la perforación, cañería y equipos instalados.",
@@ -248,7 +239,6 @@ export const SERVICES: Service[] = [
   {
     id: "6",
     slug: "limpieza",
-    slug2: "",
     title: "Limpieza de Perforaciones",
     shortDescription:
       "Limpieza exhaustiva de pozos surgentes y perforaciones para reactivar caudal y mejorar la calidad del agua.",
@@ -277,7 +267,6 @@ export const SERVICES: Service[] = [
   {
     id: "7",
     slug: "pescas",
-    slug2: "",
     title: "Pesca de Electrobombas",
     shortDescription:
       "Recuperación de electrobombas, cañerías y elementos caídos al interior de la perforación mediante técnicas especializadas.",
@@ -306,7 +295,6 @@ export const SERVICES: Service[] = [
   {
     id: "8",
     slug: "estudios-geologicos",
-    slug2: "",
     title: "Estudios Geológicos",
     shortDescription:
       "Análisis del terreno y estudios hidrogeológicos para determinar la mejor ubicación y profundidad de perforación.",
@@ -335,7 +323,6 @@ export const SERVICES: Service[] = [
   {
     id: "9",
     slug: "desarrollo",
-    slug2: "",
     title: "Desarrollo de Perforaciones",
     shortDescription:
       "Optimización y desarrollo de pozos de agua para mejorar caudal, limpieza y rendimiento en sistemas existentes.",
@@ -368,7 +355,6 @@ export const SERVICES: Service[] = [
   {
     id: "10",
     slug: "mantenimiento",
-    slug2: "",
     title: "Mantenimiento y Rehabilitación de Pozos",
     shortDescription:
       "Servicios de mantenimiento preventivo y correctivo de pozos existentes para optimizar su funcionamiento y vida útil.",
@@ -397,7 +383,6 @@ export const SERVICES: Service[] = [
   {
     id: "11",
     slug: "perforaciones",
-    slug2: "",
     title: "Perforaciones de Pozos",
     shortDescription:
       "Realizamos perforaciones de pozos de agua en Mendoza y San Juan para uso doméstico, agrícola e industrial, con estudios geológicos previos para garantizar resultados óptimos.",

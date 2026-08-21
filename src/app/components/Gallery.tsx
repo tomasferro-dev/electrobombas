@@ -1,25 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { PROJECTS, Project } from '../data';
-
-// ── Lazy glob: las imágenes se cargan solo cuando se necesitan ──
-const allProjectImagesGlob = import.meta.glob(
-  '../../assets/proyectos/**/*.webp',
-  { import: 'default' }
-) as Record<string, () => Promise<string>>;
-
-function useFirstProjectImage(imageFolder: string): string | null {
-  const [src, setSrc] = useState<string | null>(null);
-  useEffect(() => {
-    const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
-      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
-      return path.includes(imageFolder);
-    });
-    if (entry) entry[1]().then(setSrc);
-  }, [imageFolder]);
-  return src;
-}
+import { useFirstProjectImage } from '../lib/projectImages';
 
 const SERVICE_COLORS: Record<string, string> = {
   'Extracción de electrobomba':      'bg-blue-100 text-blue-800',

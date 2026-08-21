@@ -1,6 +1,4 @@
 import { Award, Cog, Shield, Users } from 'lucide-react';
-// import { Link } from 'react-router-dom';
-// import ArenasImg from '../../assets/arenas-perfo.webp';
 import ArenasImg from '../../assets/porqueelegirnos.webp';
 
 const reasons = [

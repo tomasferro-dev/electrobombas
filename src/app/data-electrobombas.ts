@@ -1,14 +1,4 @@
-// ─────────────────────────────────────────────
-// AGREGÁ ESTO EN src/app/data.ts
-// ─────────────────────────────────────────────
-// Copiá y pegá esta sección al final de tu data.ts existente
-
-// import test1 from '../assets/bombas/test3.webp'
-// import test2 from '../assets/bombas/test2.webp'
-// import test3 from '../assets/bombas/test4.webp'
-// import test4 from '../assets/bombas/test5.webp'
-// import test5 from '../assets/bombas/test6.webp'
-// import test6 from '../assets/bombas/test7.webp'
+// Catálogo de electrobombas en venta. Se muestra en /venta.
 
 export interface Electrobomba {
   id: string;

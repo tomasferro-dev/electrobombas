@@ -1,101 +1,107 @@
-# Arenas Perforaciones — React Router App
+# Arenas Electrobombas
 
-SPA migrada a aplicación con enrutado completo usando **React Router v6** + **Vite** + **Tailwind CSS**.
+Sitio de Arenas Electrobombas — venta, reparación y alquiler de electrobombas
+y perforación de pozos de agua en Mendoza y San Juan.
 
-## 🗂️ Estructura de rutas
+**Stack:** Vite 5 + React 18 + React Router 6 + Tailwind 3 · Deploy en Vercel.
+
+```bash
+npm install
+npm run dev        # desarrollo
+npm run build      # build de producción (tsc -b && vite build)
+npm run preview    # servir el build local
+```
+
+## Rutas
 
 | URL | Página |
 |-----|--------|
-| `/` | → redirige a `/home` |
-| `/home` | Landing completa: Hero + Servicios (preview) + Nosotros + Galería (preview) + Contacto |
-| `/servicios` | Grid completo de todos los servicios |
-| `/servicios/:slug` | Detalle individual de servicio |
-| `/proyectos` | Galería completa de proyectos con filtro por categoría |
-| `/proyectos/:id` | Detalle de proyecto con lightbox de imágenes |
-| `/contacto` | Formulario + mapa + info de contacto completa |
-| `/nosotros` | Empresa + estadísticas + historia |
+| `/` | Home: hero, servicios, por qué elegirnos, galería y contacto |
+| `/servicios` | Grilla de los 12 servicios |
+| `/servicios/:slug` | Detalle de un servicio |
+| `/venta` | Venta de electrobombas: catálogo con specs y catálogo por marca |
+| `/reparacion` | Reparación: proceso, qué incluye y formulario |
+| `/proyectos` | Obras realizadas, con filtro por servicio y provincia |
+| `/proyectos/:id` | Detalle de una obra con galería y lightbox |
+| `/nosotros` | Empresa e historia |
+| `/contacto` | Formulario, datos y mapa |
+| cualquier otra | 404 real con `noindex` (no redirige a la home) |
 
-**Slugs de servicios disponibles:**
-`perforaciones`, `electrobombas`, `bobinados`, `filmaciones`, `limpieza`, `pescas`, `estudios-geologicos`, `mantenimiento`
+**Slugs de servicio:** `perforaciones`, `alquiler`, `bobinados`, `filmaciones`,
+`limpieza`, `pescas`, `estudios-geologicos`, `desarrollo`, `mantenimiento`,
+`extraccion`.
 
-## 🚀 Instalación y desarrollo
+`venta` y `reparacion` también existen en `SERVICES`, pero tienen landing
+propia: llevan el campo `href` y `/servicios/venta` y `/servicios/reparacion`
+hacen **301** hacia `/venta` y `/reparacion` (ver `vercel.json`). Para armar el
+link de un servicio usá siempre `serviceHref(service)`, nunca
+`` `/servicios/${slug}` `` a mano.
+
+## Dónde se editan los datos
+
+Todo el contenido sale de `src/app/`:
+
+| Archivo | Qué contiene |
+|---------|--------------|
+| `data.ts` | `SERVICES`, `PROJECTS`, `CONTACT`, `whatsappLink()`, `serviceHref()` |
+| `data-electrobombas.ts` | `ELECTROBOMBAS_VENTA` — catálogo con specs de `/venta` |
+| `data-service-images.ts` | `SERVICE_IMAGES` — galería por slug de servicio |
+| `components/ProductCard.tsx` | `PRODUCTOS_VENTA` — catálogo por marca, con fotos |
+
+### Agregar una obra
+
+1. Poné las fotos en `src/assets/proyectos/<carpeta>/`.
+2. Corré el optimizador (ver abajo).
+3. Agregá la entrada a `PROJECTS` en `data.ts` con `imageFolder: "<carpeta>"`.
+   Las fotos se levantan solas: no hay que importarlas una por una.
+4. Sumá la URL a `public/sitemap.xml`.
+
+## Imágenes
+
+Todas las imágenes del sitio son **WebP**. Las fotos entran directo del
+celular a 3000–4000 px y hasta 9 MB; sin convertir, el sitio servía 250 MB.
 
 ```bash
-# Instalar dependencias
-npm install
-
-# Correr en desarrollo
-npm run dev
-
-# Build para producción
-npm run build
-
-# Preview del build
-npm run preview
+python scripts/optimize-images.py --dry-run    # ver el ahorro, sin tocar nada
+python scripts/optimize-images.py --replace    # convertir y borrar los originales
 ```
 
-## ☁️ Deploy en Vercel (un clic)
+El script redimensiona por familia (1600 px hero, 1200 px fotos de obra,
+1000 px catálogo) y corrige la orientación EXIF, que WebP no arrastra.
+Después de correrlo hay que apuntar los imports a `.webp`.
 
-1. Subí el proyecto a GitHub
-2. En [vercel.com](https://vercel.com), hacé clic en **"Add New Project"**
-3. Importá tu repositorio
-4. Vercel detecta Vite automáticamente — no hace falta configurar nada
-5. Hacé clic en **Deploy**
+Los `import.meta.glob` de las fotos de obra viven **solo** en
+`src/app/lib/projectImages.ts`. Si cambia el formato o la estructura de
+carpetas, ese es el único archivo a tocar.
 
-El archivo `vercel.json` ya está configurado para manejar el enrutado del lado del cliente correctamente.
+## SEO
 
-## 🖼️ Integrar tus assets (imágenes reales)
+- `components/SEO.tsx` emite title, description, canonical, Open Graph,
+  Twitter Card y JSON-LD. **Va en todas las páginas.**
+- Lleva `defer={false}`: sin eso, react-helmet-async aplica los cambios por
+  `requestAnimationFrame` y no escribe nada cuando el rAF no corre (pestaña
+  en segundo plano, renderizador headless). Con `defer` activado, el sitio
+  entero quedaba con el title y el canonical del `index.html`.
+- Los meta de `index.html` llevan `data-rh="true"` para que Helmet los
+  reemplace en vez de duplicarlos. Son el fallback para WhatsApp y Facebook,
+  que no ejecutan JavaScript.
+- Al agregar una ruta indexable, sumala a `public/sitemap.xml`.
 
-### Logo
-En `src/app/components/Header.tsx`, descomentá:
-```tsx
-import logo from '../../assets/arenas_perforaciones_sin_fondo.png';
-// y en el JSX:
-<img src={logo} alt="Arenas Perforaciones" className="h-10 md:h-12 w-auto object-contain" />
-```
+## Analítica
 
-### Hero
-En `src/app/components/Hero.tsx`:
-```tsx
-import HeroImageDesktop from '../../../assets/hero-perforacion.jpg';
-// y en el JSX reemplazá el div de placeholder por:
-<img src={HeroImageDesktop} ... />
-```
+GA4 se carga sólo si existe la variable `VITE_GA4_ID` (formato `G-XXXXXXXXXX`).
+Sin ella no se carga ningún script de terceros. Se define en Vercel
+(Settings → Environment Variables) o en `.env.local` para desarrollo.
+El prefijo `VITE_` es obligatorio y el valor se inyecta **en el build**: hay
+que redesplegar después de cambiarla.
 
-### Proyectos — imágenes dinámicas por carpeta
-En `src/app/pages/proyectos/ProyectoDetallePage.tsx`, el array `images` está vacío por defecto.
-Para cargar imágenes reales, usá `import.meta.glob` como en tu Gallery original:
+`lib/analytics.ts` manda un `page_view` por navegación y captura el clic de
+cualquier link de WhatsApp con un único listener delegado.
 
-```tsx
-// Ejemplo para el proyecto 'limpieza'
-const limpiezaImages = Object.values(
-  import.meta.glob('../../../assets/limpieza/*.jpg', { eager: true, import: 'default' })
-) as string[];
-```
+## Deploy
 
-Luego asociá cada array al proyecto correspondiente en `data.ts` o directamente en el componente.
-
-## 📝 Personalizar datos
-
-Todos los datos del sitio están centralizados en:
-
-```
-src/app/data.ts
-```
-
-- **`SERVICES`**: array con todos los servicios (slug, título, descripción, features, icono, gradient)
-- **`PROJECTS`**: array con todos los proyectos (id, título, descripción, ubicación, categoría)
-- **`CONTACT`**: teléfonos, email, dirección, horarios, WhatsApp, LinkedIn
-
-Modificá este archivo para actualizar todo el sitio.
-
-## 📦 Dependencias principales
-
-| Paquete | Versión | Uso |
-|---------|---------|-----|
-| `react` | ^18 | Framework |
-| `react-router-dom` | ^6.26 | Enrutado |
-| `lucide-react` | ^0.400 | Iconos |
-| `react-icons` | ^5 | Icono WhatsApp |
-| `tailwindcss` | ^3.4 | Estilos |
-| `vite` | ^5 | Bundler |
+Vercel detecta Vite solo. `vercel.json` define los 301 y el rewrite de SPA.
+El sitio canónico es **`https://www.arenaselectrobombas.com.ar`** (con `www`):
+el dominio sin `www` redirige. Si cambia, hay que actualizar `BASE_URL` en
+`SEO.tsx`, `public/sitemap.xml`, `public/robots.txt` y el JSON-LD de
+`HomePage.tsx`.

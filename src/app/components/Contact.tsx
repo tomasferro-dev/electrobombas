@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Phone, MapPin, Clock, Mail, Linkedin } from "lucide-react";
 import WhatsAppIcon from './WhatsAppIcon';
 import { CONTACT, whatsappLink } from "../data";
-// import electro from "../../assets/electro.webp";
 import electro from '../../assets/logooo.webp';
 
 

@@ -7,34 +7,6 @@ import Breadcrumb from '../../components/Breadcrumb';
 import SEO from '../../components/SEO';
 import NotFoundPage from '../NotFoundPage';
 
-// Lazy glob: imágenes se cargan solo cuando se necesitan
-const allProjectImagesGlob = import.meta.glob(
-  '../../../assets/proyectos/**/*.webp',
-  { import: 'default' }
-) as Record<string, () => Promise<string>>;
-
-function useFirstProjectImage(imageFolder: string): string | null {
-  const [src, setSrc] = useState<string | null>(null);
-  useEffect(() => {
-    const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
-      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
-      return path.includes(imageFolder);
-    });
-    if (entry) entry[1]().then(setSrc);
-  }, [imageFolder]);
-  return src;
-}
-
-async function loadProjectImages(imageFolder: string): Promise<string[]> {
-  const loaders = Object.entries(allProjectImagesGlob)
-    .filter(([path]) => {
-      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
-      return path.includes(imageFolder);
-    })
-    .map(([, load]) => load);
-  return Promise.all(loaders.map((l) => l()));
-}
-
 const SERVICE_COLORS: Record<string, string> = {
   'Extracción de electrobomba':   'bg-blue-100 text-blue-800',
   'Colocación de electrobomba':   'bg-sky-100 text-sky-800',
@@ -306,6 +278,7 @@ export default function ProyectoDetallePage() {
 
 // Sub-componente para tarjeta de proyecto relacionado
 import type { Project } from '../../data';
+import { useFirstProjectImage, loadProjectImages } from '../../lib/projectImages';
 
 const RelatedProjectCard = memo(function RelatedProjectCard({ project: p }: { project: Project }) {
   const cover = useFirstProjectImage(p.imageFolder);

@@ -1,25 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { PROJECTS, Project } from "../data";
-
-// ── Lazy glob ─────────────────────────────────────────────────
-const allProjectImagesGlob = import.meta.glob(
-  '../../assets/proyectos/**/*.webp',
-  { import: 'default' }
-) as Record<string, () => Promise<string>>;
-
-function useFirstProjectImage(imageFolder: string): string | null {
-  const [src, setSrc] = useState<string | null>(null);
-  useEffect(() => {
-    const entry = Object.entries(allProjectImagesGlob).find(([path]) => {
-      if (path.includes('/BANNER/') || path.includes('/banner/')) return false;
-      return path.includes(imageFolder);
-    });
-    if (entry) entry[1]().then(setSrc);
-  }, [imageFolder]);
-  return src;
-}
+import { useFirstProjectImage } from '../lib/projectImages';
 
 // Mapeo de slug de servicio → servicios del proyecto que matchean
 const SERVICE_SLUG_MAP: Record<string, string[]> = {
