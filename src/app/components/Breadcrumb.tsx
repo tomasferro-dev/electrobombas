@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Head } from 'vite-react-ssg';
 import { ChevronRight, Home } from 'lucide-react';
 
 const BASE_URL = 'https://www.arenaselectrobombas.com.ar';
@@ -54,9 +54,9 @@ export default function Breadcrumb({ label }: { label?: string }) {
 
   return (
     <>
-      <Helmet defer={false}>
+      <Head defer={false}>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
-      </Helmet>
+      </Head>
 
       <nav
         className="flex items-center gap-1.5 text-sm text-gray-500 py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"

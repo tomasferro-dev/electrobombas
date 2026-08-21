@@ -22,7 +22,7 @@ export interface ProductoVenta {
 
 export const PRODUCTOS_VENTA: ProductoVenta[] = [
   {
-    id: 'bomba-franklin',
+    id: 'bomba-watermot',
     tipo: 'Electrobomba',
     marca: 'WATERMOT',
     modelo: '',
@@ -38,7 +38,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
     // Reemplazá con tus rutas reales: '../../../assets/bomba1.webp'
     imagenes: [watermot1,watermot2,watermot3,watermot1],
   },{
-    id: 'bomba-franklin',
+    id: 'bomba-shakti',
     tipo: 'Electrobomba',
     marca: 'SHAKTI',
     modelo: '',
@@ -55,7 +55,7 @@ export const PRODUCTOS_VENTA: ProductoVenta[] = [
     imagenes: [shakti1],
   },
   {
-    id: 'hidraulica-franklin',
+    id: 'hidraulica-watermot',
     tipo: 'Hidráulica',
     marca: 'WATERMOT',
     modelo: '',

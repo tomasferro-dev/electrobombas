@@ -9,6 +9,7 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
+
 declare module '*.jpg' {
   const src: string;
   export default src;

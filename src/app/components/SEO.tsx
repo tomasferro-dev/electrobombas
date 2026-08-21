@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { Head } from 'vite-react-ssg';
 
 const SITE_NAME = 'Arenas Electrobombas';
 const BASE_URL = 'https://www.arenaselectrobombas.com.ar';
@@ -40,7 +40,7 @@ export default function SEO({
   const imageUrl = ogImage.startsWith('http') ? ogImage : `${BASE_URL}${ogImage}`;
 
   return (
-    <Helmet defer={false}>
+    <Head defer={false}>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {url && <link rel="canonical" href={url} />}
@@ -71,6 +71,6 @@ export default function SEO({
           {JSON.stringify(jsonLd)}
         </script>
       )}
-    </Helmet>
+    </Head>
   );
 }

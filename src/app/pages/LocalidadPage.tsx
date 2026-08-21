@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Phone, ArrowRight } from 'lucide-react';
 import WhatsAppIcon from '../components/WhatsAppIcon';
 import SEO from '../components/SEO';
@@ -45,8 +45,12 @@ function ObraCard({ project }: { project: Project }) {
   );
 }
 
-export default function LocalidadPage({ slug }: { slug: string }) {
-  const loc = findLocalidad(slug);
+export default function LocalidadPage() {
+  // El slug sale de la URL y no de una prop: asi la ruta puede declararse
+  // con `lazy`, que es lo que vite-react-ssg necesita para juntar los assets
+  // de cada pagina en el build.
+  const { pathname } = useLocation();
+  const loc = findLocalidad(pathname.replace(/^\//, ''));
   if (!loc) return <NotFoundPage />;
 
   const obras = loc.provincia

@@ -31,10 +31,14 @@ export function useSlideshow(count: number, intervalMs = 6000) {
     current,
     /** Si el slide ya se mostró alguna vez y por lo tanto conviene renderizarlo. */
     isMounted: (index: number) => mounted.has(index),
-    /** Atributos de carga: el primer slide es el LCP, el resto va diferido. */
+    /**
+     * Atributos de carga: el primer slide es el LCP, el resto va diferido.
+     * fetchpriority va en minúsculas: React 18 no conoce el camelCase y lo
+     * descarta con un warning en vez de emitir el atributo.
+     */
     imgProps: (index: number) =>
       index === 0
-        ? ({ loading: 'eager', fetchPriority: 'high', decoding: 'sync' } as const)
-        : ({ loading: 'lazy', fetchPriority: 'low', decoding: 'async' } as const),
+        ? ({ loading: 'eager', fetchpriority: 'high', decoding: 'sync' } as const)
+        : ({ loading: 'lazy', fetchpriority: 'low', decoding: 'async' } as const),
   };
 }

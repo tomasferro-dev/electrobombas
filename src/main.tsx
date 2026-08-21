@@ -1,17 +1,13 @@
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import App from './app/App';
+import { ViteReactSSG } from 'vite-react-ssg';
+import { routes } from './app/routes';
 import './styles/index.css';
 import { initAnalytics } from './app/lib/analytics';
 
-// No-op si no está definida VITE_GA4_ID.
-initAnalytics();
-
-createRoot(document.getElementById('root')!).render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </HelmetProvider>
+export const createRoot = ViteReactSSG(
+  { routes },
+  ({ isClient }) => {
+    // Sólo en el navegador: en el build el render corre en Node y no hay
+    // document. Además es no-op si no está definida VITE_GA4_ID.
+    if (isClient) initAnalytics();
+  },
 );

@@ -96,7 +96,7 @@ export default function Header({ mode }: HeaderProps) {
               alt="Arenas Electrobombas"
               width={512}
               height={200}
-              fetchPriority="high"
+              fetchpriority="high"
               className="h-10 md:h-12 w-auto object-contain"
             />
           </Link>

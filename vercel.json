@@ -1,20 +1,9 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
-    {
-      "source": "/servicios/venta",
-      "destination": "/venta",
-      "permanent": true
-    },
-    {
-      "source": "/servicios/reparacion",
-      "destination": "/reparacion",
-      "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/((?!sitemap\.xml|robots\.txt).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/servicios/venta", "destination": "/venta", "permanent": true },
+    { "source": "/servicios/reparacion", "destination": "/reparacion", "permanent": true }
   ]
 }
