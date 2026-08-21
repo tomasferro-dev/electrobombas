@@ -21,6 +21,7 @@ import Breadcrumb from "../../components/Breadcrumb";
 import ServiceImageGallery from "../../components/ServiceImageGallery";
 import VentaProductos from "../../components/ProductCard";
 import { SERVICE_IMAGES } from "../../data-service-images";
+import Img from '../../components/Img';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Droplet,
@@ -74,10 +75,11 @@ export default function ServicioDetallePage() {
 
       {/* Hero banner */}
       <div className="relative text-white">
-        <img
+        <Img
           src={service.imageDetail || service.image}
           alt={service.title}
           className="absolute inset-0 w-full h-full object-cover"
+        sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative">

@@ -85,10 +85,11 @@ export default function ProyectoDetallePage() {
       <div className="relative text-white py-14 px-4 overflow-hidden">
         {/* Imagen de fondo */}
         {images[0] && (
-          <img
+          <Img
             src={images[0]}
             alt=""
             className="absolute inset-0 w-full h-full object-cover object-center"
+          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
           />
         )}
         {/* Overlay oscuro */}
@@ -158,11 +159,12 @@ export default function ProyectoDetallePage() {
                       onClick={() => setLightboxIdx(i)}
                       className="aspect-square rounded-xl overflow-hidden group relative"
                     >
-                      <img
+                      <Img
                         src={src}
                         alt={`${project.title} foto ${i + 1}`}
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                       />
                       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <span className="text-white text-xs font-medium">Ampliar</span>
@@ -282,6 +284,7 @@ export default function ProyectoDetallePage() {
 // Sub-componente para tarjeta de proyecto relacionado
 import type { Project } from '../../data';
 import { useFirstProjectImage, loadProjectImages } from '../../lib/projectImages';
+import Img from '../../components/Img';
 
 const RelatedProjectCard = memo(function RelatedProjectCard({ project: p }: { project: Project }) {
   const cover = useFirstProjectImage(p.imageFolder);
@@ -292,11 +295,12 @@ const RelatedProjectCard = memo(function RelatedProjectCard({ project: p }: { pr
     >
       <div className="aspect-video overflow-hidden">
         {cover ? (
-          <img
+          <Img
             src={cover}
             alt={p.title}
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">

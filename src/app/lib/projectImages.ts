@@ -21,9 +21,17 @@ function isBanner(path: string): boolean {
   return path.includes('/BANNER/') || path.includes('/banner/');
 }
 
+/**
+ * foo-w400.webp es una variante para el srcset, no una foto más.
+ * Sin este filtro cada obra mostraría la misma foto tres veces.
+ */
+function isVariant(path: string): boolean {
+  return /-w\d+\.webp$/.test(path);
+}
+
 function entriesFor(imageFolder: string) {
   return Object.entries(projectImagesGlob).filter(
-    ([path]) => !isBanner(path) && path.includes(imageFolder),
+    ([path]) => !isBanner(path) && !isVariant(path) && path.includes(imageFolder),
   );
 }
 

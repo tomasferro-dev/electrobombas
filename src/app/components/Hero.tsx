@@ -6,6 +6,7 @@ import HeroImage2 from '../../assets/hero1.webp';
 import HeroImage3 from '../../assets/hero5.webp';
 import HeroImage4 from '../../assets/limpieza1.webp';
 import { useSlideshow } from '../lib/useSlideshow';
+import Img from '../components/Img';
 
 /** Índice del escalonado, que la clase .reveal lee como delay. */
 const reveal = (i: number) => ({ '--reveal-i': i }) as CSSProperties;
@@ -41,7 +42,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 overflow-hidden">
         {images.map((img, index) =>
           isMounted(index) ? (
-            <img
+            <Img
               key={index}
               src={img.src}
               alt={img.alt}
@@ -49,6 +50,7 @@ export default function Hero() {
               className={`absolute right-0 top-0 h-full w-[75%] object-cover object-[80%_center] transition-opacity duration-1000 ${
                 index === current ? 'opacity-100' : 'opacity-0'
               }`}
+            sizes="75vw"
             />
           ) : null,
         )}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { PROJECTS, Project } from "../data";
 import { useFirstProjectImage } from '../lib/projectImages';
+import Img from '../components/Img';
 
 // Mapeo de slug de servicio → servicios del proyecto que matchean
 const SERVICE_SLUG_MAP: Record<string, string[]> = {
@@ -36,11 +37,12 @@ function CarouselCard({ project }: { project: Project }) {
     >
       <div className="aspect-video bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
         {cover && (
-          <img
+          <Img
             src={cover}
             alt={project.title}
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
           />
         )}
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">

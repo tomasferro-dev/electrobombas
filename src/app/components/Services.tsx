@@ -13,6 +13,7 @@ import {
   Clock,
 } from "lucide-react";
 import { SERVICES, serviceHref } from "../data";
+import Img from '../components/Img';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Droplet,
@@ -124,10 +125,11 @@ export default function Services({ preview = false }: ServicesProps) {
               >
                 {/* Imagen — solo en desktop */}
                 <div className="hidden md:block relative h-48 overflow-hidden">
-                  <img
+                  <Img
                     src={service.images[0] || service.image}
                     alt={service.title}
                     className="w-full h-full object-cover"
+                  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                   />
                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2.5 rounded-full">
                     <Icon className="w-5 h-5 text-white" />

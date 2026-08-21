@@ -11,6 +11,7 @@ import Faq from '../components/Faq';
 import { FAQ_VENTA, faqJsonLd } from '../data-faq';
 import VentaProductos from '../components/ProductCard';
 import ProjectsCarousel from '../layouts/ProjectsCarousel';
+import Img from '../components/Img';
 
 const USO_OPTIONS = ['Todos', 'Doméstico', 'Agrícola', 'Industrial', 'Municipal', 'Minería'];
 
@@ -31,7 +32,7 @@ function ElectrobombaCard({ bomba }: { bomba: Electrobomba }) {
       {/* Imagen */}
       <div className="h-44 sm:h-52 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
         {bomba.imagen ? (
-          <img src={bomba.imagen} alt={`${bomba.marca} ${bomba.modelo}`} className="h-full w-full object-contain p-4" />
+          <Img src={bomba.imagen} alt={`${bomba.marca} ${bomba.modelo}`} className="h-full w-full object-contain p-4" sizes="(min-width:640px) 33vw, 100vw" />
         ) : (
           <div className="text-center text-gray-400">
             <Droplet className="w-10 h-10 mx-auto mb-2 text-gray-300" />

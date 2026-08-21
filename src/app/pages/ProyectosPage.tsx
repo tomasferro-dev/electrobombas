@@ -14,6 +14,7 @@ import Bg3 from '../../assets/proyectos/BANNER/banner4.webp';
 import Bg5 from '../../assets/proyectos/BANNER/banner6.webp';
 import Bg6 from '../../assets/proyectos/BANNER/banner7.webp';
 import Bg7 from '../../assets/proyectos/BANNER/banner8.webp';
+import Img from '../components/Img';
 
 // ── Estado del lightbox por proyecto ──────────────────────────
 type LightboxState = { images: string[]; idx: number; projectTitle: string };
@@ -113,7 +114,7 @@ export default function ProyectosPage() {
       <div className="relative h-[450px] flex items-center justify-center text-white overflow-hidden">
         {bannerImages.map((img, i) =>
           bannerMounted(i) ? (
-            <img
+            <Img
               key={i}
               src={img}
               alt={i === 0 ? 'Obras de perforación y mantenimiento de pozos de agua' : ''}
@@ -121,6 +122,7 @@ export default function ProyectosPage() {
               className={`absolute inset-0 w-full h-full object-cover object-[center_40%] transition-opacity duration-1000 ${
                 i === bannerCurrent ? 'opacity-100' : 'opacity-0'
               }`}
+            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
             />
           ) : null,
         )}
@@ -352,11 +354,12 @@ function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps)
             disabled={!mainImg}
           >
             {mainImg ? (
-              <img
+              <Img
                 src={mainImg}
                 alt={project.title}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
               />
             ) : (
               // Skeleton mientras carga la imagen principal
@@ -384,11 +387,12 @@ function ProjectCard({ project, onOpenLightbox, accentColor }: ProjectCardProps)
                   className="aspect-square overflow-hidden rounded group relative"
                   onClick={() => onOpenLightbox(images, src, project.title)}
                 >
-                  <img
+                  <Img
                     src={src}
                     alt={`${project.title} foto ${i + 2}`}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                   />
                   {/* Badge de "más fotos" en la última miniatura */}
                   {i === restImgs.length - 1 && imageCount > 5 && (

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { PROJECTS, Project } from '../data';
 import { useFirstProjectImage } from '../lib/projectImages';
+import Img from '../components/Img';
 
 const SERVICE_COLORS: Record<string, string> = {
   'Extracción de electrobomba':      'bg-blue-100 text-blue-800',
@@ -28,11 +29,12 @@ function GalleryItem({ project }: { project: Project }) {
     >
       <div className="aspect-square bg-gradient-to-br from-gray-700 to-gray-900 relative overflow-hidden">
         {cover && (
-          <img
+          <Img
             src={cover}
             alt={project.title}
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
           />
         )}
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">

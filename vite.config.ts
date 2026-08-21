@@ -11,10 +11,10 @@ interface ConfigWithSSG extends UserConfig {
 
 const config: ConfigWithSSG = {
   plugins: [react()],
-  // dirStyle 'flat' emite dist/venta.html. Con "cleanUrls" en vercel.json,
-  // Vercel lo sirve en /venta, y el 404.html queda en la raíz del output,
-  // que es donde Vercel lo busca para responder un 404 real.
   ssgOptions: {
+    // dirStyle 'flat' emite dist/venta.html. Con "cleanUrls" en vercel.json,
+    // Vercel lo sirve en /venta, y el 404.html queda en la raíz del output,
+    // que es donde Vercel lo busca para responder un 404 real.
     dirStyle: 'flat',
     formatting: 'none',
   },

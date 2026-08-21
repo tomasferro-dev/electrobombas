@@ -17,6 +17,7 @@ Uso:
 """
 
 import argparse
+import json
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -30,6 +31,10 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "src" / "assets"
 
 SOURCE_EXT = {".jpg", ".jpeg", ".png"}
+# Anchos extra que se emiten junto al archivo principal, para el srcset.
+# Un celular de 400 px de ancho no tiene por qué bajar una imagen de 1200.
+VARIANT_WIDTHS = (400, 800)
+VARIANT_SUFFIX = "-w"  # foo-w400.webp
 # Ancho máximo al que el sitio muestra cada familia de imágenes.
 # Los banners y heros ocupan el viewport completo; las fotos de galería
 # viven dentro de una grilla y nunca pasan de media pantalla.
@@ -63,6 +68,11 @@ def quality_for(rel_path: str) -> int:
     return QUALITY_DEFAULT
 
 
+def is_variant(path: Path) -> bool:
+    """foo-w400.webp es una variante, no una imagen fuente."""
+    return VARIANT_SUFFIX in path.stem and path.stem.rsplit(VARIANT_SUFFIX, 1)[-1].isdigit()
+
+
 def convert(path: Path, dry_run: bool, replace: bool) -> dict:
     rel = path.relative_to(ASSETS).as_posix()
     original = path.stat().st_size
@@ -80,6 +90,7 @@ def convert(path: Path, dry_run: bool, replace: bool) -> dict:
             if im.width > limit:
                 height = round(im.height * limit / im.width)
                 im = im.resize((limit, height), Image.LANCZOS)
+            width = im.width
 
             if dry_run:
                 from io import BytesIO
@@ -89,12 +100,46 @@ def convert(path: Path, dry_run: bool, replace: bool) -> dict:
             else:
                 im.save(target, format="WEBP", quality=quality_for(rel), method=6)
                 new = target.stat().st_size
-                if replace:
+
+                # Variantes chicas para el srcset. Sólo las que son
+                # efectivamente más angostas que el archivo principal.
+                for w in VARIANT_WIDTHS:
+                    if im.width <= w:
+                        continue
+                    variant = target.with_name(f"{target.stem}{VARIANT_SUFFIX}{w}.webp")
+                    small = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+                    small.save(variant, format="WEBP", quality=quality_for(rel), method=6)
+                    new += variant.stat().st_size
+
+                if replace and path != target:
                     path.unlink()
 
-        return {"rel": rel, "original": original, "new": new, "error": None}
+        return {"rel": rel, "original": original, "new": new, "width": width, "error": None}
     except Exception as e:  # noqa: BLE001 — se reporta y se sigue con el resto
-        return {"rel": rel, "original": original, "new": original, "error": str(e)}
+        return {"rel": rel, "original": original, "new": original, "width": 0, "error": str(e)}
+
+
+def write_width_manifest() -> None:
+    """
+    Anchos reales de cada imagen principal, para el srcset.
+
+    Es una pasada aparte que sólo lee dimensiones: el srcset necesita el
+    ancho verdadero del archivo grande, y declararlo a ojo hace que el
+    navegador elija mal la variante.
+    """
+    manifest = {}
+    for p in sorted(ASSETS.rglob("*.webp")):
+        if is_variant(p):
+            continue
+        try:
+            with Image.open(p) as im:
+                manifest[p.relative_to(ASSETS).as_posix()] = im.width
+        except Exception as e:  # noqa: BLE001
+            print(f"  ERROR leyendo ancho de {p.name}: {e}")
+
+    path = ASSETS / "image-widths.json"
+    path.write_text(json.dumps(dict(sorted(manifest.items())), indent=0), encoding="utf-8")
+    print(f"  Manifiesto        : {path.relative_to(ROOT)} ({len(manifest)} imágenes)")
 
 
 def human(n: float) -> str:
@@ -112,7 +157,10 @@ def main() -> None:
     ap.add_argument("--quiet", action="store_true", help="solo el resumen")
     args = ap.parse_args()
 
-    images = sorted(p for p in ASSETS.rglob("*") if p.suffix.lower() in SOURCE_EXT)
+    images = sorted(
+        p for p in ASSETS.rglob("*")
+        if p.suffix.lower() in SOURCE_EXT and not is_variant(p)
+    )
     if not images:
         print("No hay imágenes para convertir.")
         return

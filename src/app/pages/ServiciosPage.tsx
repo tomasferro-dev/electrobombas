@@ -11,6 +11,7 @@ import { whatsappLink } from '../data';
 import Bg1 from '../../assets/serv1.webp';
 import Bg2 from '../../assets/hero4.webp';
 import Bg3 from '../../assets/agua1.webp';
+import Img from '../components/Img';
 
 export default function ServiciosPage() {
   const waUrl = whatsappLink('Hola! Quisiera consultar sobre sus servicios.');
@@ -38,7 +39,7 @@ export default function ServiciosPage() {
         {/* Carrusel */}
         {images.map((img, index) =>
           isMounted(index) ? (
-            <img
+            <Img
               key={index}
               src={img.src}
               alt={img.alt}
@@ -46,6 +47,7 @@ export default function ServiciosPage() {
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                 index === current ? 'opacity-100' : 'opacity-0'
               }`}
+            sizes="100vw"
             />
           ) : null,
         )}

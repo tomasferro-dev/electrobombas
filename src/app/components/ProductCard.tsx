@@ -1,6 +1,7 @@
 import { PRODUCTOS_VENTA, type ProductoVenta } from '../data-productos';
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, Zap, Droplet } from 'lucide-react';
+import Img from '../components/Img';
 
 // ─────────────────────────────────────────────────────────────
 
@@ -64,7 +65,7 @@ function Lightbox({ images, startIdx, altBase, onClose }: LightboxProps) {
               i === idx ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-80'
             }`}
           >
-            <img src={src} alt="" className="w-full h-full object-cover" />
+            <Img src={src} alt="" className="w-full h-full object-cover" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
           </button>
         ))}
       </div>
@@ -103,10 +104,11 @@ function ProductCard({ producto }: ProductCardProps) {
               className="relative rounded-lg overflow-hidden mb-2 cursor-zoom-in group"
               onClick={() => setLightboxIdx(0)}
             >
-              <img
+              <Img
                 src={producto.imagenes[0]}
                 alt={`${producto.tipo} ${producto.marca}`}
                 className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-400"
+              sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                 <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
@@ -121,7 +123,7 @@ function ProductCard({ producto }: ProductCardProps) {
                     className="relative rounded-md overflow-hidden cursor-zoom-in group aspect-square"
                     onClick={() => setLightboxIdx(i + 1)}
                   >
-                    <img src={src} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <Img src={src} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
                   </div>
                 ))}

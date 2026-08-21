@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import Img from '../components/Img';
 
 interface ServiceImageGalleryProps {
   images: string[];
@@ -30,10 +31,11 @@ export default function ServiceImageGallery({ images, altBase }: ServiceImageGal
           className="relative rounded-xl overflow-hidden mb-3 cursor-zoom-in group"
           onClick={() => setLightboxIdx(0)}
         >
-          <img
+          <Img
             src={images[0]}
             alt={`${altBase} - foto principal`}
             className="w-full h-72 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(min-width:640px) 50vw, 100vw"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
             <ZoomIn className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
@@ -49,10 +51,11 @@ export default function ServiceImageGallery({ images, altBase }: ServiceImageGal
                 className="relative rounded-lg overflow-hidden cursor-zoom-in group aspect-square"
                 onClick={() => setLightboxIdx(i + 1)}
               >
-                <img
+                <Img
                   src={src}
                   alt={`${altBase} - foto ${i + 2}`}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                sizes="(min-width:640px) 50vw, 100vw"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
               </div>
@@ -124,7 +127,7 @@ export default function ServiceImageGallery({ images, altBase }: ServiceImageGal
                   i === lightboxIdx ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-80'
                 }`}
               >
-                <img src={src} alt="" className="w-full h-full object-cover" />
+                <Img src={src} alt="" className="w-full h-full object-cover" sizes="(min-width:640px) 50vw, 100vw" />
               </button>
             ))}
           </div>

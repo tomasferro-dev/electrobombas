@@ -10,6 +10,7 @@ import { faqJsonLd } from '../data-faq';
 import { PROJECTS, SERVICES, CONTACT, whatsappLink, serviceHref } from '../data';
 import { useFirstProjectImage } from '../lib/projectImages';
 import type { Project } from '../data';
+import Img from '../components/Img';
 
 function ObraCard({ project }: { project: Project }) {
   const cover = useFirstProjectImage(project.imageFolder);
@@ -21,12 +22,13 @@ function ObraCard({ project }: { project: Project }) {
     >
       <div className="h-40 bg-gray-100 overflow-hidden">
         {cover && (
-          <img
+          <Img
             src={cover}
             alt={project.title}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
           />
         )}
       </div>
