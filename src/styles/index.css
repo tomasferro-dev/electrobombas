@@ -38,3 +38,43 @@
     line-height: 1.4;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Aparición escalonada del hero.
+
+   Reemplaza al stagger de framer-motion, que pesaba ~110 KB de JS para
+   animar seis elementos una sola vez al cargar.
+
+   El contenido es visible por defecto. La animación se activa recién
+   cuando JS marca <html> con .anim-ready, así que si el JS no corre, si
+   el navegador no anima, o si el crawler saca la foto antes de tiempo, el
+   texto igual se ve. Una animación que arranca en opacity:0 sin esa
+   guarda deja el hero en blanco cuando algo falla.
+
+   El escalonado sale del --reveal-i de cada hijo.
+   ────────────────────────────────────────────────────────────── */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-ready .reveal {
+  animation: reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--reveal-i, 0) * 0.15s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .anim-ready .reveal {
+    animation: none;
+  }
+}

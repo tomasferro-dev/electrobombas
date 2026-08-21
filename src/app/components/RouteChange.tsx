@@ -11,6 +11,13 @@ import { trackPageView } from '../lib/analytics';
 export default function RouteChange() {
   const { pathname } = useLocation();
 
+  // Habilita las animaciones de entrada recién cuando hay JS corriendo.
+  // Ver el comentario de .reveal en styles/index.css: sin esta guarda, un
+  // fallo de animación dejaría el contenido invisible.
+  useEffect(() => {
+    document.documentElement.classList.add('anim-ready');
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     // setTimeout 0: deja que Helmet aplique el <title> nuevo antes de medir.

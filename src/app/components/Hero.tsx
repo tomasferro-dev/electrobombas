@@ -1,11 +1,20 @@
 import { Phone, FileText, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useSlideshow } from '../lib/useSlideshow';
+import type { CSSProperties } from 'react';
 import HeroImage1 from '../../assets/pesca22.webp';
 import HeroImage2 from '../../assets/hero1.webp';
 import HeroImage3 from '../../assets/hero5.webp';
 import HeroImage4 from '../../assets/limpieza1.webp';
+import { useSlideshow } from '../lib/useSlideshow';
+
+/** Índice del escalonado, que la clase .reveal lee como delay. */
+const reveal = (i: number) => ({ '--reveal-i': i }) as CSSProperties;
+
+const FEATURES = [
+  'Electrobombas Certificadas',
+  'Más de 20 años de Experiencia',
+  'Cobertura en Todo el País',
+];
 
 export default function Hero() {
   const scrollToSection = (id: string) => {
@@ -25,26 +34,6 @@ export default function Hero() {
     { src: HeroImage4, alt: 'Limpieza y desarrollo de una perforación de agua' },
   ];
   const { current, isMounted, imgProps } = useSlideshow(images.length);
-
-  const container = {
-    hidden: {},
-    show: {
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        transition: { duration: 0.6, ease: "easeOut" as const }
-      },
-    },
-  };
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center pt-20">
@@ -71,100 +60,85 @@ export default function Hero() {
 
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          className="max-w-4xl"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
+        <div className="max-w-4xl">
           {/* Badge */}
-          <motion.div
-            variants={item}
-            className="inline-flex items-center gap-2 bg-red-700/20 border border-red-700/30 text-red-300 text-sm
+          <div
+            style={reveal(0)}
+            className="reveal inline-flex items-center gap-2 bg-red-700/20 border border-red-700/30 text-red-300 text-sm
              px-4 py-1.5 rounded-full mb-4 mt-6"
           >
             <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
             Base en Mendoza · Servicio en todo el país
-          </motion.div>
+          </div>
 
           {/* Título — H1 principal con keywords nacionales + locales */}
-          <motion.h1
-            variants={item}
-            className="text-3xl sm:text-5xl lg:text-6xl text-white mt-2 mb-6 leading-tight"
+          <h1
+            style={reveal(1)}
+            className="reveal text-3xl sm:text-5xl lg:text-6xl text-white mt-2 mb-6 leading-tight"
           >
             La Mejor Opción en Electrobombas en{' '}
             <span className="text-red-400">Mendoza, San Juan</span>
             {' '}y <span className="text-red-400">Todo Argentina</span>
-          </motion.h1>
+          </h1>
 
           {/* Subtítulo — keywords de servicios + cobertura */}
-          <motion.h2
-            variants={item}
-            className="text-base sm:text-xl text-gray-300 mb-8 max-w-2xl"
+          <h2
+            style={reveal(2)}
+            className="reveal text-base sm:text-xl text-gray-300 mb-8 max-w-2xl"
           >
             Hacemos Reparación, Mantenimiento y Venta de Electrobombas, Bombas de Pozo de Agua, para uso{' '}
             <strong className="text-white">
               rural, residencial e industrial
             </strong>
             .
-          </motion.h2>
+          </h2>
 
           {/* Botones */}
-          <motion.div
-            variants={item}
-            className="flex flex-col sm:flex-row gap-4 mb-10"
-          >
-            <motion.a
+          <div style={reveal(3)} className="reveal flex flex-col sm:flex-row gap-4 mb-10">
+            <a
               href="tel:02614707318"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center justify-center gap-2 bg-red-700 text-white px-8 py-4 rounded-md hover:bg-red-800 transition-colors text-lg font-medium"
+              className="inline-flex items-center justify-center gap-2 bg-red-700 text-white px-8 py-4 rounded-md hover:bg-red-800 text-lg font-medium
+                transition-[transform,background-color] duration-200 hover:scale-105 active:scale-[0.97] motion-reduce:transform-none"
             >
               <Phone className="w-5 h-5" />
               Llamar Ahora
-            </motion.a>
+            </a>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                to="/contacto"
-                className="inline-flex items-center justify-center gap-2 bg-white text-red-700 px-8 py-4 rounded-md hover:bg-gray-100 transition-colors text-lg font-medium"
-              >
-                <FileText className="w-5 h-5" />
-                Solicitar Presupuesto
-              </Link>
-            </motion.div>
-          </motion.div>
+            <Link
+              to="/contacto"
+              className="inline-flex items-center justify-center gap-2 bg-white text-red-700 px-8 py-4 rounded-md hover:bg-gray-100 text-lg font-medium
+                transition-[transform,background-color] duration-200 hover:scale-105 active:scale-[0.97] motion-reduce:transform-none"
+            >
+              <FileText className="w-5 h-5" />
+              Solicitar Presupuesto
+            </Link>
+          </div>
 
           {/* Features — refuerzan autoridad y cobertura */}
-          <motion.div
-            variants={item}
-            className="flex flex-wrap gap-6 mb-24"
-          >
-            {[
-              'Electrobombas Certificadas',
-              'Más de 20 años de Experiencia',
-              'Cobertura en Todo el País',
-            ].map((f) => (
+          <div style={reveal(4)} className="reveal flex flex-wrap gap-6 mb-24">
+            {FEATURES.map((f) => (
               <div key={f} className="flex items-center gap-2 text-white">
                 <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
                 <span className="text-sm sm:text-base">{f}</span>
               </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.button
-        onClick={() => scrollToSection('servicios')}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10"
-        aria-label="Ver servicios"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-      >
-        <ChevronDown className="w-10 h-10 text-white animate-bounce" />
-      </motion.button>
+      {/* Scroll indicator — el centrado va en el contenedor y la animación
+          en el botón: .reveal termina en transform:none y borraría el
+          -translate-x-1/2 si compartieran elemento. */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+        <button
+          onClick={() => scrollToSection('servicios')}
+          style={reveal(8)}
+          className="reveal"
+          aria-label="Ver servicios"
+        >
+          <ChevronDown className="w-10 h-10 text-white animate-bounce" />
+        </button>
+      </div>
     </section>
   );
 }
