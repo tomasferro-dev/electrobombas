@@ -15,10 +15,9 @@ import ProjectsCarousel from '../layouts/ProjectsCarousel';
 const USO_OPTIONS = ['Todos', 'Doméstico', 'Agrícola', 'Industrial', 'Municipal', 'Minería'];
 
 function ElectrobombaCard({ bomba }: { bomba: Electrobomba }) {
-  const waMsg = encodeURIComponent(
+  const waUrl = whatsappLink(
     `Hola! Estoy interesado en la electrobomba ${bomba.marca} ${bomba.modelo} (${bomba.potenciaHP} HP). ¿Está disponible?`
   );
-  const waUrl = whatsappLink(waMsg);
 
   return (
     <div className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden ${bomba.destacada ? 'ring-2 ring-red-700' : ''}`}>

@@ -45,10 +45,9 @@ export default function ServicioDetallePage() {
   if (service.href) return <Navigate to={service.href} replace />;
 
   const Icon = ICON_MAP[service.icon] ?? Droplet;
-  const waMsg = encodeURIComponent(
+  const waUrl = whatsappLink(
     `Hola! Me gustaría consultar sobre el servicio de ${service.title}.`,
   );
-  const waUrl = whatsappLink(waMsg);
 
   const related = SERVICES.filter((s) => s.id !== service.id).slice(0, 3);
 

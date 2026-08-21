@@ -56,8 +56,7 @@ const INCLUYE = [
 const INCLUYE_VISIBLE_MOBILE = 5;
 
 export default function ReparacionElectrobombasPage() {
-  const waMsg = encodeURIComponent('Hola! Necesito reparar una electrobomba. ¿Me pueden ayudar?');
-  const waUrl = whatsappLink(waMsg);
+  const waUrl = whatsappLink('Hola! Necesito reparar una electrobomba. ¿Me pueden ayudar?');
 
   const [descExpanded, setDescExpanded] = useState(false);
   const [incluyeExpanded, setIncluyeExpanded] = useState(false);

@@ -31,22 +31,15 @@ export default function ProyectoDetallePage() {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [images, setImages] = useState<string[]>([]);
 
+  // Todos los hooks van ANTES del early return del 404: si no, al navegar
+  // entre un proyecto valido y uno inexistente React ve una cantidad
+  // distinta de hooks entre renders y rompe.
+  const imageFolder = project?.imageFolder;
   useEffect(() => {
-    if (project) loadProjectImages(project.imageFolder).then(setImages);
-  }, [project?.imageFolder]);
+    if (imageFolder) loadProjectImages(imageFolder).then(setImages);
+  }, [imageFolder]);
 
-  // Id inexistente = 404 real. Redirigir a /proyectos generaba un soft 404.
-  if (!project) return <NotFoundPage />;
-
-  const waMsg = encodeURIComponent(`Hola! Vi el proyecto "${project.title}" y quisiera consultar.`);
-  const waUrl = whatsappLink(waMsg);
-
-  // Proyectos relacionados: mismo servicio principal
-  const related = PROJECTS
-    .filter((p) => p.id !== project.id && p.servicios.some((s) => project.servicios.includes(s)))
-    .slice(0, 3);
-
-  const closeLightbox = () => setLightboxIdx(null);
+  const closeLightbox = useCallback(() => setLightboxIdx(null), []);
 
   const prevImg = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,7 +60,17 @@ export default function ProyectoDetallePage() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [lightboxIdx, images.length]);
+  }, [lightboxIdx, images.length, closeLightbox]);
+
+  // Id inexistente = 404 real. Redirigir a /proyectos generaba un soft 404.
+  if (!project) return <NotFoundPage />;
+
+  const waUrl = whatsappLink(`Hola! Vi el proyecto "${project.title}" y quisiera consultar.`);
+
+  // Proyectos relacionados: mismo servicio principal
+  const related = PROJECTS
+    .filter((p) => p.id !== project.id && p.servicios.some((s) => project.servicios.includes(s)))
+    .slice(0, 3);
 
   return (
     <>
