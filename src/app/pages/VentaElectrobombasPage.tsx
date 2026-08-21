@@ -7,6 +7,8 @@ import { CONTACT, whatsappLink } from '../data';
 import { ELECTROBOMBAS_VENTA, type Electrobomba } from '../data-electrobombas';
 import SEO from '../components/SEO';
 import ServiceDetailBlocks from '../components/ServiceDetailBlocks';
+import Faq from '../components/Faq';
+import { FAQ_VENTA, faqJsonLd } from '../data-faq';
 import VentaProductos from '../components/ProductCard';
 import ProjectsCarousel from '../layouts/ProjectsCarousel';
 
@@ -134,6 +136,7 @@ export default function VentaElectrobombasPage() {
         title="Venta de Electrobombas en Mendoza y San Juan"
         description="Comprá electrobombas sumergibles y de superficie en Mendoza y San Juan. Stock permanente, asesoramiento técnico y entrega inmediata. Equipos para uso doméstico, agrícola e industrial."
         canonical="/venta"
+        jsonLd={faqJsonLd(FAQ_VENTA)}
       />
       <Breadcrumb label="Venta de Electrobombas" />
 
@@ -235,6 +238,11 @@ export default function VentaElectrobombasPage() {
 
       {/* ── OBRAS RELACIONADAS ───────────────────────────────── */}
       <ProjectsCarousel slug="venta" />
+
+      <Faq
+        items={FAQ_VENTA}
+        subtitle="Lo que más nos preguntan antes de comprar un equipo."
+      />
 
       {/* ── CTA REPARACIÓN ───────────────────────────────────── */}
       <div className="py-10 sm:py-12 bg-gray-50 border-t border-gray-200">

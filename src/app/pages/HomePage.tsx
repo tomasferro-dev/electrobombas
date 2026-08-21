@@ -4,6 +4,8 @@ import WhyChooseUs from '../components/WhyChooseUs';
 import Gallery from '../components/Gallery';
 import Contact from '../components/Contact';
 import SEO from '../components/SEO';
+import Faq from '../components/Faq';
+import { FAQ_GENERAL, faqJsonLd } from '../data-faq';
 
 const localBusinessJsonLd = {
   '@context': 'https://schema.org',
@@ -12,6 +14,9 @@ const localBusinessJsonLd = {
   description:
     'Empresa especializada en venta, reparación y alquiler de electrobombas en Mendoza y San Juan. Perforación de pozos de agua, bobinados, filmaciones y más.',
   url: 'https://www.arenaselectrobombas.com.ar',
+  image: 'https://www.arenaselectrobombas.com.ar/og-image.jpg',
+  logo: 'https://www.arenaselectrobombas.com.ar/og-image.jpg',
+  // sameAs: pendiente del Google Business Profile y de las redes.
   telephone: '+5402614707318',
   email: 'arenasbombas@hotmail.com',
   address: {
@@ -58,12 +63,13 @@ export default function HomePage() {
         title="Venta y Reparación de Electrobombas en Mendoza y San Juan"
         description="Arenas Electrobombas: venta, reparación y alquiler de electrobombas en Mendoza y San Juan. Perforación de pozos, bobinados, filmaciones y extracción. +20 años de experiencia."
         canonical="/"
-        jsonLd={localBusinessJsonLd}
+        jsonLd={[localBusinessJsonLd, faqJsonLd(FAQ_GENERAL)]}
       />
       <Hero />
       <Services preview />
       <WhyChooseUs />
       <Gallery preview />
+      <Faq items={FAQ_GENERAL} />
       <Contact compact />
     </>
   );

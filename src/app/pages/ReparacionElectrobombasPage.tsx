@@ -7,6 +7,8 @@ import Breadcrumb from '../components/Breadcrumb';
 import { CONTACT, whatsappLink } from '../data';
 import SEO from '../components/SEO';
 import ServiceDetailBlocks from '../components/ServiceDetailBlocks';
+import Faq from '../components/Faq';
+import { FAQ_REPARACION, faqJsonLd } from '../data-faq';
 import ProjectsCarousel from '../layouts/ProjectsCarousel';
 
 const PROCESO = [
@@ -66,6 +68,7 @@ export default function ReparacionElectrobombasPage() {
         title="Reparación de Electrobombas en Mendoza y San Juan"
         description="Servicio técnico especializado en reparación de electrobombas sumergibles y de superficie. Diagnóstico, bobinado, repuestos y prueba en banco. Cobertura en Mendoza, San Juan y Argentina."
         canonical="/reparacion"
+        jsonLd={faqJsonLd(FAQ_REPARACION)}
       />
       <Breadcrumb label="Reparación de Electrobombas" />
 
@@ -80,7 +83,7 @@ export default function ReparacionElectrobombasPage() {
 
           {/* Título — reducido en mobile para evitar overflow */}
           <h1 className="text-xl sm:text-3xl lg:text-5xl font-semibold mb-3 sm:mb-5 leading-tight">
-            Reparación de Electrobombas Sumergibles
+            Reparación de Electrobombas Sumergibles{' '}
             <span className="block text-gray-400 text-base sm:text-2xl lg:text-3xl font-normal mt-1">
               Mendoza y San Juan
             </span>
@@ -247,6 +250,11 @@ export default function ReparacionElectrobombasPage() {
 
       {/* ── OBRAS RELACIONADAS ────────────────────────────────── */}
       <ProjectsCarousel slug="reparacion" />
+
+      <Faq
+        items={FAQ_REPARACION}
+        subtitle="Lo que más nos preguntan antes de traer un equipo al taller."
+      />
 
       {/* ── BANNER CTA ────────────────────────────────────────── */}
       <div className="bg-red-700 py-8 sm:py-10 text-center px-4">

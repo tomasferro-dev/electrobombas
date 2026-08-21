@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Linkedin } from "lucide-react";
 import { CONTACT, SERVICES, serviceHref } from "../data";
+import { LOCALIDADES } from "../data-localidades";
 import logo from "../../assets/logo-blanco.webp";
 
 
@@ -17,7 +18,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
@@ -74,6 +75,20 @@ export default function Footer() {
                     className="hover:text-white transition-colors"
                   >
                     {s.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Zonas */}
+          <div>
+            <h3 className="text-base font-semibold mb-4">Zonas</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              {LOCALIDADES.map((l) => (
+                <li key={l.slug}>
+                  <Link to={`/${l.slug}`} className="hover:text-white transition-colors">
+                    {l.h1}
                   </Link>
                 </li>
               ))}
