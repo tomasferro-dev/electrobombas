@@ -11,7 +11,8 @@ npm install
 npm run dev        # desarrollo
 npm run build      # build de producción: genera un HTML por ruta
 npm run lint       # ESLint
-node scripts/audit-seo.mjs   # audita el HTML generado (falla si hay problemas)
+node scripts/audit-seo.mjs        # audita el HTML generado
+node scripts/verify-routing.mjs   # verifica los redirects, cleanUrls y el 404
 npm run preview    # servir el build local
 ```
 
@@ -156,9 +157,19 @@ cualquier link de WhatsApp con un único listener delegado.
 
 ## Deploy
 
-`vercel.json` define `cleanUrls` y los 301 (`/home`, `/servicios/venta` y
-`/servicios/reparacion`). Ya no hay rewrite de SPA: con SSG cada ruta tiene su
-propio HTML, y las inexistentes caen en `404.html` con status 404.
+`vercel.json` define `cleanUrls` y las redirecciones permanentes de `/home`,
+`/servicios/venta` y `/servicios/reparacion`. Vercel las devuelve como **308**,
+que Google trata igual que un 301. Ya no hay rewrite de SPA: con SSG cada ruta
+tiene su propio HTML, y las inexistentes caen en `404.html` con status 404.
+
+`vite preview` **no lee `vercel.json`**, así que ese ruteo no se puede probar
+con el preview normal. Para eso está `scripts/verify-routing.mjs`, que levanta
+un servidor sobre `dist/` aplicando las mismas reglas y corre 16 aserciones.
+Contra un deploy real:
+
+```bash
+node scripts/verify-routing.mjs --base https://<deploy>.vercel.app
+```
 El sitio canónico es **`https://www.arenaselectrobombas.com.ar`** (con `www`):
 el dominio sin `www` redirige. Si cambia, hay que actualizar `BASE_URL` en
 `SEO.tsx`, `public/sitemap.xml`, `public/robots.txt` y el JSON-LD de
