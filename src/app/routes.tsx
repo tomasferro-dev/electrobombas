@@ -1,6 +1,7 @@
 import type { RouteRecord } from 'vite-react-ssg';
 
 import RootLayout from './layouts/RootLayout';
+import RouteError from './components/RouteError';
 import SubpageLayout from './layouts/SubpageLayout';
 import { SERVICES, PROJECTS } from './data';
 import { LOCALIDADES } from './data-localidades';
@@ -28,6 +29,8 @@ export const routes: RouteRecord[] = [
     path: '/',
     element: <RootLayout />,
     entry: 'src/app/layouts/RootLayout.tsx',
+    // Captura los fallos de carga de chunk de cualquier hijo. Ver RouteError.
+    errorElement: <RouteError />,
     children: [
       {
         index: true,
@@ -40,6 +43,7 @@ export const routes: RouteRecord[] = [
     path: '/',
     element: <SubpageLayout />,
     entry: 'src/app/layouts/SubpageLayout.tsx',
+    errorElement: <RouteError />,
     children: [
       {
         path: 'servicios',
