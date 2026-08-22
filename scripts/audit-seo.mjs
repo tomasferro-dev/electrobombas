@@ -6,7 +6,10 @@
  * a SSG eran invisibles desde el DOM (Helmet los limpiaba en el cliente) pero
  * estaban en el HTML crudo, que es el que lee Google primero.
  *
- * Uso:  node scripts/audit-seo.mjs
+ * Uso:
+ *   node scripts/audit-seo.mjs                     # sobre dist/
+ *   node scripts/audit-seo.mjs --base https://...  # sobre un deploy real
+ *
  * Sale con código 1 si encuentra algún problema, así sirve en CI.
  */
 import { readdir, readFile } from 'node:fs/promises'
@@ -14,6 +17,8 @@ import { join, extname, relative, sep } from 'node:path'
 
 const DIST = 'dist'
 const BASE = 'https://www.arenaselectrobombas.com.ar'
+const argBase = process.argv.indexOf('--base')
+const REMOTO = argBase > -1 ? process.argv[argBase + 1].replace(/\/$/, '') : null
 const MAX_TITLE = 65
 const MIN_PALABRAS = 150
 
@@ -32,10 +37,36 @@ const problemas = []
 const filas = []
 const flag = (tipo, ruta, detalle = '') => problemas.push({ tipo, ruta, detalle })
 
-for await (const file of htmlFiles(DIST)) {
-  const raw = await readFile(file, 'utf-8')
+/**
+ * Las páginas a auditar salen siempre de dist/, que es la lista de rutas
+ * que produce el build. Con --base se piden por HTTP en vez de leerse del
+ * disco, para verificar lo que sirve el hosting y no sólo lo que se generó.
+ */
+async function* paginas() {
+  const rutas = []
+  for await (const file of htmlFiles(DIST)) {
+    rutas.push('/' + relative(DIST, file).split(sep).join('/').replace(/\.html$/, '').replace(/^index$/, ''))
+  }
+
+  for (const ruta of rutas.sort()) {
+    if (!REMOTO) {
+      yield { ruta, raw: await readFile(join(DIST, ruta === '/' ? 'index.html' : `${ruta}.html`), 'utf-8') }
+      continue
+    }
+    // El 404 se pide por una URL inexistente: cleanUrls redirige /404.
+    const url = REMOTO + (ruta === '/404' ? '/_url-inexistente-de-auditoria' : ruta)
+    const res = await fetch(url)
+    const esperado = ruta === '/404' ? 404 : 200
+    if (res.status !== esperado) {
+      flag('status inesperado en el deploy', ruta, `HTTP ${res.status}, esperaba ${esperado}`)
+      continue
+    }
+    yield { ruta, raw: await res.text() }
+  }
+}
+
+for await (const { ruta, raw } of paginas()) {
   const html = sinComentarios(raw)
-  const ruta = '/' + relative(DIST, file).split(sep).join('/').replace(/\.html$/, '').replace(/^index$/, '')
 
   const head = html.slice(0, html.indexOf('</head>'))
   const titles = all(/<title[^>]*>([\s\S]*?)<\/title>/g, head)
@@ -86,6 +117,7 @@ for await (const file of htmlFiles(DIST)) {
 }
 
 filas.sort((a, b) => a.ruta.localeCompare(b.ruta))
+console.log(`Auditando: ${REMOTO ?? 'dist/ (build local)'}`)
 console.log(`Páginas analizadas: ${filas.length}\n`)
 console.log('RUTA'.padEnd(38) + 'PAL'.padStart(5) + 'TIT'.padStart(5) + '  SCHEMAS')
 for (const f of filas) {
