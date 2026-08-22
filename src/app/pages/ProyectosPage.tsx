@@ -291,7 +291,7 @@ export default function ProyectosPage() {
           {/* Imagen */}
           <img
             src={lightbox.images[lightbox.idx]}
-            alt=""
+            alt={`${lightbox.projectTitle} — foto ${lightbox.idx + 1} de ${lightbox.images.length}`}
             className="max-w-full max-h-[82vh] rounded-lg object-contain"
             onClick={(e) => e.stopPropagation()}
           />

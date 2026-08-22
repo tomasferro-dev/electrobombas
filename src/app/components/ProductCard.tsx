@@ -65,7 +65,7 @@ function Lightbox({ images, startIdx, altBase, onClose }: LightboxProps) {
               i === idx ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-80'
             }`}
           >
-            <Img src={src} alt="" className="w-full h-full object-cover" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
+            <Img src={src} alt={`${altBase} — vista ${i + 1}`} className="w-full h-full object-cover" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
           </button>
         ))}
       </div>
@@ -123,7 +123,7 @@ function ProductCard({ producto }: ProductCardProps) {
                     className="relative rounded-md overflow-hidden cursor-zoom-in group aspect-square"
                     onClick={() => setLightboxIdx(i + 1)}
                   >
-                    <Img src={src} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
+                    <Img src={src} alt={`${producto.marca} ${producto.tipo} — foto ${i + 2}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
                   </div>
                 ))}

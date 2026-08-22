@@ -127,7 +127,7 @@ export default function ServiceImageGallery({ images, altBase }: ServiceImageGal
                   i === lightboxIdx ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-80'
                 }`}
               >
-                <Img src={src} alt="" className="w-full h-full object-cover" sizes="(min-width:640px) 50vw, 100vw" />
+                <Img src={src} alt={`${altBase} — vista ${i + 1}`} className="w-full h-full object-cover" sizes="(min-width:640px) 50vw, 100vw" />
               </button>
             ))}
           </div>

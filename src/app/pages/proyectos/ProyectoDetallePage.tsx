@@ -89,6 +89,7 @@ export default function ProyectoDetallePage() {
           <Img
             src={images[0]}
             alt=""
+            aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover object-center"
           sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
           />
@@ -263,7 +264,7 @@ export default function ProyectoDetallePage() {
           </button>
           <img
             src={images[lightboxIdx]}
-            alt=""
+            alt={`${project.title} — foto ${lightboxIdx + 1} de ${images.length}`}
             className="max-w-full max-h-[85vh] rounded-lg object-contain"
             onClick={(e) => e.stopPropagation()}
           />
