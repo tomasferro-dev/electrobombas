@@ -13,6 +13,7 @@ npm run build      # build de producción: genera un HTML por ruta
 npm run lint       # ESLint
 node scripts/audit-seo.mjs        # audita el HTML generado
 node scripts/verify-routing.mjs   # verifica los redirects, cleanUrls y el 404
+node scripts/screenshots.mjs      # capturas en desktop y mobile
 npm run preview    # servir el build local
 ```
 
@@ -147,6 +148,26 @@ carpetas, ese es el único archivo a tocar.
   `scripts/audit-seo.mjs`: chequea title/description/canonical únicos y con
   la URL propia, og:image, twitter:card, un solo h1, JSON-LD válido,
   contenido mínimo y que no queden preloads de imagen.
+
+## Verificación visual
+
+Los otros scripts miran estructura —peso, atributos, HTML servido— y eso no
+alcanza: los logos perdieron la transparencia y se veían con fondo negro sin
+que ningún chequeo lo detectara.
+
+```bash
+node scripts/screenshots.mjs                      # sobre dist/
+node scripts/screenshots.mjs --base https://...   # sobre un deploy
+node scripts/screenshots.mjs --full               # página completa
+```
+
+Captura 11 páginas (una por plantilla) en desktop y mobile con el Chrome ya
+instalado — no descarga ningún navegador. Además reporta imágenes rotas y
+errores de consola, y sale con código 1 si encuentra alguno. Las capturas
+quedan en `screenshots/`, que está en el `.gitignore`.
+
+**Miralas.** El script detecta imágenes rotas y errores, pero no juzga si algo
+se ve mal: eso requiere abrir los PNG.
 
 ## Analítica
 
