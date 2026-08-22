@@ -6,3 +6,6 @@ dist/
 # Cache de TypeScript y temporales de Vite
 *.tsbuildinfo
 vite.config.ts.timestamp-*.mjs
+
+# Capturas de verificacion visual
+screenshots/

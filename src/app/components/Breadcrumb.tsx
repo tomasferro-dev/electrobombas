@@ -59,7 +59,7 @@ export default function Breadcrumb({ label }: { label?: string }) {
       </Head>
 
       <nav
-        className="flex items-center gap-1.5 text-sm text-gray-500 py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+        className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-gray-500 py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
         aria-label="Breadcrumb"
       >
         <Link to="/" className="flex items-center gap-1 hover:text-red-700 transition-colors">
@@ -67,10 +67,13 @@ export default function Breadcrumb({ label }: { label?: string }) {
           <span>Inicio</span>
         </Link>
         {crumbs.map((crumb) => (
-          <span key={crumb.path} className="flex items-center gap-1.5">
+          // min-w-0 para que el ítem pueda encogerse: sin eso, un título
+          // largo desarma la fila entera en mobile en vez de pasar a la
+          // línea siguiente.
+          <span key={crumb.path} className="flex items-center gap-1.5 min-w-0">
             <ChevronRight className="w-3.5 h-3.5 opacity-40" />
             {crumb.isLast ? (
-              <span className="text-gray-900 font-medium">{crumb.label}</span>
+              <span className="text-gray-900 font-medium min-w-0">{crumb.label}</span>
             ) : (
               <Link to={crumb.path} className="hover:text-red-700 transition-colors">
                 {crumb.label}
