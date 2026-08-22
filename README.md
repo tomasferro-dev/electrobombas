@@ -10,6 +10,8 @@ vite-react-ssg** · Deploy en Vercel.
 npm install
 npm run dev        # desarrollo
 npm run build      # build de producción: genera un HTML por ruta
+npm run lint       # ESLint
+node scripts/audit-seo.mjs   # audita el HTML generado (falla si hay problemas)
 npm run preview    # servir el build local
 ```
 
@@ -102,6 +104,17 @@ El script redimensiona por familia (1600 px hero, 1200 px fotos de obra,
 1000 px catálogo) y corrige la orientación EXIF, que WebP no arrastra.
 Después de correrlo hay que apuntar los imports a `.webp`.
 
+También emite las variantes `foo-w400.webp` y `foo-w800.webp` para el
+`srcset`, más `image-widths.json` con el ancho real de cada archivo
+principal. Usá el componente **`<Img>`** en vez de `<img>`: arma el srcset
+solo y sólo hay que pasarle un `sizes` acorde a cómo se muestra la imagen.
+Las del lightbox quedan como `<img>` a propósito: ahí se quiere el archivo
+completo.
+
+El build corre `scripts/strip-image-preloads.mjs` al final. vite-react-ssg
+precarga todos los assets del entry de cada ruta —en la home eran 3,5 MB de
+fotos en tamaño completo— y no expone una opción para desactivarlo.
+
 Los `import.meta.glob` de las fotos de obra viven **solo** en
 `src/app/lib/projectImages.ts`. Si cambia el formato o la estructura de
 carpetas, ese es el único archivo a tocar.
@@ -118,10 +131,17 @@ carpetas, ese es el único archivo a tocar.
   en segundo plano, renderizador headless). Con `defer` activado, el sitio
   entero quedaba con el title y el canonical del `index.html`.
 - `Breadcrumb.tsx` emite `BreadcrumbList`; `data-faq.ts`, `FAQPage`.
-- Los meta de `index.html` llevan `data-rh="true"` para que Helmet los
-  reemplace en vez de duplicarlos. Son el fallback para WhatsApp y Facebook,
-  que no ejecutan JavaScript.
+- **`index.html` no lleva title, description, canonical ni Open Graph.** Es
+  la plantilla de las 34 páginas y cada una ya recibe su head del servidor:
+  ponerlos ahí los duplica (dos `<title>` y dos canonical, el segundo
+  apuntando siempre a la home). Google ignora dos canonical distintos.
 - Al agregar una ruta indexable, sumala a `public/sitemap.xml`.
+- **Verificá sobre el HTML generado, no sobre el DOM.** Helmet limpia los
+  duplicados en el cliente, así que desde la consola del navegador todo se
+  ve bien aunque el HTML servido esté mal. Para eso está
+  `scripts/audit-seo.mjs`: chequea title/description/canonical únicos y con
+  la URL propia, og:image, twitter:card, un solo h1, JSON-LD válido,
+  contenido mínimo y que no queden preloads de imagen.
 
 ## Analítica
 

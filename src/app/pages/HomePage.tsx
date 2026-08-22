@@ -61,6 +61,7 @@ export default function HomePage() {
     <>
       <SEO
         title="Venta y Reparación de Electrobombas en Mendoza y San Juan"
+        brandSuffix={false}
         description="Arenas Electrobombas: venta, reparación y alquiler de electrobombas en Mendoza y San Juan. Perforación de pozos, bobinados, filmaciones y extracción. +20 años de experiencia."
         canonical="/"
         jsonLd={[localBusinessJsonLd, faqJsonLd(FAQ_GENERAL)]}

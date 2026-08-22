@@ -37,6 +37,10 @@ export interface Service {
 
 export interface Project {
   id: string;
+  /** Title corto para el SERP. El title visible suele pasar los 65 chars. */
+  seoTitle?: string;
+  /** Meta description escrita a mano, en vez de recortar la descripción. */
+  metaDescription?: string;
   title: string;
   provincia?: 'San Juan' | 'Mendoza';
   descripcion: string;
@@ -416,6 +420,9 @@ export const SERVICES: Service[] = [
 export const PROJECTS: Project[] = [
   {
     id: 'barrancas-maipu',
+    seoTitle: 'Extracción y colocación de electrobomba en Barrancas, Maipú',
+    metaDescription:
+      'Extracción del equipo de bombeo para diagnóstico y colocación de una electrobomba en condiciones óptimas, en Barrancas, Maipú. Obra documentada con fotos.',
     title: 'Extracción y Colocación – Barrancas, Maipú',
     provincia: 'Mendoza',
     descripcion:
@@ -426,6 +433,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'bianchetti',
+    seoTitle: 'Intervención de pozo en establecimiento agrícola de Mendoza',
+    metaDescription:
+      'Extracción, reparación del motor y recolocación del equipo de bombeo en un pozo de finca en Mendoza. Diagnóstico completo y puesta en marcha.',
     title: 'Extracción y Colocación – Sector Agrícola, Mendoza',
     provincia: 'Mendoza',
     descripcion:
@@ -436,6 +446,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'desarrollo-perforacion-nueva',
+    seoTitle: 'Perforación nueva para un emprendimiento inmobiliario',
+    metaDescription:
+      'Perforación de pozo nuevo, desarrollo hidráulico para optimizar el caudal y montaje del equipo de bombeo para un emprendimiento inmobiliario.',
     title: 'Desarrollo de Perforación Nueva',
     provincia: undefined,
     descripcion:
@@ -446,6 +459,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'san-juan-7-intervenciones',
+    seoTitle: 'Siete intervenciones en pozos de San Juan',
+    metaDescription:
+      'Extracción de electrobombas, limpieza de perforaciones y recolocación en siete pozos de San Juan. Trabajo sobre perforaciones existentes.',
     title: 'Extracción, Colocación y Limpieza – San Juan (7 intervenciones)',
     provincia: 'San Juan',
     descripcion:
@@ -462,6 +478,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'pistachos-san-juan',
+    seoTitle: 'Rehabilitación de pozo en finca de pistachos, San Juan',
+    metaDescription:
+      'Limpieza profunda de la perforación, extracción del equipo y rehabilitación del sistema de agua de un establecimiento agrícola de San Juan.',
     title: 'Limpieza, Extracción y Rehabilitación – Sector Agrícola, San Juan',
     provincia: 'San Juan',
     descripcion:
@@ -478,6 +497,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'muni-lujan',
+    seoTitle: 'Electrobomba para un municipio de Luján de Cuyo',
+    metaDescription:
+      'Retiro, revisión técnica y recolocación de la electrobomba de un organismo municipal en Luján de Cuyo, Mendoza.',
     title: 'Extracción y Colocación – Sector Municipal, Luján de Cuyo',
     provincia: 'Mendoza',
     descripcion:
@@ -488,6 +510,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'olivum',
+    seoTitle: 'Bomba y alquiler para riego olivícola en Mendoza',
+    metaDescription:
+      'Extracción del equipo de bombeo, provisión de una electrobomba de alquiler y recolocación en el sistema de riego de un establecimiento olivícola de Mendoza.',
     title: 'Extracción, Colocación y Alquiler de Bomba – Sector Olivícola, Mendoza',
     provincia: 'Mendoza',
     descripcion:
@@ -502,6 +527,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'parque-solar-geneya',
+    seoTitle: 'Pesca y recuperación de pozo en un parque solar de San Juan',
+    metaDescription:
+      'La electrobomba cayó dentro de la perforación: filmación diagnóstica, pesca del equipo, limpieza, cañería nueva y colocación con cables y tablero.',
     title: 'Servicio Integral – Sector Energía Solar, San Juan',
     provincia: 'San Juan',
     descripcion:
@@ -520,6 +548,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'finca-ranfer',
+    seoTitle: 'Pesca y filmación de pozo en finca olivícola de San Juan',
+    metaDescription:
+      'Filmación del pozo para ver su estado interior, pesca de la electrobomba caída, extracción y colocación del equipo en una finca productora de aceite de oliva.',
     title: 'Pesca, Extracción, Colocación y Filmación – Sector Olivícola, San Juan',
     provincia: 'San Juan',
     descripcion:
@@ -536,6 +567,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'petroleo-sudamericano',
+    seoTitle: 'Pozo de agua de un yacimiento petrolero en Barrancas',
+    metaDescription:
+      'Extracción del equipo con funcionamiento deficiente, venta de una electrobomba nueva y colocación en el pozo que abastece un yacimiento en Barrancas, Mendoza.',
     title: 'Extracción, Colocación y Venta de Equipo – Sector Petrolero, Barrancas',
     provincia: 'Mendoza',
     descripcion:
@@ -551,6 +585,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'san-rafael-real-del-padre',
+    seoTitle: 'Limpieza y reentubación de pozo en Real del Padre',
+    metaDescription:
+      'Limpieza del pozo para sacar sedimentos e incrustaciones, reentubación de la perforación y colocación del equipo en Real del Padre, San Rafael.',
     title: 'Limpieza, Reentubación y Colocación – San Rafael, Real del Padre',
     provincia: 'Mendoza',
     descripcion:
@@ -566,6 +603,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'santa-rosa',
+    seoTitle: 'Extracción y colocación de electrobomba en Santa Rosa',
+    metaDescription:
+      'Extracción del equipo instalado para revisión y mantenimiento, y reinstalación en el pozo, en Santa Rosa, Mendoza.',
     title: 'Extracción y Colocación – Santa Rosa',
     provincia: 'Mendoza',
     descripcion:
@@ -576,6 +616,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'supermercado-libertad',
+    seoTitle: 'Sistema de bombeo de un supermercado en Mendoza',
+    metaDescription:
+      'Extracción, colocación y mantenimiento del sistema de bombeo de un supermercado en Mendoza, para asegurar el abastecimiento de agua del local.',
     title: 'Extracción, Colocación y Mantenimiento – Sector Comercial, Mendoza',
     provincia: 'Mendoza',
     descripcion:

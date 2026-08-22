@@ -75,9 +75,10 @@ export default function ProyectoDetallePage() {
   return (
     <>
       <SEO
-        title={project.title}
-        description={`${project.descripcion.slice(0, 150)}...`}
+        title={project.seoTitle ?? project.title}
+        description={project.metaDescription ?? project.descripcion.slice(0, 155)}
         canonical={`/proyectos/${project.id}`}
+        brandSuffix={false}
       />
       <Breadcrumb label={project.title} />
 

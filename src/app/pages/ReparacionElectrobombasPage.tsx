@@ -65,6 +65,7 @@ export default function ReparacionElectrobombasPage() {
     <>
       <SEO
         title="Reparación de Electrobombas en Mendoza y San Juan"
+        brandSuffix={false}
         description="Servicio técnico especializado en reparación de electrobombas sumergibles y de superficie. Diagnóstico, bobinado, repuestos y prueba en banco. Cobertura en Mendoza, San Juan y Argentina."
         canonical="/reparacion"
         jsonLd={faqJsonLd(FAQ_REPARACION)}

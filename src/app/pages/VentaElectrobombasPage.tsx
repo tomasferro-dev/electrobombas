@@ -134,6 +134,7 @@ export default function VentaElectrobombasPage() {
     <>
       <SEO
         title="Venta de Electrobombas en Mendoza y San Juan"
+        brandSuffix={false}
         description="Comprá electrobombas sumergibles y de superficie en Mendoza y San Juan. Stock permanente, asesoramiento técnico y entrega inmediata. Equipos para uso doméstico, agrícola e industrial."
         canonical="/venta"
         jsonLd={faqJsonLd(FAQ_VENTA)}
