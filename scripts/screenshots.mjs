@@ -55,6 +55,9 @@ const PAGINAS = [
 
 const VISTAS = [
   ['desktop', 1440, 900, 1],
+  // 820 px: el ancho de tablet donde el header se rompia sin que nadie lo
+  // viera, porque solo se miraba desktop y mobile.
+  ['tablet', 820, 1100, 2],
   ['mobile', 390, 844, 2],
 ]
 

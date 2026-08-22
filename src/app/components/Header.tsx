@@ -85,7 +85,7 @@ export default function Header({ mode }: HeaderProps) {
       : 'bg-white shadow-md';
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16 md:h-20 ${bgClass}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16 lg:h-20 ${bgClass}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex items-center justify-between h-full">
 
@@ -97,12 +97,12 @@ export default function Header({ mode }: HeaderProps) {
               width={512}
               height={200}
               fetchpriority="high"
-              className="h-10 md:h-12 w-auto object-contain"
+              className="h-10 lg:h-12 w-auto object-contain"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <NavLink
                 key={link.to}
@@ -174,7 +174,7 @@ export default function Header({ mode }: HeaderProps) {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-md"
+            className="lg:hidden p-2 rounded-md"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -189,7 +189,7 @@ export default function Header({ mode }: HeaderProps) {
 
       {/* Mobile Navigation Drawer */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
           <nav className="flex flex-col py-2">
             {NAV_LINKS.map((link) => (
               <NavLink
