@@ -116,6 +116,10 @@ El build corre `scripts/strip-image-preloads.mjs` al final. vite-react-ssg
 precarga todos los assets del entry de cada ruta —en la home eran 3,5 MB de
 fotos en tamaño completo— y no expone una opción para desactivarlo.
 
+Los logos son un caso aparte: los originales con transparencia viven en
+`brand/`, fuera del alcance del script. Al convertirlos hay que pasarlos a
+`RGBA` siempre — si no, la transparencia se aplasta a negro. Ver `brand/README.md`.
+
 Los `import.meta.glob` de las fotos de obra viven **solo** en
 `src/app/lib/projectImages.ts`. Si cambia el formato o la estructura de
 carpetas, ese es el único archivo a tocar.

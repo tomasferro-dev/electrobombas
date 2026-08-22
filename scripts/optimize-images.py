@@ -50,8 +50,13 @@ QUALITY_DEFAULT = 80
 # Fotos de obra: son documentales, no de catálogo. 72 es indistinguible a
 # tamaño de pantalla y las mantiene por debajo del techo de 250 KB.
 QUALITY_BY_PREFIX = {"proyectos/": 72}
-# Los PNG con transparencia (logos) se convierten sin perder el alfa.
-KEEP_ALPHA_EXT = {".png"}
+
+
+def tiene_alfa(im: "Image.Image") -> bool:
+    """True si la imagen tiene algún píxel no opaco."""
+    if im.mode not in ("RGBA", "LA", "P"):
+        return False
+    return im.convert("RGBA").getchannel("A").getextrema()[0] < 255
 
 
 def max_width_for(rel_path: str) -> int:
@@ -83,8 +88,12 @@ def convert(path: Path, dry_run: bool, replace: bool) -> dict:
             # se guardan rotadas (el visor las endereza por metadata EXIF,
             # que WebP no arrastra).
             im = ImageOps.exif_transpose(im)
-            has_alpha = path.suffix.lower() in KEEP_ALPHA_EXT and im.mode in ("RGBA", "LA", "P")
-            im = im.convert("RGBA" if has_alpha else "RGB")
+            # Se preserva el alfa según lo que la imagen REALMENTE tiene, no
+            # según su extensión. Atarlo a la extensión ya rompió los dos
+            # logos una vez: al reprocesar los .webp ya convertidos, la
+            # extensión no estaba en la lista, se convirtieron a RGB y la
+            # transparencia quedó en negro.
+            im = im.convert("RGBA" if tiene_alfa(im) else "RGB")
 
             limit = max_width_for(rel)
             if im.width > limit:
