@@ -1,5 +1,10 @@
 # Arenas Electrobombas
 
+> **Retomando el trabajo?** Leé primero [`BITACORA.md`](BITACORA.md): tiene el
+> estado del proyecto, lo hecho, lo pendiente de cada lado y las trampas
+> conocidas. Este README explica *cómo* funciona el proyecto; la bitácora,
+> *dónde estamos*.
+
 Sitio de Arenas Electrobombas — venta, reparación y alquiler de electrobombas
 y perforación de pozos de agua en Mendoza y San Juan.
 
