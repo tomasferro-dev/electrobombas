@@ -9,3 +9,7 @@ vite.config.ts.timestamp-*.mjs
 
 # Capturas de verificacion visual
 screenshots/
+
+# Cache de Python
+__pycache__/
+*.pyc
