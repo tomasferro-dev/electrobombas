@@ -72,6 +72,7 @@ export default function LocalidadPage() {
     telephone: '+5402614707318',
     email: CONTACT.email,
     image: 'https://www.arenaselectrobombas.com.ar/og-image.jpg',
+    logo: 'https://www.arenaselectrobombas.com.ar/logo.png',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '1536 Jesús Nazareno',

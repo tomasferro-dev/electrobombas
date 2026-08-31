@@ -2,8 +2,27 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Iconos. Se generan con scripts/generate-icons.py desde
+      brand/logo-icono.png; no editar a mano.
+
+      El orden importa: el navegador se queda con la ÚLTIMA regla que aplique,
+      así que la declaración sin `media` va primera como respaldo universal —es
+      la que usa Google, que ignora los media queries— y las dos con `media`
+      después, para que el navegador elija según el tema.
+
+      La variante oscura es una pastilla clara: el logo es negro y rojo, y
+      sobre una pestaña oscura el contorno negro desaparece.
+    -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192" />
+    <link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" href="/favicon-dark-96.png" sizes="96x96" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="/favicon-dark-192.png" sizes="192x192" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 
     <!--
       El head de SEO (title, description, canonical, Open Graph, JSON-LD) lo

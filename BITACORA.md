@@ -9,7 +9,7 @@
 > sirve sólo `dist/`, y ningún `.md` de la raíz entra ahí (verificado:
 > `/README.md` devuelve 404 en el sitio).
 
-**Última actualización:** 23/08/2026 · commit `cb87f3b` · **producción al día**
+**Última actualización:** 31/08/2026 · **producción al día**
 
 ---
 
@@ -139,8 +139,12 @@ real** en vez de `dist/`. Todos salen con código 1 si encuentran problemas.
    extensión aplastó la transparencia de los logos a negro.
 7. **Los logos originales están en `brand/`**, fuera de `src/assets/` para que
    el script no los reprocese. Ver `brand/README.md`.
-8. **Al agregar una ruta indexable, sumala a `public/sitemap.xml`.**
-9. **El dominio canónico es `www`.** Si cambia, tocar `BASE_URL` en `SEO.tsx`,
+8. **Los iconos se generan, no se editan.** `python scripts/generate-icons.py`
+   los produce desde `brand/logo-icono.png`. El favicon tiene que ser
+   **cuadrado y múltiplo de 48 px**: Google lo exige y el anterior (el
+   logotipo completo, 612×408) no cumplía ninguna de las dos condiciones.
+9. **Al agregar una ruta indexable, sumala a `public/sitemap.xml`.**
+10. **El dominio canónico es `www`.** Si cambia, tocar `BASE_URL` en `SEO.tsx`,
    `sitemap.xml`, `robots.txt` y el JSON-LD de `HomePage.tsx`.
 
 ### Verificación visual — no es opcional
@@ -154,7 +158,31 @@ en tablet. El viewport de tablet se agregó justamente por eso.
 
 ---
 
-## 5. Historial de la sesión del 22–23/08/2026
+## 5. Historial
+
+### Sesión del 31/08/2026 — iconos
+
+- **Favicon nuevo** desde el monograma AE (`brand/logo-icono.png`, 2000×2000).
+  El anterior era el logotipo completo en 612×408: a 16 px se veía como una
+  mancha roja ilegible, y Google pide favicon **cuadrado y múltiplo de 48 px**.
+- `scripts/generate-icons.py` quita el fondo blanco por relleno de inundación
+  desde los bordes —sólo el blanco exterior, para no perforar zonas internas—
+  y reescala en **alfa premultiplicado**, que evita el halo claro en el borde.
+  El antialiasing lo aporta el reescalado de 2000 px al tamaño final, no un
+  umbral gradual.
+- **Variante para modo oscuro**: el logo es negro y rojo, y sobre una pestaña
+  oscura el contorno negro desaparece. Se compararon tres opciones con
+  capturas a 16/32/48/96 px: sin cambios (el contorno se pierde), halo blanco
+  (funciona de 32 px para arriba, pero a 16 se come el glifo) y **pastilla
+  clara redondeada**, la única legible a 16 px. Se eligió la pastilla.
+- `apple-touch-icon` con fondo sólido: iOS ignora la transparencia y la pinta
+  de negro.
+- **Bug corregido**: el `logo` del `LocalBusiness` apuntaba a `og-image.jpg`,
+  que es una **foto de obra**. Google recibía una foto donde esperaba el
+  logotipo. Ahora apunta a `/logo.png`. Se agregó también en `LocalidadPage`.
+- Se eliminó `public/favicon.png`, que quedó sin referencias.
+
+### Sesión del 22–23/08/2026
 
 22 commits, de `11cc5c7` a `cb87f3b`. Fases 0, 1 y 2 completas.
 
